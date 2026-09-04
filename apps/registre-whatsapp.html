@@ -1,0 +1,1868 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>Registre WhatsApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --bg:#F1F3F1;
+  --surface:#FFFFFF;
+  --surface-2:#E8EDEA;
+  --ink:#0F1613;
+  --ink-2:#4B5751;
+  --ink-3:#7D8A83;
+  --line:#D4DBD6;
+  --line-strong:#B9C4BE;
+  --accent:#0E6F5C;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#DDEBE5;
+  --amber:#9C6214;
+  --amber-soft:#F4E7D3;
+  --good:#2E7D5B;
+  --crit:#A93B2C;
+  --shadow:0 1px 2px rgba(15,22,19,.06), 0 8px 24px -16px rgba(15,22,19,.28);
+  --radius:10px;
+  --f-display:"Bricolage Grotesque","Trebuchet MS",sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1412;
+    --surface:#151D1A;
+    --surface-2:#1D2724;
+    --ink:#E4EDE8;
+    --ink-2:#9DACA5;
+    --ink-3:#74837C;
+    --line:#26332E;
+    --line-strong:#36463F;
+    --accent:#46B893;
+    --accent-ink:#08201A;
+    --accent-soft:#173029;
+    --amber:#DFA45C;
+    --amber-soft:#33280F;
+    --good:#4FBE8E;
+    --crit:#E0705E;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1412;
+  --surface:#151D1A;
+  --surface-2:#1D2724;
+  --ink:#E4EDE8;
+  --ink-2:#9DACA5;
+  --ink-3:#74837C;
+  --line:#26332E;
+  --line-strong:#36463F;
+  --accent:#46B893;
+  --accent-ink:#08201A;
+  --accent-soft:#173029;
+  --amber:#DFA45C;
+  --amber-soft:#33280F;
+  --good:#4FBE8E;
+  --crit:#E0705E;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:28px 20px 140px}
+
+.masthead{display:flex;flex-direction:column;gap:8px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{flex:none}
+h1{font-family:var(--f-display);font-weight:700;font-size:28px;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.tagline{margin:0;color:var(--ink-2);max-width:66ch}
+.tagline b{color:var(--ink);font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+button{font-family:inherit;font-size:14px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  padding:9px 15px;border-radius:8px;cursor:pointer;font-weight:500;
+  transition:background .15s ease,border-color .15s ease;
+}
+.btn:hover{background:var(--surface-2)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn-primary:hover{background:var(--accent);filter:brightness(1.06)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+input[type=text],input[type=date],select{
+  font-family:inherit;font-size:14px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px;min-width:0;
+}
+label.field{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--ink-3);font-weight:500}
+
+/* ---------- intake ---------- */
+#intake{margin-top:26px;display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start}
+.slot{padding:26px 24px;text-align:center;border-style:dashed;border-width:1.5px;transition:border-color .15s ease,background .15s ease;height:100%}
+.slot.over{border-color:var(--accent);background:var(--accent-soft)}
+.slot .n{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+.slot h2{font-family:var(--f-display);font-weight:600;font-size:20px;margin:6px 0 6px;letter-spacing:-.01em}
+.slot p{margin:0 auto 18px;color:var(--ink-2);max-width:44ch;font-size:14px}
+.slot .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hint{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);margin-top:14px}
+.slot.done{border-style:solid;border-color:var(--accent)}
+.slot .ok{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--accent);font-weight:600;margin-bottom:12px}
+
+.transform{display:grid;grid-template-columns:1fr auto 1.15fr;gap:16px;align-items:center;margin:0 auto 22px;max-width:660px;text-align:left}
+.bubbles{display:flex;flex-direction:column;gap:7px}
+.bubble{background:var(--surface-2);border:1px solid var(--line);border-radius:12px 12px 12px 3px;padding:7px 11px;font-size:12.5px;color:var(--ink-2);font-family:var(--f-mono)}
+.bubble.me{border-radius:12px 12px 3px 12px;align-self:flex-end;background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.arrow{color:var(--accent);font-size:20px}
+.minigrid{border:1px solid var(--line);border-radius:6px;overflow:hidden;font-family:var(--f-mono);font-size:11.5px}
+.minigrid div{display:grid;grid-template-columns:1.6fr .8fr .9fr}
+.minigrid span{padding:6px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.minigrid div:last-child span{border-bottom:0}
+.minigrid span:last-child{border-right:0}
+.minigrid .head span{background:var(--surface-2);color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase;font-size:10px}
+.minigrid .val{color:var(--amber)}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:16px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;text-align:left}
+.step .n{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.1em}
+.step h3{font-size:14px;margin:4px 0 4px;font-weight:600}
+.step p{margin:0;font-size:13px;color:var(--ink-2)}
+
+/* ---------- workspace ---------- */
+#workspace{margin-top:26px;display:flex;flex-direction:column;gap:18px}
+.filebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px}
+.filechip{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:5px 9px}
+.filechip.model{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:500}
+.filebar .spacer{flex:1}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{padding:13px 15px;display:flex;flex-direction:column;gap:2px}
+.tile .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.tile .v{font-family:var(--f-display);font-weight:600;font-size:25px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .s{font-size:12px;color:var(--ink-2)}
+.tile.flag .v{color:var(--amber)}
+.tile.small .v{font-size:16px;letter-spacing:0;line-height:1.35}
+
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;padding:14px 16px}
+
+.routing{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.routing h3{margin:0;font-size:14px;font-weight:600}
+.routing .sub{margin:0;font-size:12.5px;color:var(--ink-2)}
+.routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.route{display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:8px;padding:7px 10px}
+.route .who{flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.route .cnt{font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+.route select{padding:5px 7px;font-size:12.5px}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:0;background:none;color:var(--ink-2);padding:9px 14px;cursor:pointer;border-bottom:2px solid transparent;font-weight:500;white-space:nowrap}
+.tab .cnt{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);margin-left:6px}
+.tab .add{font-family:var(--f-mono);font-size:11px;color:var(--accent);margin-left:5px;font-weight:600}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.tab:hover{color:var(--ink)}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:7px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;background:var(--surface-2);position:sticky;top:0;white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:12.5px}
+td.mono{font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
+td.msg{max-width:420px;min-width:220px}
+td.pick{width:34px;padding-right:0}
+tbody tr:hover{background:var(--surface-2)}
+tr.old td{color:var(--ink-3)}
+tr.new td{background:var(--accent-soft)}
+tr.new:hover td{background:var(--accent-soft);filter:brightness(.98)}
+tr.off td{opacity:.42}
+tr.rowno td:first-child{color:var(--ink-3)}
+.rowref{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+.pill{display:inline-block;font-size:11px;padding:1px 7px;border-radius:99px;border:1px solid var(--line-strong);color:var(--ink-2);white-space:nowrap}
+.pill.media{background:var(--amber-soft);border-color:transparent;color:var(--amber)}
+.pill.sys{background:var(--surface-2);border-color:transparent;color:var(--ink-3)}
+.pill.del{background:var(--surface-2);border-color:transparent;color:var(--crit)}
+.pill.sent{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.pill.add{background:var(--accent);border-color:transparent;color:var(--accent-ink);font-weight:600}
+.score{font-family:var(--f-mono);font-size:12px;color:var(--amber);font-weight:500}
+.tablefoot{padding:9px 14px;font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line)}
+.empty{padding:34px 20px;text-align:center;color:var(--ink-2)}
+.empty strong{display:block;color:var(--ink);font-weight:600;margin-bottom:5px}
+
+.exportbar{
+  position:sticky;bottom:0;margin-top:4px;padding:13px 16px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:0 -6px 24px -18px rgba(0,0,0,.5), var(--shadow);
+}
+.sheetpicks{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
+.sheetpicks label{display:flex;align-items:center;gap:5px;cursor:pointer}
+.exportbar .spacer{flex:1}
+.note{font-size:12px;color:var(--ink-3)}
+
+footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
+footer b{color:var(--ink-2);font-weight:600}
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(16px);
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:13.5px;
+  opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:50;max-width:80vw;text-align:center;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:860px){
+  #intake{grid-template-columns:1fr}
+  .transform{grid-template-columns:1fr;gap:12px}
+  .arrow{transform:rotate(90deg);text-align:center}
+  .page{padding:20px 14px 150px}
+  h1{font-size:24px}
+}
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+        <path d="M2.6 3.2h9.6v7.4H6.4L2.6 13.4V3.2z" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+        <rect x="15.6" y="3.2" width="5.6" height="5.2" stroke="var(--ink-3)" stroke-width="1.4"/>
+        <rect x="21.2" y="3.2" width="5.6" height="5.2" stroke="var(--ink-3)" stroke-width="1.4"/>
+        <rect x="15.6" y="8.4" width="5.6" height="5.2" stroke="var(--ink-3)" stroke-width="1.4"/>
+        <rect x="21.2" y="8.4" width="5.6" height="5.2" fill="var(--amber)" fill-opacity=".28" stroke="var(--amber)" stroke-width="1.4"/>
+        <path d="M4 20.5h22M4 24.8h22" stroke="var(--line-strong)" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M10.5 18.2v8.6M18.5 18.2v8.6" stroke="var(--line-strong)" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <h1>Registre WhatsApp</h1>
+    </div>
+    <p class="tagline">Dépose la discussion et ton classeur : les dépenses annoncées dans les messages sont écrites <b>dans ton fichier Excel, à sa structure</b> — mêmes feuilles, mêmes colonnes, à la suite des lignes existantes. Sans classeur, tu obtiens un rapport complet de la discussion. Tout est calculé dans ton navigateur.</p>
+  </header>
+
+  <section id="intake">
+    <div class="card slot" id="dropChat">
+      <div class="n">Étape 1 · obligatoire</div>
+      <h2>La discussion WhatsApp</h2>
+      <div class="transform" aria-hidden="true">
+        <div class="bubbles">
+          <div class="bubble">70dh frais ghazala récupération BBU</div>
+          <div class="bubble me">900dhs reste electricien</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="minigrid">
+          <div class="head"><span>dépense</span><span>Montant</span><span>date</span></div>
+          <div><span>70dh frais ghazala…</span><span class="val">70</span><span>08-27-26</span></div>
+          <div><span>900dhs reste electr…</span><span class="val">900</span><span>09-02-26</span></div>
+        </div>
+      </div>
+      <p>Le fichier <code>.txt</code> de l'export, ou directement le <code>.zip</code> tel que WhatsApp te l'envoie.</p>
+      <div class="actions">
+        <button class="btn btn-primary" id="pickChat">Choisir la discussion</button>
+        <button class="btn" id="demo">Voir un exemple</button>
+      </div>
+      <input type="file" id="fileChat" accept=".txt,.zip,text/plain,application/zip" hidden>
+      <p class="hint">Android et iPhone · français, anglais, arabe · chiffres arabes convertis</p>
+    </div>
+
+    <div class="card slot" id="dropModel">
+      <div class="n">Étape 2 · facultatif</div>
+      <h2>Le classeur à remplir</h2>
+      <p>Ton <code>.xlsx</code> existant. L'app garde ses feuilles, ses colonnes, ses bordures et ses formats de date, et ajoute les lignes à la suite.</p>
+      <div class="actions">
+        <button class="btn" id="pickModel">Choisir le classeur</button>
+      </div>
+      <input type="file" id="fileModel" accept=".xlsx" hidden>
+      <p class="hint">Sans classeur : rapport en 6 feuilles (messages, participants, activité, commandes)</p>
+    </div>
+  </section>
+
+  <section id="steps" class="steps">
+    <div class="step">
+      <div class="n">EXPORT · 1</div>
+      <h3>Ouvre la discussion</h3>
+      <p>Dans WhatsApp, appuie sur le nom du contact ou du groupe en haut de la conversation.</p>
+    </div>
+    <div class="step">
+      <div class="n">EXPORT · 2</div>
+      <h3>Exporter la discussion</h3>
+      <p>Tout en bas de la fiche : « Exporter la discussion ». Sur Android c'est aussi dans le menu ⋮ → Plus.</p>
+    </div>
+    <div class="step">
+      <div class="n">EXPORT · 3</div>
+      <h3>Sans les médias</h3>
+      <p>Choisis « Sans médias » : le fichier reste léger et l'analyse ne perd rien. Envoie-le-toi, puis dépose-le ici.</p>
+    </div>
+  </section>
+
+  <section id="workspace" hidden>
+    <div class="card filebar">
+      <span class="filechip" id="fileName">—</span>
+      <span class="filechip model" id="modelChip" hidden></span>
+      <span class="note" id="fileMeta"></span>
+      <span class="spacer"></span>
+      <button class="btn" id="changeModel">Classeur modèle</button>
+      <button class="btn" id="change">Changer de discussion</button>
+    </div>
+
+    <div class="tiles" id="tiles"></div>
+
+    <div class="card routing" id="routing" hidden>
+      <h3>Qui écrit dans quelle feuille</h3>
+      <p class="sub">Chaque message contenant un montant part dans la feuille de son auteur. Les virements repérés (« de X à Y », versement, 💵) vont dans la feuille des opérations.</p>
+      <div class="routes" id="routes"></div>
+    </div>
+
+    <div class="card controls">
+      <label class="field">Format des dates
+        <select id="dateOrder">
+          <option value="auto">Détecté automatiquement</option>
+          <option value="dmy">JJ/MM/AAAA</option>
+          <option value="mdy">MM/JJ/AAAA</option>
+          <option value="ymd">AAAA/MM/JJ</option>
+        </select>
+      </label>
+      <label class="field">Mon compte (pour « envoyé / reçu »)
+        <select id="me"></select>
+      </label>
+      <label class="field">Mots-clés produits <span class="note">séparés par des virgules</span>
+        <input type="text" id="keywords" placeholder="montre, coffret, abaya…">
+      </label>
+      <label class="field">Filtrer par auteur
+        <select id="fAuthor"></select>
+      </label>
+      <label class="field">Rechercher dans les messages
+        <input type="text" id="fQuery" placeholder="mot, numéro, ville…">
+      </label>
+      <label class="field">Du
+        <input type="date" id="fFrom">
+      </label>
+      <label class="field">Au
+        <input type="date" id="fTo">
+      </label>
+    </div>
+
+    <div class="card">
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div class="tablewrap" id="preview"></div>
+      <div class="tablefoot" id="previewFoot"></div>
+    </div>
+
+    <div class="card exportbar">
+      <div class="sheetpicks" id="sheetpicks"></div>
+      <span class="spacer"></span>
+      <span class="note" id="exportNote"></span>
+      <button class="btn" id="csv">CSV de l'onglet</button>
+      <button class="btn btn-primary" id="xlsx">Télécharger le classeur Excel</button>
+    </div>
+  </section>
+
+  <footer>
+    <b>Rien ne sort de ton appareil.</b> Le fichier est lu et analysé par la page elle-même ; seul le classeur que tu télécharges quitte le navigateur. Ton classeur d'origine n'est jamais modifié : tu récupères une copie remplie. Les lignes déjà présentes ne sont pas réécrites, et une même dépense n'est jamais ajoutée deux fois.
+  </footer>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   1. Lecture d'un export WhatsApp
+   ============================================================ */
+
+var INVISIBLE = /[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g;
+
+function normalize(text){
+  return text
+    .replace(/\r\n?/g, "\n")
+    .replace(INVISIBLE, "")
+    .replace(/\u00A0/g, " ")
+    .replace(/[\u0660-\u0669]/g, function(d){ return String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48); })
+    .replace(/[\u06F0-\u06F9]/g, function(d){ return String.fromCharCode(d.charCodeAt(0) - 0x06F0 + 48); });
+}
+
+var LINE_RE = /^\[?\s*(\d{1,4})[\/.\-](\d{1,2})[\/.\-](\d{2,4})[,\s]+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(a\.?\s?m\.?|p\.?\s?m\.?|ص|م)?\s*\]?\s*(?:[-–—]\s+)?([\s\S]*)$/i;
+var SENDER_RE = /^([^:\n]{1,80}):\s([\s\S]*)$/;
+
+var MEDIA_RE = /(<[^>]*(?:m[eé]dias?|media|attached|joint|مرفق)[^>]*>|\b(?:image|images|photo|video|vid[eé]o|audio|sticker|autocollant|gif|document|carte de visite|contact card)\s+(?:omitted|omis|omise|non inclus)|m[eé]dias? (?:omis|omitted)|تم حذف الوسائط)/i;
+var DELETED_RE = /(ce message a [eé]t[eé] supprim[eé]|this message was deleted|you deleted this message|vous avez supprim[eé] ce message|تم حذف هذه الرسالة)/i;
+var LINK_RE = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
+
+function detectDateOrder(rows){
+  var dmy = 0, mdy = 0, ymd = 0, i;
+  for(i = 0; i < rows.length; i++){
+    if(rows[i][0].length === 4){ ymd++; continue; }
+    if(+rows[i][0] > 12) dmy++;
+    if(+rows[i][1] > 12) mdy++;
+  }
+  if(ymd > rows.length / 2) return "ymd";
+  if(dmy > 0 && mdy === 0) return "dmy";
+  if(mdy > 0 && dmy === 0) return "mdy";
+  return "dmy";
+}
+
+function makeDate(a, b, c, h, mi, s, ampm, order){
+  var y, m, d;
+  if(order === "ymd"){ y = +a; m = +b; d = +c; }
+  else if(order === "mdy"){ m = +a; d = +b; y = +c; }
+  else { d = +a; m = +b; y = +c; }
+  if(y < 100) y += (y >= 70 ? 1900 : 2000);
+  var hh = +h;
+  if(ampm){
+    var p = ampm.toLowerCase().replace(/[.\s]/g, "");
+    var pm = (p === "pm" || ampm === "م");
+    if(pm && hh < 12) hh += 12;
+    if(!pm && hh === 12) hh = 0;
+  }
+  var dt = new Date(y, m - 1, d, hh, +mi, s ? +s : 0);
+  return isNaN(dt.getTime()) ? null : dt;
+}
+
+function extractPhones(t){
+  var out = [], re = /(?:\+|00)?\d[\d\s.\-()]{7,19}\d/g, m, d;
+  while((m = re.exec(t)) !== null){
+    d = m[0].replace(/\D/g, "");
+    if(d.indexOf("00212") === 0) d = "0" + d.slice(5);
+    else if(d.indexOf("212") === 0 && d.length === 12) d = "0" + d.slice(3);
+    if(/^0[5-7]\d{8}$/.test(d) && out.indexOf(d) < 0) out.push(d);
+  }
+  return out;
+}
+
+function parseChat(text, orderPref){
+  var lines = normalize(text).split("\n");
+  var raw = [], i, m;
+  for(i = 0; i < lines.length; i++){
+    m = LINE_RE.exec(lines[i]);
+    if(m){
+      raw.push([m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]]);
+    } else if(raw.length){
+      raw[raw.length - 1][7] += "\n" + lines[i];
+    }
+  }
+  var detected = detectDateOrder(raw);
+  var order = (orderPref && orderPref !== "auto") ? orderPref : detected;
+
+  var msgs = [], r, rest, sm, author, body, type, dt, n = 0;
+  for(i = 0; i < raw.length; i++){
+    r = raw[i];
+    dt = makeDate(r[0], r[1], r[2], r[3], r[4], r[5], r[6], order);
+    if(!dt) continue;
+    rest = r[7].replace(/^\s+/, "");
+    sm = SENDER_RE.exec(rest);
+    if(sm){
+      author = sm[1].replace(/^~\s*/, "").trim();
+      body = sm[2];
+      type = "texte";
+      if(DELETED_RE.test(body)) type = "supprimé";
+      else if(MEDIA_RE.test(body) && body.length < 160) type = "média";
+    } else {
+      author = "";
+      body = rest;
+      type = "système";
+    }
+    var links = body.match(LINK_RE) || [];
+    msgs.push({
+      n: ++n, date: dt, author: author, text: body.trim(),
+      type: type, links: links, phones: extractPhones(body)
+    });
+  }
+  return { messages: msgs, detected: detected, order: order };
+}
+
+/* ============================================================
+   2. Montants, villes, commandes COD
+   ============================================================ */
+
+var CITIES = ["Casablanca","Rabat","Salé","Fès","Marrakech","Tanger","Meknès","Oujda","Kénitra","Agadir","Tétouan","Témara","Safi","Mohammedia","Khouribga","Béni Mellal","El Jadida","Taza","Nador","Settat","Larache","Ksar El Kébir","Khémisset","Guelmim","Berrechid","Oued Zem","Fkih Ben Salah","Taourirt","Berkane","Sidi Slimane","Errachidia","Sidi Kacem","Khénifra","Essaouira","Tiflet","Taroudant","Ouarzazate","Youssoufia","Laâyoune","Dakhla","Al Hoceima","Chefchaouen","Ifrane","Azrou","Midelt","Sefrou","Bouskoura","Sidi Bennour","Zagora","Tan-Tan","Tinghir","Skhirat","Bouznika","Martil","Mdiq","Asilah","Ouazzane","Benguerir","Boujdour","Smara","Rissani","Erfoud","Azemmour","Tiznit","Ait Melloul","Inezgane","Dcheira","Harhoura","Deroua","Mediouna","Nouaceur","Tit Mellil","Souk Larbaa","Sidi Yahya","Moulay Bousselham","Had Soualem","Ben Ahmed","El Kelaa des Sraghna","Chichaoua","Imintanoute","Ouled Teima","Biougra","Tafraout","Sidi Ifni","Bouarfa","Jerada","Figuig","Missour","Boulemane","Ain Taoujdate","Moulay Yacoub","Sidi Allal El Bahraoui","Ain Aouda","Sidi Rahal"];
+var CITIES_AR = {"الدار البيضاء":"Casablanca","كازا":"Casablanca","الرباط":"Rabat","سلا":"Salé","فاس":"Fès","مراكش":"Marrakech","طنجة":"Tanger","مكناس":"Meknès","وجدة":"Oujda","القنيطرة":"Kénitra","أكادير":"Agadir","اكادير":"Agadir","تطوان":"Tétouan","تمارة":"Témara","آسفي":"Safi","اسفي":"Safi","المحمدية":"Mohammedia","خريبكة":"Khouribga","بني ملال":"Béni Mellal","الجديدة":"El Jadida","تازة":"Taza","الناظور":"Nador","سطات":"Settat","العرائش":"Larache","الخميسات":"Khémisset","كلميم":"Guelmim","برشيد":"Berrechid","وادي زم":"Oued Zem","بركان":"Berkane","الرشيدية":"Errachidia","خنيفرة":"Khénifra","الصويرة":"Essaouira","تارودانت":"Taroudant","ورزازات":"Ouarzazate","العيون":"Laâyoune","الداخلة":"Dakhla","الحسيمة":"Al Hoceima","شفشاون":"Chefchaouen","إفران":"Ifrane","أزرو":"Azrou","ميدلت":"Midelt","صفرو":"Sefrou","زاكورة":"Zagora","تنغير":"Tinghir","انزكان":"Inezgane","ايت ملول":"Ait Melloul"};
+
+var ADDRESS_RE = /(\brue\b|\bavenue\b|\bav\.\b|\bbd\b|\bboulevard\b|\bquartier\b|\bhay\b|\bderb\b|\bdrb\b|\blot\b|\blotissement\b|\bimm\b|\bimmeuble\b|\bappt?\b|\b[ée]tage\b|\br[ée]sidence\b|\bcit[ée]\b|\bn°\s?\d|شارع|حي |درب|زنقة|عمارة|الطابق)/i;
+var NAME_RE = /(?:\bnom\b|\bism\b|\bsmiti\b|الاسم|إسم)\s*[:=]?\s*([\p{L}][\p{L}\s'’.\-]{2,38})/iu;
+var QTY_RE = /(?:(\d{1,3})\s*(?:pcs?|pi[eè]ces?|unit[ée]s?|قطع|قطعة|حبة)|\bx\s?(\d{1,3})\b|\b(\d{1,3})\s?x\b)/i;
+var AMOUNT_RE = /(?:(\d{1,3}(?:[ .,]\d{3})+|\d+(?:[.,]\d{1,2})?)\s*(?:dhs?|dirhams?|mad|درهم|د\.?م)|(?:dhs?|mad|درهم)\s*(\d{1,3}(?:[ .,]\d{3})+|\d+(?:[.,]\d{1,2})?))/gi;
+
+function deaccent(s){
+  return s.normalize ? s.normalize("NFD").replace(/[\u0300-\u036F]/g, "").toLowerCase() : s.toLowerCase();
+}
+var CITY_INDEX = CITIES.map(function(c){ return { plain: deaccent(c), label: c }; });
+
+function findCity(text){
+  var t = deaccent(text), i, k;
+  for(i = 0; i < CITY_INDEX.length; i++){
+    if(t.indexOf(CITY_INDEX[i].plain) >= 0) return CITY_INDEX[i].label;
+  }
+  for(k in CITIES_AR){ if(text.indexOf(k) >= 0) return CITIES_AR[k]; }
+  return "";
+}
+
+function parseAmount(s){
+  var v = s.replace(/\s/g, "").replace(/,(?=\d{3}\b)/g, "").replace(/\.(?=\d{3}\b)/g, "").replace(",", ".");
+  var n = parseFloat(v);
+  return isFinite(n) ? n : 0;
+}
+
+function findAmount(text){
+  var best = 0, m;
+  AMOUNT_RE.lastIndex = 0;
+  while((m = AMOUNT_RE.exec(text)) !== null){
+    var n = parseAmount(m[1] || m[2] || "");
+    if(n > best && n < 100000000) best = n;
+  }
+  return best;
+}
+
+function findQty(text){
+  var m = QTY_RE.exec(text);
+  if(!m) return 0;
+  var q = +(m[1] || m[2] || m[3] || 0);
+  return (q > 0 && q < 500) ? q : 0;
+}
+
+function findAddress(text){
+  var lines = text.split("\n"), i;
+  for(i = 0; i < lines.length; i++){
+    if(ADDRESS_RE.test(lines[i])) return lines[i].trim().slice(0, 160);
+  }
+  return "";
+}
+
+function findProducts(text, keywords){
+  var t = deaccent(text), hits = [], i;
+  for(i = 0; i < keywords.length; i++){
+    if(keywords[i] && t.indexOf(deaccent(keywords[i])) >= 0) hits.push(keywords[i]);
+  }
+  return hits.join(", ");
+}
+
+function stripPhones(s){
+  return s.replace(/(?:\+|00)?\d[\d\s.\-()]{7,19}\d/g, function(m){
+    var d = m.replace(/\D/g, "");
+    if(d.indexOf("00212") === 0) d = "0" + d.slice(5);
+    else if(d.indexOf("212") === 0 && d.length === 12) d = "0" + d.slice(3);
+    return /^0[5-7]\d{8}$/.test(d) ? " " : m;
+  });
+}
+
+function tidyAddress(line, client){
+  var s = stripPhones(line).replace(AMOUNT_RE, " ");
+  if(client && client.length > 2){
+    s = s.replace(new RegExp(client.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), " ");
+  }
+  return s.replace(/\s*,\s*,+/g, ", ")
+          .replace(/^[\s,;.\-—·]+/, "")
+          .replace(/[\s,;.\-—·?!]+$/, "")
+          .replace(/\b(total|prix|montant|thaman|taman)\s*$/i, "")
+          .replace(/[\s,;.\-—·?!]+$/, "")
+          .replace(/\s{2,}/g, " ")
+          .trim().slice(0, 160);
+}
+
+function burstify(msgs){
+  var bursts = [], cur = null, i, m, gap;
+  for(i = 0; i < msgs.length; i++){
+    m = msgs[i];
+    if(m.type === "système") continue;
+    if(cur && cur.author === m.author){
+      gap = (m.date - cur.end) / 60000;
+      if(gap <= 45 && m.date.toDateString() === cur.end.toDateString()){
+        cur.items.push(m); cur.end = m.date; continue;
+      }
+    }
+    cur = { author: m.author, start: m.date, end: m.date, items: [m] };
+    bursts.push(cur);
+  }
+  return bursts;
+}
+
+function detectOrders(msgs, keywords, me){
+  var bursts = burstify(msgs), out = [], i;
+  for(i = 0; i < bursts.length; i++){
+    var b = bursts[i];
+    var text = b.items.map(function(m){ return m.text; }).join("\n");
+    var phones = [], j, k;
+    for(j = 0; j < b.items.length; j++){
+      for(k = 0; k < b.items[j].phones.length; k++){
+        if(phones.indexOf(b.items[j].phones[k]) < 0) phones.push(b.items[j].phones[k]);
+      }
+    }
+    var city = findCity(text), amount = findAmount(text), qty = findQty(text);
+    var addr = findAddress(text), prod = findProducts(text, keywords);
+    var nm = NAME_RE.exec(text);
+    var client = nm ? nm[1].trim() : (b.author !== me ? b.author : "");
+
+    var score = 0;
+    if(phones.length) score += 2;
+    if(amount) score += 1;
+    if(city) score += 1;
+    if(addr) score += 1;
+    if(prod) score += 1;
+    if(qty) score += 0.5;
+    if(nm) score += 1;
+    if(score < 2) continue;
+
+    out.push({
+      date: b.start, author: b.author, sent: b.author === me, client: client,
+      phone: phones.join(" / "), city: city,
+      address: addr ? tidyAddress(addr, client) : "",
+      product: prod, qty: qty, amount: amount, score: score,
+      excerpt: text.replace(/\s*\n\s*/g, " · ").slice(0, 220)
+    });
+  }
+  return out;
+}
+
+/* ============================================================
+   3. Dépenses et virements (mode classeur modèle)
+   ============================================================ */
+
+var TRANSFER_RE = /(\u{1F4B5}|\u{1F4B8}|\bvers[eé]e?s?\b|\bversement\b|\bvirement\b|\btransfert\b|\bcash\b|\bde\s+[\p{L}]+\s+[àa]\s+[\p{L}]+)/iu;
+
+function isTransfer(text){
+  TRANSFER_RE.lastIndex = 0;
+  return TRANSFER_RE.test(text);
+}
+
+/* Un message devient une ligne dès qu'il annonce un montant en dirhams. */
+function detectEntries(msgs, routes, sheets){
+  var transferSheet = null, i;
+  for(i = 0; i < sheets.length; i++){
+    if(sheets[i].kind === "transferts"){ transferSheet = sheets[i].name; break; }
+  }
+  var out = [];
+  for(i = 0; i < msgs.length; i++){
+    var m = msgs[i];
+    if(m.type !== "texte") continue;
+    var amount = findAmount(m.text);
+    if(!amount) continue;
+    var label = m.text.replace(/\s*\n\s*/g, " ").trim();
+    var target;
+    if(transferSheet && isTransfer(m.text)) target = transferSheet;
+    else target = routes[m.author] || "";
+    if(!target || target === "__ignore__") continue;
+    out.push({
+      key: "e" + m.n,
+      sheet: target,
+      libelle: label,
+      montant: amount,
+      date: new Date(m.date.getFullYear(), m.date.getMonth(), m.date.getDate()),
+      auteur: m.author,
+      transfert: target === transferSheet,
+      n: m.n
+    });
+  }
+  return out;
+}
+
+/* ============================================================
+   4. Lecture et écriture du classeur modèle (XML OOXML direct)
+   ============================================================ */
+
+var XML_NS = "http://www.w3.org/XML/1998/namespace";
+
+function parseXml(text){
+  return new DOMParser().parseFromString(text, "application/xml");
+}
+function serializeXml(doc, original){
+  var s = new XMLSerializer().serializeToString(doc);
+  if(s.indexOf("<?xml") !== 0 && original && original.indexOf("<?xml") === 0){
+    s = original.slice(0, original.indexOf("?>") + 2) + "\r\n" + s;
+  }
+  return s;
+}
+function colLetter(n){
+  var s = "";
+  while(n > 0){ var r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = (n - 1 - r) / 26; }
+  return s;
+}
+function colIndex(ref){
+  var m = /^([A-Z]+)/.exec(ref);
+  if(!m) return 0;
+  var n = 0, s = m[1], i;
+  for(i = 0; i < s.length; i++) n = n * 26 + (s.charCodeAt(i) - 64);
+  return n;
+}
+function rowIndex(ref){
+  var m = /(\d+)$/.exec(ref);
+  return m ? +m[1] : 0;
+}
+function excelSerial(d){
+  return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000) + 25569;
+}
+function fromSerial(n){
+  var ms = (n - 25569) * 86400000;
+  var d = new Date(ms);
+  return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+
+function classifyHeader(label){
+  var t = deaccent(String(label || "")).trim();
+  if(!t) return "autre";
+  if(/\b(date|jour)\b/.test(t) || t === "date") return "date";
+  if(/(montant|motant|mntant|somme|prix|verse|total|cout|^dh$|\bdh\b|\bmad\b)/.test(t)) return "montant";
+  if(/(remar|note|commentaire|observ|\bobs\b)/.test(t)) return "remarque";
+  if(/(depense|type|operation|libelle|description|article|produit|objet|motif|designation|nature|intitule)/.test(t)) return "libelle";
+  return "autre";
+}
+
+function sheetKindOf(name, headers){
+  var t = deaccent(name) + " " + headers.map(function(h){ return deaccent(h.label); }).join(" ");
+  return /(cash|flow|virement|versement|transfert|operation|verse)/.test(t) ? "transferts" : "personne";
+}
+
+function cellText(c, shared){
+  var t = c.getAttribute("t"), i;
+  if(t === "inlineStr"){
+    var is = c.getElementsByTagName("is")[0];
+    if(!is) return "";
+    var ts = is.getElementsByTagName("t"), s = "";
+    for(i = 0; i < ts.length; i++) s += ts[i].textContent;
+    return s;
+  }
+  var v = c.getElementsByTagName("v")[0];
+  if(!v) return "";
+  if(t === "s") return shared[+v.textContent] || "";
+  if(t === "str" || t === "e" || t === "b") return v.textContent;
+  var n = parseFloat(v.textContent);
+  return isNaN(n) ? v.textContent : n;
+}
+
+function readModel(buffer){
+  return JSZip.loadAsync(buffer).then(function(zip){
+    var jobs = [
+      zip.file("xl/workbook.xml").async("string"),
+      zip.file("xl/_rels/workbook.xml.rels").async("string")
+    ];
+    var ss = zip.file("xl/sharedStrings.xml");
+    jobs.push(ss ? ss.async("string") : Promise.resolve(""));
+    return Promise.all(jobs).then(function(res){
+      var wbDoc = parseXml(res[0]), relDoc = parseXml(res[1]);
+      var shared = [];
+      if(res[2]){
+        var sDoc = parseXml(res[2]), sis = sDoc.getElementsByTagName("si"), i, j;
+        for(i = 0; i < sis.length; i++){
+          var ts = sis[i].getElementsByTagName("t"), txt = "";
+          for(j = 0; j < ts.length; j++){
+            if(ts[j].parentNode.nodeName.indexOf("rPh") < 0) txt += ts[j].textContent;
+          }
+          shared.push(txt);
+        }
+      }
+      var rels = {}, rl = relDoc.getElementsByTagName("Relationship"), k;
+      for(k = 0; k < rl.length; k++) rels[rl[k].getAttribute("Id")] = rl[k].getAttribute("Target");
+
+      var list = wbDoc.getElementsByTagName("sheet"), sheets = [], p;
+      for(k = 0; k < list.length; k++){
+        var rid = list[k].getAttribute("r:id") || list[k].getAttribute("id");
+        var target = rels[rid] || "";
+        if(!target) continue;
+        p = target.charAt(0) === "/" ? target.slice(1) : "xl/" + target.replace(/^\.\//, "");
+        sheets.push({ name: list[k].getAttribute("name"), path: p });
+      }
+      var reads = sheets.map(function(s){
+        var f = zip.file(s.path);
+        return f ? f.async("string") : Promise.resolve("");
+      });
+      return Promise.all(reads).then(function(xmls){
+        sheets.forEach(function(s, idx){ describeSheet(s, xmls[idx], shared); });
+        return { sheets: sheets.filter(function(s){ return s.headers.length > 0; }), shared: shared };
+      });
+    });
+  });
+}
+
+function describeSheet(sheet, xml, shared){
+  sheet.headers = [];
+  sheet.existing = [];
+  sheet.lastRow = 1;
+  if(!xml){ return; }
+  var doc = parseXml(xml);
+  var rowEls = doc.getElementsByTagName("row"), i, j;
+  var byRow = {}, maxCol = 0;
+  for(i = 0; i < rowEls.length; i++){
+    var idx = parseInt(rowEls[i].getAttribute("r") || (i + 1), 10);
+    var cells = rowEls[i].getElementsByTagName("c"), map = {};
+    for(j = 0; j < cells.length; j++){
+      var ref = cells[j].getAttribute("r") || (colLetter(j + 1) + idx);
+      var ci = colIndex(ref);
+      if(ci > maxCol) maxCol = ci;
+      map[ci] = { value: cellText(cells[j], shared), style: cells[j].getAttribute("s") };
+    }
+    byRow[idx] = map;
+  }
+  var head = byRow[1] || {};
+  for(i = 1; i <= maxCol; i++){
+    var label = head[i] ? String(head[i].value) : "";
+    if(!label) continue;
+    var second = byRow[2] && byRow[2][i] ? byRow[2][i] : null;
+    sheet.headers.push({
+      col: i,
+      letter: colLetter(i),
+      label: label,
+      kind: classifyHeader(label),
+      style: second && second.style != null ? second.style : (head[i].style != null ? head[i].style : null),
+      headStyle: head[i].style
+    });
+  }
+  sheet.maxCol = maxCol;
+  sheet.kind = sheetKindOf(sheet.name, sheet.headers);
+
+  var last = 1, r;
+  for(r in byRow){
+    var ri = +r;
+    if(ri < 2) continue;
+    var has = false;
+    for(i = 1; i <= maxCol; i++){
+      var c = byRow[ri][i];
+      if(c && c.value !== "" && c.value !== null && c.value !== undefined){ has = true; break; }
+    }
+    if(has && ri > last) last = ri;
+  }
+  sheet.lastRow = last;
+
+  for(r = 2; r <= last; r++){
+    if(!byRow[r]) continue;
+    sheet.existing.push(sheet.headers.map(function(h){
+      var c = byRow[r][h.col];
+      return c ? c.value : "";
+    }));
+  }
+  /* style de date : celui d'une cellule de date déjà remplie */
+  sheet.headers.forEach(function(h){
+    if(h.kind !== "date") return;
+    for(var rr = 2; rr <= last; rr++){
+      var c = byRow[rr] && byRow[rr][h.col];
+      if(c && typeof c.value === "number" && c.style != null){ h.dateStyle = c.style; return; }
+    }
+  });
+}
+
+function valueFor(entry, kind){
+  if(kind === "libelle") return entry.libelle;
+  if(kind === "montant") return entry.montant;
+  if(kind === "date") return entry.date;
+  return "";
+}
+
+/* Écrit les lignes dans le XML de la feuille, en réutilisant les styles déjà en place. */
+function fillSheetXml(xml, sheet, entries){
+  var doc = parseXml(xml);
+  var ns = doc.documentElement.namespaceURI;
+  var sheetData = doc.getElementsByTagName("sheetData")[0];
+  if(!sheetData) return xml;
+
+  var rowEls = doc.getElementsByTagName("row"), rows = {}, i;
+  for(i = 0; i < rowEls.length; i++){
+    rows[parseInt(rowEls[i].getAttribute("r") || (i + 1), 10)] = rowEls[i];
+  }
+
+  function makeEl(tag){ return ns ? doc.createElementNS(ns, tag) : doc.createElement(tag); }
+
+  function rowFor(idx){
+    if(rows[idx]) return rows[idx];
+    var row = makeEl("row");
+    row.setAttribute("r", String(idx));
+    var placed = false, keys = Object.keys(rows).map(Number).sort(function(a, b){ return a - b; });
+    for(var k = 0; k < keys.length; k++){
+      if(keys[k] > idx){ sheetData.insertBefore(row, rows[keys[k]]); placed = true; break; }
+    }
+    if(!placed) sheetData.appendChild(row);
+    rows[idx] = row;
+    return row;
+  }
+
+  function cellFor(row, ref){
+    var cs = row.getElementsByTagName("c"), k;
+    for(k = 0; k < cs.length; k++){ if(cs[k].getAttribute("r") === ref) return cs[k]; }
+    var c = makeEl("c");
+    c.setAttribute("r", ref);
+    var target = colIndex(ref), placed = false;
+    for(k = 0; k < cs.length; k++){
+      if(colIndex(cs[k].getAttribute("r") || "") > target){ row.insertBefore(c, cs[k]); placed = true; break; }
+    }
+    if(!placed) row.appendChild(c);
+    return c;
+  }
+
+  var at = sheet.lastRow + 1;
+  entries.forEach(function(e){
+    var row = rowFor(at);
+    row.setAttribute("spans", "1:" + sheet.maxCol);
+    sheet.headers.forEach(function(h){
+      var ref = h.letter + at;
+      var cell = cellFor(row, ref);
+      var isDate = h.kind === "date";
+      var style = isDate && h.dateStyle != null ? h.dateStyle
+                : (cell.getAttribute("s") != null ? cell.getAttribute("s") : h.style);
+      while(cell.firstChild) cell.removeChild(cell.firstChild);
+      cell.removeAttribute("t");
+      if(style != null) cell.setAttribute("s", String(style));
+
+      var val = valueFor(e, h.kind);
+      if(val === "" || val === null || val === undefined) return;
+      if(isDate){
+        if(h.dateStyle != null){
+          var vd = makeEl("v");
+          vd.textContent = String(excelSerial(val));
+          cell.appendChild(vd);
+        } else {
+          setInline(cell, fmtDate(val));
+        }
+      } else if(typeof val === "number"){
+        var v = makeEl("v");
+        v.textContent = String(val);
+        cell.appendChild(v);
+      } else {
+        setInline(cell, String(val));
+      }
+    });
+    at++;
+  });
+
+  function setInline(cell, text){
+    cell.setAttribute("t", "inlineStr");
+    var is = makeEl("is"), t = makeEl("t");
+    t.setAttributeNS(XML_NS, "xml:space", "preserve");
+    t.textContent = text;
+    is.appendChild(t);
+    cell.appendChild(is);
+  }
+
+  var dim = doc.getElementsByTagName("dimension")[0];
+  if(dim){
+    dim.setAttribute("ref", "A1:" + colLetter(sheet.maxCol) + Math.max(at - 1, sheet.lastRow, 1));
+  }
+  return serializeXml(doc, xml);
+}
+
+function writeModel(buffer, sheets, entriesBySheet){
+  return JSZip.loadAsync(buffer).then(function(zip){
+    var jobs = sheets.map(function(s){
+      var list = entriesBySheet[s.name] || [];
+      if(!list.length) return Promise.resolve();
+      var f = zip.file(s.path);
+      if(!f) return Promise.resolve();
+      return f.async("string").then(function(xml){
+        zip.file(s.path, fillSheetXml(xml, s, list));
+      });
+    });
+    return Promise.all(jobs).then(function(){
+      return zip.generateAsync({ type: "arraybuffer", compression: "DEFLATE" });
+    });
+  });
+}
+
+/* ============================================================
+   5. État
+   ============================================================ */
+
+var DAYS = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+var SHEETS = [
+  { id: "resume",       label: "Résumé" },
+  { id: "messages",     label: "Messages" },
+  { id: "commandes",    label: "Commandes" },
+  { id: "participants", label: "Participants" },
+  { id: "jour",         label: "Par jour" },
+  { id: "heure",        label: "Par heure" }
+];
+
+var state = {
+  fileName: "", chatName: "", rawText: "", mediaFiles: [],
+  parsed: null, me: "", keywords: [],
+  filters: { author: "", q: "", from: "", to: "" },
+  tab: "messages",
+  picks: { resume: true, messages: true, commandes: true, participants: true, jour: true, heure: true },
+  model: null,          // { fileName, buffer, sheets }
+  routes: {},           // auteur -> nom de feuille | "__ignore__"
+  excluded: {}          // clé d'entrée -> true
+};
+
+function $(id){ return document.getElementById(id); }
+function pad(n){ return n < 10 ? "0" + n : "" + n; }
+function fmtDate(d){ return pad(d.getDate()) + "/" + pad(d.getMonth() + 1) + "/" + d.getFullYear(); }
+function fmtTime(d){ return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+function dayKey(d){ return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+function nfmt(n){ return (Math.round(n * 100) / 100).toLocaleString("fr-FR"); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function words(t){ var w = t.trim().match(/[\p{L}\p{N}'’\-]+/gu); return w ? w.length : 0; }
+
+function filtered(){
+  var all = state.parsed ? state.parsed.messages : [];
+  var f = state.filters;
+  var from = f.from ? new Date(f.from + "T00:00:00") : null;
+  var to = f.to ? new Date(f.to + "T23:59:59") : null;
+  var q = f.q ? deaccent(f.q) : "";
+  return all.filter(function(m){
+    if(f.author && m.author !== f.author) return false;
+    if(from && m.date < from) return false;
+    if(to && m.date > to) return false;
+    if(q && deaccent(m.text).indexOf(q) < 0 && deaccent(m.author).indexOf(q) < 0) return false;
+    return true;
+  });
+}
+
+/* ============================================================
+   6. Feuilles du rapport (mode sans modèle)
+   ============================================================ */
+
+function buildMessages(msgs){
+  var me = state.me;
+  return {
+    cols: [
+      { label: "N°", f: "num", w: 6 }, { label: "Date", f: "date", w: 11 },
+      { label: "Heure", f: "text", w: 7 }, { label: "Jour", f: "text", w: 10 },
+      { label: "Auteur", f: "text", w: 20 }, { label: "Sens", f: "tag", w: 9 },
+      { label: "Type", f: "tag", w: 10 }, { label: "Message", f: "msg", w: 70 },
+      { label: "Mots", f: "num", w: 7 }, { label: "Caractères", f: "num", w: 11 },
+      { label: "Téléphones", f: "text", w: 16 }, { label: "Liens", f: "text", w: 30 }
+    ],
+    rows: msgs.map(function(m){
+      return [
+        m.n, m.date, fmtTime(m.date), DAYS[m.date.getDay()], m.author || "—",
+        m.type === "système" ? "—" : (m.author === me ? "Envoyé" : "Reçu"),
+        m.type, m.text, words(m.text), m.text.length,
+        m.phones.join(" / "), m.links.join(" ")
+      ];
+    })
+  };
+}
+
+function buildOrders(msgs){
+  var orders = detectOrders(msgs, state.keywords, state.me);
+  return {
+    orders: orders,
+    cols: [
+      { label: "Date", f: "date", w: 11 }, { label: "Heure", f: "text", w: 7 },
+      { label: "Auteur", f: "text", w: 20 }, { label: "Sens", f: "tag", w: 9 },
+      { label: "Nom client", f: "text", w: 22 }, { label: "Téléphone", f: "mono", w: 15 },
+      { label: "Ville", f: "text", w: 15 }, { label: "Adresse", f: "text", w: 34 },
+      { label: "Produit", f: "text", w: 18 }, { label: "Quantité", f: "num", w: 9 },
+      { label: "Montant (MAD)", f: "num", w: 13 }, { label: "Indice", f: "score", w: 8 },
+      { label: "Extrait", f: "msg", w: 60 }
+    ],
+    rows: orders.map(function(o){
+      return [
+        o.date, fmtTime(o.date), o.author, o.sent ? "Envoyé" : "Reçu",
+        o.client, o.phone, o.city, o.address, o.product,
+        o.qty || null, o.amount || null, o.score, o.excerpt
+      ];
+    })
+  };
+}
+
+function buildParticipants(msgs){
+  var by = {}, total = 0, i, m, a;
+  for(i = 0; i < msgs.length; i++){
+    m = msgs[i];
+    if(m.type === "système") continue;
+    a = m.author || "—";
+    if(!by[a]) by[a] = { n: 0, w: 0, media: 0, links: 0, first: m.date, last: m.date, days: {} };
+    by[a].n++; total++;
+    by[a].w += words(m.text);
+    if(m.type === "média") by[a].media++;
+    by[a].links += m.links.length;
+    if(m.date < by[a].first) by[a].first = m.date;
+    if(m.date > by[a].last) by[a].last = m.date;
+    by[a].days[dayKey(m.date)] = 1;
+  }
+  var rows = Object.keys(by).map(function(k){
+    var v = by[k];
+    return [k, v.n, total ? Math.round(v.n / total * 1000) / 10 : 0, v.w,
+            v.n ? Math.round(v.w / v.n * 10) / 10 : 0, v.media, v.links,
+            v.first, v.last, Object.keys(v.days).length];
+  }).sort(function(x, y){ return y[1] - x[1]; });
+  return {
+    cols: [
+      { label: "Auteur", f: "text", w: 24 }, { label: "Messages", f: "num", w: 10 },
+      { label: "% des messages", f: "num", w: 14 }, { label: "Mots", f: "num", w: 10 },
+      { label: "Mots / message", f: "num", w: 14 }, { label: "Médias", f: "num", w: 9 },
+      { label: "Liens", f: "num", w: 8 }, { label: "Premier message", f: "date", w: 15 },
+      { label: "Dernier message", f: "date", w: 15 }, { label: "Jours actifs", f: "num", w: 12 }
+    ],
+    rows: rows
+  };
+}
+
+function topAuthors(msgs, limit){
+  var by = {}, i;
+  for(i = 0; i < msgs.length; i++){
+    if(msgs[i].type === "système") continue;
+    var a = msgs[i].author || "—";
+    by[a] = (by[a] || 0) + 1;
+  }
+  return Object.keys(by).sort(function(x, y){ return by[y] - by[x]; }).slice(0, limit);
+}
+
+function buildByDay(msgs){
+  var authors = topAuthors(msgs, 10), map = {}, i, m, key;
+  for(i = 0; i < msgs.length; i++){
+    m = msgs[i];
+    key = dayKey(m.date);
+    if(!map[key]) map[key] = { date: new Date(m.date.getFullYear(), m.date.getMonth(), m.date.getDate()), total: 0, by: {}, autres: 0 };
+    map[key].total++;
+    if(m.type === "système") continue;
+    var a = m.author || "—";
+    if(authors.indexOf(a) >= 0) map[key].by[a] = (map[key].by[a] || 0) + 1;
+    else map[key].autres++;
+  }
+  var keys = Object.keys(map).sort();
+  var cols = [
+    { label: "Date", f: "date", w: 11 }, { label: "Jour", f: "text", w: 10 },
+    { label: "Messages", f: "num", w: 10 }
+  ];
+  authors.forEach(function(a){ cols.push({ label: a, f: "num", w: Math.min(18, Math.max(9, a.length + 2)) }); });
+  var hasOther = keys.some(function(k){ return map[k].autres > 0; });
+  if(hasOther) cols.push({ label: "Autres", f: "num", w: 9 });
+  var rows = keys.map(function(k){
+    var d = map[k], row = [d.date, DAYS[d.date.getDay()], d.total];
+    authors.forEach(function(a){ row.push(d.by[a] || 0); });
+    if(hasOther) row.push(d.autres);
+    return row;
+  });
+  return { cols: cols, rows: rows };
+}
+
+function buildByHour(msgs){
+  var counts = new Array(24).fill(0), i;
+  for(i = 0; i < msgs.length; i++) counts[msgs[i].date.getHours()]++;
+  var total = msgs.length || 1;
+  return {
+    cols: [{ label: "Heure", f: "text", w: 8 }, { label: "Messages", f: "num", w: 10 }, { label: "Part (%)", f: "num", w: 10 }],
+    rows: counts.map(function(c, h){ return [pad(h) + " h", c, Math.round(c / total * 1000) / 10]; })
+  };
+}
+
+function buildSummary(msgs, orders){
+  var media = 0, deleted = 0, sys = 0, w = 0, links = 0, phones = {}, amount = 0, i;
+  for(i = 0; i < msgs.length; i++){
+    var m = msgs[i];
+    if(m.type === "média") media++;
+    else if(m.type === "supprimé") deleted++;
+    else if(m.type === "système") sys++;
+    w += words(m.text);
+    links += m.links.length;
+    m.phones.forEach(function(p){ phones[p] = 1; });
+  }
+  for(i = 0; i < orders.length; i++) amount += orders[i].amount;
+
+  var authors = topAuthors(msgs, 999);
+  var day = buildByDay(msgs).rows, hour = buildByHour(msgs).rows;
+  var bestDay = day.slice().sort(function(a, b){ return b[2] - a[2]; })[0];
+  var bestHour = hour.slice().sort(function(a, b){ return b[1] - a[1]; })[0];
+  var first = msgs.length ? msgs[0].date : null;
+  var last = msgs.length ? msgs[msgs.length - 1].date : null;
+  var f = state.filters, fdesc = [];
+  if(f.author) fdesc.push("auteur = " + f.author);
+  if(f.q) fdesc.push("recherche = " + f.q);
+  if(f.from) fdesc.push("à partir du " + f.from);
+  if(f.to) fdesc.push("jusqu'au " + f.to);
+
+  var rows = [
+    ["Fichier source", state.fileName],
+    ["Discussion", state.chatName],
+    ["Période", first ? fmtDate(first) + " → " + fmtDate(last) : "—"],
+    ["Jours couverts", day.length],
+    ["Participants", authors.length],
+    ["Messages", msgs.length],
+    ["dont médias", media],
+    ["dont messages supprimés", deleted],
+    ["dont messages système", sys],
+    ["Mots écrits", w],
+    ["Liens partagés", links],
+    ["Numéros de téléphone distincts", Object.keys(phones).length],
+    ["Commandes détectées", orders.length],
+    ["Montant total détecté (MAD)", Math.round(amount * 100) / 100],
+    ["Auteur le plus actif", authors[0] || "—"],
+    ["Jour le plus actif", bestDay ? fmtDate(bestDay[0]) + " (" + bestDay[2] + " messages)" : "—"],
+    ["Heure la plus active", bestHour ? bestHour[0] + " (" + bestHour[1] + " messages)" : "—"],
+    ["Fichiers médias dans l'archive", state.mediaFiles.length],
+    ["Filtres appliqués", fdesc.length ? fdesc.join(" · ") : "aucun"],
+    ["Classeur généré le", fmtDate(new Date()) + " à " + fmtTime(new Date())]
+  ];
+  return {
+    cols: [{ label: "Indicateur", f: "text", w: 32 }, { label: "Valeur", f: "text", w: 46 }],
+    rows: rows,
+    stats: { media: media, links: links, phones: Object.keys(phones).length, amount: amount,
+             days: day.length, authors: authors.length, first: first, last: last }
+  };
+}
+
+/* ============================================================
+   7. Assemblage
+   ============================================================ */
+
+var built = null;
+
+/* Une entrée déjà présente dans le classeur ne doit pas être réécrite. */
+function existingKeys(sheet){
+  var keys = {}, iL = -1, iM = -1, iD = -1, i;
+  sheet.headers.forEach(function(h, idx){
+    if(h.kind === "libelle" && iL < 0) iL = idx;
+    if(h.kind === "montant" && iM < 0) iM = idx;
+    if(h.kind === "date" && iD < 0) iD = idx;
+  });
+  for(i = 0; i < sheet.existing.length; i++){
+    var r = sheet.existing[i];
+    var lab = iL >= 0 ? deaccent(String(r[iL] || "")).replace(/\s+/g, " ").trim() : "";
+    var mnt = iM >= 0 ? r[iM] : "";
+    var dt = "";
+    if(iD >= 0 && typeof r[iD] === "number") dt = String(Math.round(r[iD]));
+    keys[lab + "|" + mnt + "|" + dt] = true;
+  }
+  return keys;
+}
+
+function entryKeyIn(sheet, e){
+  var dt = String(excelSerial(e.date));
+  return deaccent(e.libelle).replace(/\s+/g, " ").trim() + "|" + e.montant + "|" + dt;
+}
+
+function buildModelView(msgs){
+  var model = state.model;
+  var entries = detectEntries(msgs, state.routes, model.sheets);
+  var bySheet = {}, dupes = 0;
+  model.sheets.forEach(function(s){
+    bySheet[s.name] = { sheet: s, add: [], known: existingKeys(s) };
+  });
+  entries.forEach(function(e){
+    var bucket = bySheet[e.sheet];
+    if(!bucket) return;
+    if(bucket.known[entryKeyIn(bucket.sheet, e)]){ e.duplicate = true; dupes++; return; }
+    e.included = !state.excluded[e.key];
+    bucket.add.push(e);
+  });
+  var total = 0;
+  Object.keys(bySheet).forEach(function(k){
+    total += bySheet[k].add.filter(function(e){ return e.included; }).length;
+  });
+  return { entries: entries, bySheet: bySheet, total: total, dupes: dupes };
+}
+
+function buildAll(){
+  var msgs = filtered();
+  var ord = buildOrders(msgs);
+  var out = {
+    msgs: msgs,
+    messages: buildMessages(msgs),
+    commandes: ord,
+    participants: buildParticipants(msgs),
+    jour: buildByDay(msgs),
+    heure: buildByHour(msgs),
+    resume: buildSummary(msgs, ord.orders)
+  };
+  out.model = state.model ? buildModelView(msgs) : null;
+  return out;
+}
+
+/* ============================================================
+   8. Rendu
+   ============================================================ */
+
+function render(){
+  if(!state.parsed) return;
+  built = buildAll();
+  renderTiles();
+  renderRouting();
+  renderTabs();
+  renderPreview();
+  renderPicks();
+  renderExportBar();
+}
+
+function tile(k, v, s, flag, small){
+  return '<div class="card tile' + (flag ? " flag" : "") + (small ? " small" : "") + '"><span class="k">' + esc(k) + '</span>' +
+         '<span class="v">' + esc(v) + '</span>' + (s ? '<span class="s">' + esc(s) + '</span>' : "") + "</div>";
+}
+
+function renderTiles(){
+  var st = built.resume.stats, msgs = built.msgs;
+  var period = st.first ? fmtDate(st.first) + " → " + fmtDate(st.last) : "—";
+  var html = tile("Messages", msgs.length.toLocaleString("fr-FR"), st.days + " jours") +
+             tile("Participants", String(st.authors), built.participants.rows.length ? built.participants.rows[0][0] : "") +
+             tile("Période", period, "", false, true);
+  if(built.model){
+    var m = built.model;
+    var sheetsWith = Object.keys(m.bySheet).filter(function(k){ return m.bySheet[k].add.length; }).length;
+    html += tile("Lignes à ajouter", String(m.total), sheetsWith + (sheetsWith > 1 ? " feuilles" : " feuille"), true) +
+            tile("Déjà dans le classeur", String(m.dupes), "ignorées") +
+            tile("Feuilles du modèle", String(state.model.sheets.length), state.model.sheets.map(function(s){ return s.name; }).join(", "), false, true);
+  } else {
+    html += tile("Commandes détectées", String(built.commandes.orders.length),
+                 built.commandes.orders.length ? nfmt(st.amount) + " DH repérés" : "aucun montant repéré", true) +
+            tile("Numéros repérés", String(st.phones), st.media + (st.media > 1 ? " médias" : " média")) +
+            tile("Liens partagés", String(st.links), "");
+  }
+  $("tiles").innerHTML = html;
+}
+
+function renderRouting(){
+  var box = $("routing");
+  if(!state.model){ box.hidden = true; return; }
+  box.hidden = false;
+  var authors = topAuthors(state.parsed.messages, 999);
+  var counts = {};
+  if(built && built.model){
+    built.model.entries.forEach(function(e){ counts[e.auteur] = (counts[e.auteur] || 0) + 1; });
+  }
+  var options = state.model.sheets.map(function(s){
+    return { v: s.name, l: s.name + (s.kind === "transferts" ? " (opérations)" : "") };
+  });
+  $("routes").innerHTML = authors.map(function(a){
+    var cur = state.routes[a] || "__ignore__";
+    var opts = '<option value="__ignore__"' + (cur === "__ignore__" ? " selected" : "") + ">Ignorer</option>";
+    opts += options.map(function(o){
+      return '<option value="' + esc(o.v) + '"' + (cur === o.v ? " selected" : "") + ">" + esc(o.l) + "</option>";
+    }).join("");
+    return '<div class="route"><span class="who">' + esc(a) + '</span>' +
+           '<span class="cnt">' + (counts[a] || 0) + '</span>' +
+           '<select data-author="' + esc(a) + '">' + opts + "</select></div>";
+  }).join("");
+  Array.prototype.forEach.call($("routes").querySelectorAll("select"), function(sel){
+    sel.onchange = function(){ state.routes[sel.dataset.author] = sel.value; render(); };
+  });
+}
+
+function renderTabs(){
+  var t = $("tabs"), html = "";
+  if(state.model){
+    state.model.sheets.forEach(function(s){
+      var b = built.model.bySheet[s.name];
+      var add = b ? b.add.filter(function(e){ return e.included; }).length : 0;
+      html += '<button class="tab" role="tab" data-tab="m:' + esc(s.name) + '" aria-selected="' + (state.tab === "m:" + s.name) + '">' +
+              esc(s.name) + '<span class="cnt">' + s.existing.length + "</span>" +
+              (add ? '<span class="add">+' + add + "</span>" : "") + "</button>";
+    });
+  } else {
+    SHEETS.forEach(function(s){
+      var n = built[s.id].rows.length;
+      html += '<button class="tab" role="tab" data-tab="' + s.id + '" aria-selected="' + (state.tab === s.id) + '">' +
+              esc(s.label) + '<span class="cnt">' + n + "</span></button>";
+    });
+  }
+  t.innerHTML = html;
+  var found = false;
+  Array.prototype.forEach.call(t.querySelectorAll(".tab"), function(b){
+    if(b.dataset.tab === state.tab) found = true;
+    b.onclick = function(){ state.tab = b.dataset.tab; renderTabs(); renderPreview(); };
+  });
+  if(!found){
+    var first = t.querySelector(".tab");
+    if(first){ state.tab = first.dataset.tab; first.setAttribute("aria-selected", "true"); }
+  }
+}
+
+var MAX_PREVIEW = 150;
+
+function cellHtml(v, f){
+  if(v === "" || v === null || v === undefined) return "<td></td>";
+  if(f === "date") return '<td class="mono">' + fmtDate(v) + "</td>";
+  if(f === "num") return '<td class="num">' + (typeof v === "number" ? nfmt(v) : esc(v)) + "</td>";
+  if(f === "mono") return '<td class="mono">' + esc(v) + "</td>";
+  if(f === "score") return '<td class="num"><span class="score">' + v + "</span></td>";
+  if(f === "tag"){
+    var cls = v === "média" ? "media" : v === "système" ? "sys" : v === "supprimé" ? "del" : v === "Envoyé" ? "sent" : "";
+    return '<td><span class="pill ' + cls + '">' + esc(v) + "</span></td>";
+  }
+  if(f === "msg"){
+    var s = String(v), cut = s.length > 150 ? s.slice(0, 150) + "…" : s;
+    return '<td class="msg" title="' + esc(s.slice(0, 500)) + '">' + esc(cut) + "</td>";
+  }
+  return "<td>" + esc(v) + "</td>";
+}
+
+function renderPreview(){
+  if(state.model && state.tab.indexOf("m:") === 0){ renderModelPreview(state.tab.slice(2)); return; }
+  var sheet = built[state.tab];
+  var host = $("preview"), foot = $("previewFoot");
+  if(!sheet){ host.innerHTML = ""; foot.textContent = ""; return; }
+  if(!sheet.rows.length){
+    host.innerHTML = '<div class="empty"><strong>Rien à afficher ici.</strong>' +
+      (state.tab === "commandes"
+        ? "Aucune commande repérée avec les filtres actuels. Ajoute tes mots-clés produits ci-dessus."
+        : "Élargis les filtres pour retrouver des lignes.") + "</div>";
+    foot.textContent = "";
+    return;
+  }
+  var html = "<table><thead><tr>";
+  sheet.cols.forEach(function(c){
+    html += '<th class="' + (c.f === "num" || c.f === "score" ? "num" : "") + '">' + esc(c.label) + "</th>";
+  });
+  html += "</tr></thead><tbody>";
+  var shown = sheet.rows.slice(0, MAX_PREVIEW), i, j;
+  for(i = 0; i < shown.length; i++){
+    html += "<tr>";
+    for(j = 0; j < sheet.cols.length; j++) html += cellHtml(shown[i][j], sheet.cols[j].f);
+    html += "</tr>";
+  }
+  html += "</tbody></table>";
+  host.innerHTML = html;
+  foot.textContent = sheet.rows.length > MAX_PREVIEW
+    ? "Aperçu des " + MAX_PREVIEW + " premières lignes · " + sheet.rows.length.toLocaleString("fr-FR") + " lignes seront exportées."
+    : sheet.rows.length.toLocaleString("fr-FR") + " ligne" + (sheet.rows.length > 1 ? "s" : "") + " · toutes exportées.";
+}
+
+function modelCell(v, kind){
+  if(v === "" || v === null || v === undefined) return "<td></td>";
+  if(kind === "date"){
+    if(typeof v === "number") return '<td class="mono">' + fmtDate(fromSerial(v)) + "</td>";
+    if(v instanceof Date) return '<td class="mono">' + fmtDate(v) + "</td>";
+    return '<td class="mono">' + esc(v) + "</td>";
+  }
+  if(kind === "montant") return '<td class="num">' + (typeof v === "number" ? nfmt(v) : esc(v)) + "</td>";
+  if(kind === "libelle"){
+    var s = String(v), cut = s.length > 120 ? s.slice(0, 120) + "…" : s;
+    return '<td class="msg" title="' + esc(s.slice(0, 400)) + '">' + esc(cut) + "</td>";
+  }
+  return "<td>" + esc(v) + "</td>";
+}
+
+function renderModelPreview(name){
+  var bucket = built.model.bySheet[name];
+  var host = $("preview"), foot = $("previewFoot");
+  if(!bucket){ host.innerHTML = ""; foot.textContent = ""; return; }
+  var sheet = bucket.sheet;
+  var html = '<table><thead><tr><th></th><th class="num">Ligne</th>';
+  sheet.headers.forEach(function(h){
+    html += '<th class="' + (h.kind === "montant" ? "num" : "") + '">' + esc(h.label) + "</th>";
+  });
+  html += "</tr></thead><tbody>";
+
+  sheet.existing.forEach(function(r, i){
+    html += '<tr class="old"><td class="pick"></td><td class="rowref">' + (i + 2) + "</td>";
+    sheet.headers.forEach(function(h, j){ html += modelCell(r[j], h.kind); });
+    html += "</tr>";
+  });
+
+  var at = sheet.lastRow + 1;
+  bucket.add.forEach(function(e){
+    var cls = "new" + (e.included ? "" : " off");
+    html += '<tr class="' + cls + '"><td class="pick"><input type="checkbox" data-key="' + esc(e.key) + '"' + (e.included ? " checked" : "") + "></td>";
+    html += '<td class="rowref">' + (e.included ? at++ : "—") + "</td>";
+    sheet.headers.forEach(function(h){
+      var v = valueFor(e, h.kind);
+      html += modelCell(v === "" ? "" : v, h.kind);
+    });
+    html += "</tr>";
+  });
+  html += "</tbody></table>";
+
+  if(!sheet.existing.length && !bucket.add.length){
+    host.innerHTML = '<div class="empty"><strong>Aucune ligne pour cette feuille.</strong>' +
+      "Vérifie l'affectation des auteurs juste au-dessus : chaque personne doit pointer vers sa feuille.</div>";
+    foot.textContent = "";
+    return;
+  }
+  host.innerHTML = html;
+  Array.prototype.forEach.call(host.querySelectorAll("input[type=checkbox]"), function(cb){
+    cb.onchange = function(){
+      if(cb.checked) delete state.excluded[cb.dataset.key];
+      else state.excluded[cb.dataset.key] = true;
+      render();
+    };
+  });
+  var add = bucket.add.filter(function(e){ return e.included; }).length;
+  foot.textContent = sheet.existing.length + " ligne" + (sheet.existing.length > 1 ? "s" : "") + " déjà dans le classeur · " +
+    add + " à ajouter à partir de la ligne " + (sheet.lastRow + 1) + ".";
+}
+
+function renderPicks(){
+  var host = $("sheetpicks");
+  if(state.model){
+    host.innerHTML = '<span class="note">Les lignes cochées sont écrites dans une copie de <b>' + esc(state.model.fileName) + "</b>.</span>";
+    return;
+  }
+  var html = "";
+  SHEETS.forEach(function(s){
+    html += '<label><input type="checkbox" data-sheet="' + s.id + '"' + (state.picks[s.id] ? " checked" : "") + "> " + esc(s.label) + "</label>";
+  });
+  host.innerHTML = html;
+  Array.prototype.forEach.call(host.querySelectorAll("input"), function(cb){
+    cb.onchange = function(){ state.picks[cb.dataset.sheet] = cb.checked; };
+  });
+}
+
+function renderExportBar(){
+  var btn = $("xlsx"), note = $("exportNote"), csv = $("csv");
+  if(state.model){
+    var n = built.model.total;
+    btn.textContent = n ? "Remplir le classeur (" + n + " ligne" + (n > 1 ? "s" : "") + ")" : "Remplir le classeur";
+    btn.disabled = !n;
+    csv.hidden = true;
+    note.textContent = n ? "" : "Aucune ligne à ajouter — vérifie les affectations.";
+  } else {
+    btn.textContent = "Télécharger le classeur Excel";
+    btn.disabled = false;
+    csv.hidden = false;
+    note.textContent = built.msgs.length > 40000 ? "Gros classeur : la génération peut prendre quelques secondes." : "";
+  }
+}
+
+function renderControls(){
+  var authors = topAuthors(state.parsed.messages, 999);
+  var me = $("me"), fa = $("fAuthor");
+  me.innerHTML = authors.map(function(a){
+    return '<option value="' + esc(a) + '"' + (a === state.me ? " selected" : "") + ">" + esc(a) + "</option>";
+  }).join("");
+  fa.innerHTML = '<option value="">Tous les auteurs</option>' + authors.map(function(a){
+    return '<option value="' + esc(a) + '">' + esc(a) + "</option>";
+  }).join("");
+  var d = state.parsed.detected;
+  var label = d === "dmy" ? "JJ/MM/AAAA" : d === "mdy" ? "MM/JJ/AAAA" : "AAAA/MM/JJ";
+  $("fileMeta").textContent = state.parsed.messages.length.toLocaleString("fr-FR") + " messages lus · format de date détecté : " + label +
+    (state.mediaFiles.length ? " · " + state.mediaFiles.length + " fichiers médias dans l'archive" : "");
+}
+
+/* ============================================================
+   9. Export
+   ============================================================ */
+
+function sheetToAoa(sheet){
+  var aoa = [sheet.cols.map(function(c){ return c.label; })];
+  sheet.rows.forEach(function(r){ aoa.push(r.slice()); });
+  return aoa;
+}
+
+function makeWorksheet(sheet){
+  var ws = XLSX.utils.aoa_to_sheet(sheetToAoa(sheet), { cellDates: true, dateNF: "dd/mm/yyyy" });
+  ws["!cols"] = sheet.cols.map(function(c){ return { wch: c.w || 14 }; });
+  if(sheet.rows.length){
+    ws["!autofilter"] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: sheet.rows.length, c: sheet.cols.length - 1 } }) };
+  }
+  return ws;
+}
+
+function safeName(s){ return String(s).replace(/[\\\/?*\[\]:]/g, " ").trim().slice(0, 31) || "Feuille"; }
+
+function buildWorkbook(){
+  var wb = XLSX.utils.book_new();
+  wb.Props = { Title: "Discussion WhatsApp — " + state.chatName, Author: "Registre WhatsApp", CreatedDate: new Date() };
+  var any = false;
+  SHEETS.forEach(function(s){
+    if(!state.picks[s.id]) return;
+    var sheet = built[s.id];
+    if(!sheet.rows.length && s.id !== "resume") return;
+    XLSX.utils.book_append_sheet(wb, makeWorksheet(sheet), safeName(s.label));
+    any = true;
+  });
+  return any ? wb : null;
+}
+
+function outName(ext){
+  var base = (state.chatName || "discussion").replace(/[^\p{L}\p{N} _.\-]/gu, "").trim().slice(0, 48) || "discussion";
+  var d = new Date();
+  return "WhatsApp-" + base.replace(/\s+/g, "-") + "-" + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + "." + ext;
+}
+
+var toastTimer = null;
+function toast(msg){
+  var t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove("on"); }, 4200);
+}
+
+var DOWNLOAD_ERRORS = {
+  declined: "Téléchargement annulé.",
+  too_large: "Le classeur dépasse 16 Mo. Restreins la période ou décoche des feuilles.",
+  rate_limited: "Une autre demande d'enregistrement est déjà ouverte. Réessaie dans un instant.",
+  rejected_extension: "Ce format de fichier n'est pas accepté ici.",
+  unavailable: "L'enregistrement de fichiers n'est pas disponible dans cette vue."
+};
+
+function saveFile(filename, data, mime){
+  var claudeApi = window.claude;
+  if(claudeApi && typeof claudeApi.use === "function"){
+    claudeApi.use("downloads").then(function(dl){
+      if(!dl){ toast(DOWNLOAD_ERRORS.unavailable); return; }
+      return dl.save({ filename: filename, data: data }).then(function(res){
+        if(res && res.status === "saved") toast("Classeur enregistré : " + filename);
+      });
+    }).catch(function(err){
+      toast(DOWNLOAD_ERRORS[err && err.code] || "L'enregistrement n'a pas abouti.");
+    });
+    return;
+  }
+  var blob = data instanceof Blob ? data : new Blob([data], { type: mime || "application/octet-stream" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  toast("Fichier téléchargé : " + filename);
+}
+
+function exportModel(){
+  var m = built.model, bySheet = {}, any = false;
+  state.model.sheets.forEach(function(s){
+    var b = m.bySheet[s.name];
+    var list = b ? b.add.filter(function(e){ return e.included; }) : [];
+    if(list.length){ bySheet[s.name] = list; any = true; }
+  });
+  if(!any){ toast("Aucune ligne à ajouter."); return; }
+  $("xlsx").disabled = true;
+  writeModel(state.model.buffer, state.model.sheets, bySheet).then(function(buf){
+    var base = state.model.fileName.replace(/\.xlsx$/i, "");
+    saveFile(base + " - rempli.xlsx", buf, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  }).catch(function(e){
+    toast("Le remplissage a échoué : " + e.message);
+  }).then(function(){
+    $("xlsx").disabled = false;
+  });
+}
+
+function exportXlsx(){
+  if(!built) return;
+  if(state.model){ exportModel(); return; }
+  var wb = buildWorkbook();
+  if(!wb){ toast("Coche au moins une feuille à exporter."); return; }
+  $("xlsx").disabled = true;
+  setTimeout(function(){
+    try{
+      var buf = XLSX.write(wb, { bookType: "xlsx", type: "array", cellDates: true });
+      saveFile(outName("xlsx"), buf, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    } catch(e){
+      toast("La génération du classeur a échoué : " + e.message);
+    } finally {
+      $("xlsx").disabled = false;
+    }
+  }, 30);
+}
+
+function exportCsv(){
+  if(!built || state.model) return;
+  var sheet = built[state.tab];
+  if(!sheet) return;
+  var aoa = sheetToAoa(sheet).map(function(row){
+    return row.map(function(v){
+      if(v instanceof Date) return fmtDate(v);
+      if(typeof v === "number") return String(v).replace(".", ",");
+      var s = String(v === null || v === undefined ? "" : v);
+      return /[";\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    }).join(";");
+  }).join("\n");
+  var label = SHEETS.filter(function(s){ return s.id === state.tab; })[0].label;
+  saveFile(outName("csv").replace(".csv", "-" + deaccent(label).replace(/\s+/g, "-") + ".csv"),
+           "\uFEFF" + aoa, "text/csv;charset=utf-8");
+}
+
+/* ============================================================
+   10. Chargement des fichiers
+   ============================================================ */
+
+function guessChatName(fileName, msgs){
+  var n = fileName.replace(/\.(txt|zip)$/i, "");
+  var m = /(?:chat with|discussion avec|conversation avec|دردشة مع)\s+(.+)$/i.exec(n);
+  if(m) return m[1].trim();
+  if(/^(_?chat|whatsapp.*)$/i.test(n)) return topAuthors(msgs, 3).join(" & ") || n;
+  return n;
+}
+
+function autoRoutes(){
+  if(!state.model || !state.parsed) return;
+  var sheets = state.model.sheets;
+  topAuthors(state.parsed.messages, 999).forEach(function(a){
+    if(state.routes[a]) return;
+    var da = deaccent(a), match = "";
+    sheets.forEach(function(s){
+      if(s.kind === "transferts" || match) return;
+      var ds = deaccent(s.name);
+      if(da.indexOf(ds) >= 0 || ds.indexOf(da) >= 0) match = s.name;
+    });
+    state.routes[a] = match || "__ignore__";
+  });
+}
+
+function loadText(text, fileName, mediaFiles){
+  var parsed = parseChat(text, $("dateOrder") ? $("dateOrder").value : "auto");
+  if(!parsed.messages.length){
+    toast("Aucun message reconnu dans ce fichier. Est-ce bien l'export d'une discussion WhatsApp ?");
+    return;
+  }
+  state.rawText = text;
+  state.fileName = fileName;
+  state.mediaFiles = mediaFiles || [];
+  state.parsed = parsed;
+  state.chatName = guessChatName(fileName, parsed.messages);
+  state.me = topAuthors(parsed.messages, 1)[0] || "";
+  state.filters = { author: "", q: "", from: "", to: "" };
+  state.excluded = {};
+  state.routes = {};
+  state.tab = state.model ? "" : "messages";
+
+  $("fileName").textContent = fileName;
+  $("intake").hidden = true;
+  $("steps").hidden = true;
+  $("workspace").hidden = false;
+  $("fQuery").value = ""; $("fFrom").value = ""; $("fTo").value = "";
+  autoRoutes();
+  renderControls();
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function decode(buffer){
+  var bytes = new Uint8Array(buffer);
+  if(bytes.length > 1 && bytes[0] === 0xFF && bytes[1] === 0xFE) return new TextDecoder("utf-16le").decode(buffer);
+  if(bytes.length > 1 && bytes[0] === 0xFE && bytes[1] === 0xFF) return new TextDecoder("utf-16be").decode(buffer);
+  return new TextDecoder("utf-8").decode(buffer);
+}
+
+function handleChatFile(file){
+  if(!file) return;
+  var isZip = /\.zip$/i.test(file.name);
+  var reader = new FileReader();
+  reader.onload = function(){
+    if(isZip){
+      if(typeof JSZip === "undefined"){ toast("Le lecteur d'archives n'a pas pu être chargé. Dépose le fichier .txt à la place."); return; }
+      JSZip.loadAsync(reader.result).then(function(zip){
+        var txt = null, media = [];
+        zip.forEach(function(path, entry){
+          if(entry.dir) return;
+          if(/\.txt$/i.test(path) && !txt) txt = entry;
+          else media.push(path.split("/").pop());
+        });
+        if(!txt){ toast("Aucun fichier .txt trouvé dans l'archive."); return; }
+        var name = file.name.replace(/\.zip$/i, "");
+        txt.async("arraybuffer").then(function(buf){ loadText(decode(buf), name, media); });
+      }).catch(function(){ toast("Archive illisible. Dépose le fichier .txt directement."); });
+    } else {
+      loadText(decode(reader.result), file.name, []);
+    }
+  };
+  reader.onerror = function(){ toast("Impossible de lire ce fichier."); };
+  reader.readAsArrayBuffer(file);
+}
+
+function handleModelFile(file){
+  if(!file) return;
+  if(!/\.xlsx$/i.test(file.name)){
+    toast("Le classeur doit être au format .xlsx (pas .xls ni .csv).");
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(){
+    var buffer = reader.result;
+    readModel(buffer).then(function(model){
+      if(!model.sheets.length){
+        toast("Aucune feuille avec des en-têtes en ligne 1 n'a été trouvée dans ce classeur.");
+        return;
+      }
+      state.model = { fileName: file.name, buffer: buffer, sheets: model.sheets };
+      state.excluded = {};
+      state.routes = {};
+      var chip = $("modelChip");
+      chip.hidden = false;
+      chip.textContent = file.name + " · " + model.sheets.length + " feuilles";
+      var slot = $("dropModel");
+      slot.classList.add("done");
+      if(state.parsed){
+        state.tab = "";
+        autoRoutes();
+        render();
+        toast("Classeur lu : " + model.sheets.map(function(s){ return s.name; }).join(", "));
+      } else {
+        toast("Classeur prêt. Dépose maintenant la discussion WhatsApp.");
+      }
+    }).catch(function(e){
+      toast("Ce classeur n'a pas pu être lu : " + e.message);
+    });
+  };
+  reader.onerror = function(){ toast("Impossible de lire ce fichier."); };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ============================================================
+   11. Exemple de démonstration (données fictives)
+   ============================================================ */
+
+var DEMO = [
+  "24/08/2026, 09:04 - Les messages sont chiffrés de bout en bout.",
+  "24/08/2026, 09:30 - Driss: 💵49920dhs de driss à hafid par at to hd",
+  "24/08/2026, 09:31 - Hafid: Reçu, merci",
+  "27/08/2026, 11:12 - Hafid: 70dh frais ghazala récupération BBU",
+  "27/08/2026, 14:05 - Hafid: 250dhs taxi + livraison matériel site Ain Sebaa",
+  "28/08/2026, 08:40 - Driss: 1200 dhs avance équipe fibre",
+  "28/08/2026, 09:02 - Hafid: <Médias omis>",
+  "29/08/2026, 17:22 - Hafid: 340dh carburant tournée Casa - Berrechid",
+  "01/09/2026, 10:15 - Driss: 15000dhs versement à hafid pour achat câbles",
+  "02/09/2026, 12:48 - Driss: 900dhs reste electricien",
+  "02/09/2026, 19:03 - Hafid: ok noté",
+  "03/09/2026, 08:20 - Driss: 480 dh location nacelle demi-journée"
+].join("\n");
+
+/* ============================================================
+   12. Câblage
+   ============================================================ */
+
+$("pickChat").onclick = function(){ $("fileChat").click(); };
+$("fileChat").onchange = function(e){ handleChatFile(e.target.files[0]); e.target.value = ""; };
+$("pickModel").onclick = function(){ $("fileModel").click(); };
+$("changeModel").onclick = function(){ $("fileModel").click(); };
+$("fileModel").onchange = function(e){ handleModelFile(e.target.files[0]); e.target.value = ""; };
+$("demo").onclick = function(){
+  loadText(DEMO, "Discussion Telecom (exemple).txt", []);
+  toast("Exemple fictif chargé — remplace-le par ton propre export.");
+};
+$("change").onclick = function(){
+  $("workspace").hidden = true;
+  $("intake").hidden = false;
+  $("steps").hidden = false;
+  state.parsed = null;
+  built = null;
+};
+
+function wireDrop(el, handler){
+  ["dragenter", "dragover"].forEach(function(ev){
+    el.addEventListener(ev, function(e){ e.preventDefault(); el.classList.add("over"); });
+  });
+  ["dragleave", "drop"].forEach(function(ev){
+    el.addEventListener(ev, function(e){ e.preventDefault(); el.classList.remove("over"); });
+  });
+  el.addEventListener("drop", function(e){
+    if(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) handler(e.dataTransfer.files[0]);
+  });
+}
+wireDrop($("dropChat"), handleChatFile);
+wireDrop($("dropModel"), handleModelFile);
+
+$("dateOrder").onchange = function(){
+  if(!state.rawText) return;
+  state.parsed = parseChat(state.rawText, this.value);
+  render();
+};
+$("me").onchange = function(){ state.me = this.value; render(); };
+$("keywords").oninput = debounce(function(){
+  state.keywords = this.value.split(",").map(function(s){ return s.trim(); }).filter(Boolean);
+  render();
+}, 350);
+$("fAuthor").onchange = function(){ state.filters.author = this.value; render(); };
+$("fQuery").oninput = debounce(function(){ state.filters.q = this.value.trim(); render(); }, 300);
+$("fFrom").onchange = function(){ state.filters.from = this.value; render(); };
+$("fTo").onchange = function(){ state.filters.to = this.value; render(); };
+$("xlsx").onclick = exportXlsx;
+$("csv").onclick = exportCsv;
+
+function debounce(fn, ms){
+  var t = null;
+  return function(){
+    var self = this, args = arguments;
+    clearTimeout(t);
+    t = setTimeout(function(){ fn.apply(self, args); }, ms);
+  };
+}
+
+})();
+</script>
+
+</body></html>

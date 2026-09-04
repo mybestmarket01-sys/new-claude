@@ -1,0 +1,1211 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Lancement COD Septembre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Cairo:wght@400;600;700&display=swap">
+<style>
+:root{
+ --ground:#f6f3ec; --surface:#fffdf8; --surface2:#efeae0;
+ --ink:#16211f; --ink2:#4a5754; --ink3:#7b8785;
+ --line:#ded7c9; --line2:#eae4d8;
+ --teal:#304f4f; --ochre:#8d530d; --sage:#6b8e80; --panel:#304f4f;
+ --good:#4a7c59; --warn:#a8761b; --weak:#8a8578;
+ --shadow:0 1px 2px rgba(22,33,31,.05),0 8px 28px rgba(22,33,31,.06);
+ --f-disp:'Fraunces',Georgia,serif;
+ --f-body:'Archivo','Segoe UI',system-ui,sans-serif;
+ --f-mono:'JetBrains Mono',ui-monospace,monospace;
+ --f-ar:'Cairo','Segoe UI',Tahoma,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme="light"]){
+  --ground:#121a19; --surface:#1a2423; --surface2:#222d2c;
+  --ink:#eae5db; --ink2:#a8b2af; --ink3:#7d8785;
+  --line:#2c3937; --line2:#243130;
+  --teal:#7fa8a0; --ochre:#d0973f; --sage:#8fae9f; --panel:#24393a;
+  --good:#6fa87c; --warn:#d8a94a; --weak:#8a8578;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.34);
+ }
+}
+:root[data-theme="dark"]{
+ --ground:#121a19; --surface:#1a2423; --surface2:#222d2c;
+ --ink:#eae5db; --ink2:#a8b2af; --ink3:#7d8785;
+ --line:#2c3937; --line2:#243130;
+ --teal:#7fa8a0; --ochre:#d0973f; --sage:#8fae9f; --panel:#24393a;
+ --good:#6fa87c; --warn:#d8a94a; --weak:#8a8578;
+ --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+a{color:var(--ochre)}
+a:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+body{margin:0;background:var(--ground);color:var(--ink);
+ font-family:var(--f-body);font-size:15px;line-height:1.6;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px 90px}
+.ar-t,.ar-b{font-family:var(--f-ar);direction:rtl;text-align:right}
+
+/* ---- entete ---- */
+.masthead{padding:56px 0 34px;border-bottom:2px solid var(--ink);margin-bottom:34px}
+.kick{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--ochre);margin:0 0 16px;font-weight:600}
+h1{font-family:var(--f-disp);font-size:clamp(38px,6.4vw,66px);line-height:1.02;margin:0 0 18px;
+ font-weight:600;letter-spacing:-.022em;text-wrap:balance;font-variation-settings:'SOFT' 0,'WONK' 1}
+.lede{font-size:17.5px;color:var(--ink2);max-width:60ch;margin:0}
+.srcbar{display:flex;flex-wrap:wrap;gap:0;margin-top:30px;border:1px solid var(--line);
+ border-radius:9px;overflow:hidden;background:var(--surface)}
+.srcbar div{flex:1 1 150px;padding:15px 17px;border-right:1px solid var(--line2)}
+.srcbar div:last-child{border-right:0}
+.srcbar span{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.13em;
+ text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.srcbar b{font-family:var(--f-disp);font-size:25px;font-weight:600;
+ font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* ---- hypotheses ---- */
+.hyp{background:var(--panel);color:#fff;border-radius:11px;padding:24px 26px;margin-bottom:44px}
+.hyp h2{font-family:var(--f-disp);font-size:20px;margin:0 0 6px;font-weight:600;color:#fff}
+.hyp p{margin:0 0 16px;opacity:.8;font-size:14px;max-width:64ch}
+.hypg{display:flex;flex-wrap:wrap;gap:10px}
+.hypg div{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);
+ border-radius:7px;padding:9px 14px;font-size:13.5px}
+.hypg b{font-family:var(--f-mono);font-weight:600}
+
+/* ---- sections ---- */
+.corr{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ochre);
+ border-radius:0 12px 12px 0;padding:24px 28px;margin-bottom:20px;box-shadow:var(--shadow)}
+.corr h2{font-family:var(--f-disp);font-size:20px;margin:0 0 10px;font-weight:600}
+.corr p{margin:0 0 10px;color:var(--ink2);max-width:68ch;font-size:14.5px}
+.corr p:last-child{margin-bottom:0} .corr b{color:var(--ink)}
+.metrics i{display:block;font-style:normal;font-family:var(--f-mono);font-size:9.5px;
+ color:var(--ink3);margin-top:4px;line-height:1.4}
+.sect{margin:0 0 26px;padding-top:14px}
+.sect h2{font-family:var(--f-disp);font-size:31px;font-weight:600;margin:0 0 6px;
+ letter-spacing:-.018em;font-variation-settings:'WONK' 1}
+.sect p.sub{color:var(--ink2);margin:0 0 26px;font-size:15.5px;max-width:66ch}
+
+/* ---- carte item ---- */
+.item{background:var(--surface);border:1px solid var(--line);border-radius:13px;
+ padding:26px 28px;margin-bottom:20px;box-shadow:var(--shadow)}
+.ih{display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap}
+.ihl{flex:1 1 340px;min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+ color:var(--ochre);margin:0 0 8px;font-weight:600}
+.ih h3{font-family:var(--f-disp);font-size:24px;font-weight:600;margin:0 0 5px;
+ line-height:1.2;letter-spacing:-.014em;text-wrap:balance}
+.ar-t{font-size:17px;color:var(--ink2);margin:0 0 11px}
+.angle{font-size:14.5px;color:var(--ink2);margin:0}
+.angle b{color:var(--ink);font-weight:600}
+.ihr{text-align:right;flex:0 0 auto}
+.pxbig{font-family:var(--f-disp);font-size:44px;font-weight:700;line-height:1;
+ letter-spacing:-.028em;font-variant-numeric:tabular-nums}
+.pxbig small{font-size:17px;font-weight:600;margin-left:4px;color:var(--ink2)}
+.ihr s{color:var(--ink3);font-size:15px;font-family:var(--f-mono)}
+.score{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:10px}
+.sbar{width:78px;height:6px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.sbar i{display:block;height:100%;background:var(--sage);border-radius:99px}
+.score span{font-family:var(--f-mono);font-size:13px;font-weight:600}
+.score small{color:var(--ink3);font-weight:400}
+
+.ev{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:18px 0 0;padding:10px 14px;
+ border-radius:8px;background:var(--surface2);font-size:13px;font-weight:600}
+.ev em{font-style:normal;font-weight:400;color:var(--ink2)}
+.ev .dot{width:8px;height:8px;border-radius:50%;flex:0 0 8px}
+.ev-forte .dot{background:var(--good)} .ev-forte{color:var(--good)}
+.ev-correcte .dot{background:var(--sage)} .ev-correcte{color:var(--sage)}
+.ev-moyenne .dot{background:var(--warn)} .ev-moyenne{color:var(--warn)}
+.ev-faible .dot{background:var(--weak)} .ev-faible{color:var(--weak)}
+
+.compo{list-style:none;padding:0;margin:18px 0 0;border:1px solid var(--line2);border-radius:9px;
+ overflow:hidden}
+.compo li{display:flex;justify-content:space-between;gap:14px;padding:11px 15px;
+ border-bottom:1px solid var(--line2);font-size:14.5px;background:var(--surface)}
+.compo li:last-child{border-bottom:0}
+.compo li b{font-family:var(--f-mono);font-weight:600;white-space:nowrap}
+.compo .tot{background:var(--surface2);color:var(--ink2)}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:1px;
+ background:var(--line2);border:1px solid var(--line2);border-radius:9px;overflow:hidden;margin:18px 0 22px}
+.metrics div{background:var(--surface);padding:13px 15px}
+.metrics span{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.11em;
+ text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.metrics b{font-family:var(--f-disp);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;
+ letter-spacing:-.014em}
+.metrics .hi{background:var(--panel)}
+.metrics .hi span{color:rgba(255,255,255,.66)}
+.metrics .hi b{color:#fff}
+
+/* ---- onglets ---- */
+.tabs nav{display:flex;gap:3px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:18px}
+.tabs button[role=tab]{font-family:var(--f-body);font-size:13.5px;font-weight:600;
+ background:none;border:0;border-bottom:2px solid transparent;color:var(--ink3);
+ padding:9px 14px;cursor:pointer;margin-bottom:-1px;border-radius:5px 5px 0 0}
+.tabs button[role=tab]:hover{color:var(--ink)}
+.tabs button[aria-selected=true]{color:var(--ochre);border-bottom-color:var(--ochre)}
+.tabs button:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+
+.fieldrow{display:flex;justify-content:space-between;align-items:center;margin:16px 0 7px}
+.fieldrow:first-child{margin-top:0}
+label{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+ color:var(--ink3);font-weight:600}
+.cp{font-family:var(--f-body);font-size:11.5px;font-weight:600;background:var(--surface2);
+ border:1px solid var(--line);color:var(--ink2);padding:4px 11px;border-radius:6px;cursor:pointer}
+.cp:hover{border-color:var(--ochre);color:var(--ochre)}
+.cp:focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+.cp.ok{background:var(--good);border-color:var(--good);color:#fff}
+pre{white-space:pre-wrap;word-wrap:break-word;background:var(--surface2);border:1px solid var(--line2);
+ border-radius:9px;padding:16px 18px;margin:0;font-size:15px;line-height:1.85;font-family:var(--f-ar)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mono{font-family:var(--f-mono);font-size:13.5px;background:var(--surface2);
+ border:1px solid var(--line2);border-radius:7px;padding:10px 13px;margin:0}
+.hookline{margin-top:18px;padding:14px 17px;border-left:3px solid var(--ochre);
+ background:var(--surface2);border-radius:0 8px 8px 0}
+.hookline span{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;
+ text-transform:uppercase;color:var(--ochre);margin-bottom:6px;font-weight:600}
+.hookline p{margin:0;font-size:18px;font-weight:600}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+.sct th{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+ color:var(--ink3);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)}
+.sct td{padding:11px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+.sct td.t{font-family:var(--f-mono);font-size:12.5px;white-space:nowrap;color:var(--ochre);font-weight:600}
+.sct td.b{font-weight:600;white-space:nowrap;font-size:12.5px;letter-spacing:.03em}
+.spec td{padding:9px 12px;border-bottom:1px solid var(--line2)}
+.spec td:first-child{font-weight:600;width:38%}
+
+h4{font-family:var(--f-disp);font-size:17px;font-weight:600;margin:22px 0 10px}
+.promesse{font-size:16.5px;color:var(--ink2);margin:0;font-style:italic}
+ul.ben{padding-left:19px;margin:0}
+ul.ben li{margin-bottom:7px}
+.obj{border-left:3px solid var(--sage);padding:2px 0 2px 14px;margin-bottom:13px}
+.obj .q,.qa .q{font-weight:600;margin:0 0 3px;color:var(--ochre)}
+.obj p,.qa p{margin:0;font-size:14.5px;color:var(--ink2)}
+.qa{margin-bottom:12px}
+.lpnote{margin-top:20px;padding-top:14px;border-top:1px solid var(--line2);
+ font-size:13px;color:var(--ink3)}
+code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface2);
+ padding:2px 6px;border-radius:4px;color:var(--ink2)}
+
+/* ---- plan / limites ---- */
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:13px;
+ padding:28px 30px;box-shadow:var(--shadow);margin-bottom:20px}
+.plan ol{margin:0;padding-left:20px}
+.plan li{margin-bottom:13px}
+.plan li b{font-weight:600}
+.warn{border-left:3px solid var(--ochre);background:var(--surface);border:1px solid var(--line);
+ border-left:3px solid var(--ochre);border-radius:0 11px 11px 0;padding:24px 28px}
+.warn h3{font-family:var(--f-disp);font-size:19px;margin:0 0 12px;font-weight:600}
+.warn ul{margin:0;padding-left:19px}
+.warn li{margin-bottom:9px;font-size:14.5px;color:var(--ink2)}
+.warn li b{color:var(--ink)}
+footer{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+ font-size:13px;color:var(--ink3)}
+@media(max-width:700px){
+ .two{grid-template-columns:1fr}
+ .ihr{text-align:left} .score{justify-content:flex-start}
+ .item{padding:22px 19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+<header class="masthead">
+ <p class="kick">Espion COD + Radar Produit Gagnant · 4 septembre 2026</p>
+ <h1>Cinq produits, cinq packs, prêts à lancer</h1>
+ <p class="lede">Sélection tirée de la base réelle d'Espion COD et des captures de l'extension Radar,
+  chiffrée sur les hypothèses COD de la boutique. Chaque fiche porte son annonce Meta, sa légende
+  TikTok, son script vidéo et sa landing page.</p>
+ <div class="srcbar">
+  <div><span>Produits scannés</span><b>58 400</b></div>
+  <div><span>Boutiques suivies</span><b>77</b></div>
+  <div><span>Estimations de ventes</span><b>100 429</b></div>
+  <div><span>Gagnants potentiels</span><b>44</b></div>
+  <div><span>Retenus</span><b>10</b></div>
+ </div>
+</header>
+
+<div class="corr">
+ <h2>Coûts corrigés le 4 septembre</h2>
+ <p>Les coûts d'achat de cette page ne sont plus des estimations : ce sont les prix de gros
+  relevés sur eGRO. Deux conséquences. <b>Le set de pots à épices tombe à 6 DH de CPA maximum
+  et n'est plus lançable à 199 DH.</b> Les bocaux et le Pack Cuisine passent sous les 55 DH —
+  jouables, mais sans confort. <b>Seul l'appareil photo enfant reste une estimation</b> :
+  aucune source de gros marocaine ne le référence.</p>
+ <p><a href="https://claude.ai/code/artifact/f1db90f0-731e-4727-99f5-9821906425aa">Voir le dossier de sourcing</a> — prix relevés, routes d'achat et carnet d'adresses.</p>
+</div>
+<div class="hyp">
+ <h2>Le modèle économique appliqué</h2>
+ <p>Tous les CPA maximum ci-dessous sortent du même calcul, sur une base de 100 commandes.
+  Le CPA maximum est le coût d'acquisition au-delà duquel le produit perd de l'argent — pas un objectif,
+  un plafond.</p>
+ <div class="hypg">
+  <div>Confirmées <b>85 %</b></div>
+  <div>Livrées <b>70 %</b></div>
+  <div>Livraison <b>35 DH</b></div>
+  <div>Refus <b>25 DH</b></div>
+  <div>Fenêtre COD <b>149–499 DH</b></div>
+  <div>CPA moyen produits <b>63 DH</b></div>
+  <div>CPA moyen packs <b>93 DH</b></div>
+ </div>
+</div>
+
+<section class="sect">
+ <h2>Les cinq produits</h2>
+ <p class="sub">Classés par force de la preuve, pas par score. Un score élevé sur une boutique sans
+  trafic ne vaut pas une série de ventes observée sur onze jours.</p>
+</section>
+
+<article class="item" id="bocaux">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Espion COD · justyol.com</p>
+   <h3>Set 12 Bocaux Carrés 1700 ml — Cuisine Rangée en 10 Minutes</h3>
+   <p class="ar-t">طقم 12 بوكال مربع 1700 مل — كوزينة مرتبة ف 10 دقايق</p>
+   <p class="angle"><b>Angle —</b> La honte du placard ouvert devant les invités → placard de magazine</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">249<small>DH</small></div>
+   
+   <div class="score"><div class="sbar"><i style="width:85%"></i></div><span>85<small>/100</small></span></div>
+  </div>
+ </header>
+ <div class="ev ev-forte"><span class="dot"></span>Preuve forte<em>20.88 ventes/jour estimées sur 11 jours de suivi</em></div>
+ 
+ <div class="metrics">
+  <div><span>Coût réel</span><b>135 DH</b><i>eGRO : lot 7 boîtes hermétiques 80 MAD → ≈135 pour 12</i></div>
+  <div><span>Marge unitaire</span><b>114 DH</b></div>
+  <div><span>Multiple</span><b>×1.84</b></div>
+  <div class="hi"><span>CPA maximum</span><b>51.5 DH</b></div>
+  <div><span>Net / livrée</span><b>73.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-bocaux">Copier</button></div>
+   <pre class="ar-b" id="m-bocaux">الكوزينة ديالك عامرة بالساشي المحلولين والعطريات مخلطين؟ 😩
+
+طقم 12 بوكال مربع 1700 مل — مربعين ماشي مدورين، يعني كيتراكبو فوق بعضياتهم بلا ما يضيع ولو سنتيمتر.
+
+✅ 12 بوكال بحجم كبير (1.7 لتر لكل واحد)
+✅ غطا محكم — الزيت والسكر والدقيق ما كيدخلهم لا هواء لا رطوبة
+✅ مربعين = تربح ثلث البلاصة ف البلاكار
+✅ شفافين — كتشوف شنو باقي عندك بلا ما تحل
+✅ صالحين للغسيل ف الماكينة
+
+الثمن: 249 درهم بدل 448 درهم
+🚚 الدفع عند الاستلام — كتخلص منين توصلك
+📦 التوصيل ل جميع المدن
+
+الكمية محدودة — سير دابا 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-bocaux">Copier</button></div>
+     <p class="mono" id="mh-bocaux">12 Bocaux 1700 ml — 249 DH au lieu de 448</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-bocaux">Copier</button></div>
+     <p class="mono" id="md-bocaux">Paiement à la livraison · Livraison partout au Maroc</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">واش كتحشم تحل البلاكار ديالك قدام الضياف؟</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-bocaux">Copier</button></div>
+   <pre class="ar-b" id="tk-bocaux">الكوزينة ديالي تبدلات ف 10 دقايق 😳 12 بوكال ب 249 درهم فقط #المغرب #كوزينة #ترتيب #تنظيم #cod #maroc</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-bocaux">Copier</button></div>
+   <pre class="ar-b" id="hs-bocaux">#المغرب #كوزينة #ترتيب_الكوزينة #تنظيم #دارنا #maroc #casablanca #rabat #marrakech #codmaroc</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-3 s</td><td class="b">PLAN CHOC</td><td>On ouvre un placard bordélique : sachets ouverts, riz qui coule. Voix : « واش هادي هي الكوزينة ديالك؟ »</td></tr><tr><td class="t">3-7 s</td><td class="b">AGITATION</td><td>Gros plan sur du sucre renversé, une main qui cherche. « كل نهار كتقلب و ما كتلقى والو »</td></tr><tr><td class="t">7-14 s</td><td class="b">TRANSFORMATION</td><td>Time-lapse : on remplit les 12 bocaux, on les empile. Son satisfaisant du clip. « 12 بوكال مربع، كيتراكبو فوق بعضياتهم »</td></tr><tr><td class="t">14-20 s</td><td class="b">PREUVE</td><td>Split-screen avant/après du même placard. « ثلث البلاصة ربحتيها »</td></tr><tr><td class="t">20-26 s</td><td class="b">LEVÉE D&#x27;OBJECTION</td><td>Main qui retourne un bocal fermé rempli d&#x27;eau : rien ne coule. « غطا محكم 100% »</td></tr><tr><td class="t">26-30 s</td><td class="b">CTA</td><td>Carton prix 249 DH barré 448. « الدفع عند الاستلام — دق على اللينك »</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Douze bocaux carrés identiques qui s&#x27;emboîtent : vous gagnez un tiers de place et vous voyez tout d&#x27;un coup d&#x27;œil.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Gain d&#x27;un tiers de place grâce à la forme carrée (les bocaux ronds perdent les angles)</li><li>Couvercle à joint : plus de mites alimentaires ni d&#x27;humidité sur la semoule et la farine</li><li>Transparents : vous voyez ce qu&#x27;il reste sans ouvrir</li><li>Format 1,7 L, le bon volume pour 1 kg de riz, sucre ou légumes secs</li><li>Passent au lave-vaisselle et au congélateur</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« C&#x27;est du plastique fragile ? »</p><p>PP alimentaire épais, sans BPA. Le couvercle a un joint silicone et 4 clips.</p></div><div class="obj"><p class="q">« 249 DH c&#x27;est cher pour 12 »</p><p>Cela fait 20,75 DH le bocal. Un seul bocal en verre coûte plus cher, et un sac de semoule gâché en coûte 40.</p></div><div class="obj"><p class="q">« Et si ça ne me plaît pas ? »</p><p>Vous payez à la livraison. Vous ouvrez, vous vérifiez, et vous ne payez que si ça vous convient.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Contenance</td><td>1700 ml × 12</td></tr><tr><td>Matière</td><td>Polypropylène alimentaire sans BPA</td></tr><tr><td>Fermeture</td><td>Couvercle à joint + 4 clips</td></tr><tr><td>Lave-vaisselle</td><td>Oui</td></tr><tr><td>Étiquettes</td><td>Incluses</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Quelle taille exactement ?</p><p>1700 ml chacun, environ 11 × 11 × 18 cm. Les 12 rentrent dans un placard standard de 60 cm.</p></div><div class="qa"><p class="q">Ils vont au micro-ondes ?</p><p>Oui pour le contenant, non pour le couvercle fermé (retirez-le d&#x27;abord).</p></div><div class="qa"><p class="q">Je paie quand ?</p><p>À la livraison, en espèces, entre les mains du livreur.</p></div><div class="qa"><p class="q">Livraison en combien de temps ?</p><p>24 à 48 h à Casablanca et Rabat, 48 à 72 h ailleurs.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/bocaux.html</code>
+    — créas : <code>creas/bocaux-feed.png</code>, <code>creas/bocaux-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="epices">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Espion COD · justyol.com</p>
+   <h3>Set 12 Pots à Épices + Support Mural — Toutes vos Épices à Portée de Main</h3>
+   <p class="ar-t">طقم 12 بوكال ديال العطريات + ستاند — كل العطريات ف بلاصة وحدة</p>
+   <p class="angle"><b>Angle —</b> Le tiroir à épices chaotique → mur d&#x27;épices de chef</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">199<small>DH</small></div>
+   
+   <div class="score"><div class="sbar"><i style="width:84%"></i></div><span>84<small>/100</small></span></div>
+  </div>
+ </header>
+ <div class="ev ev-forte"><span class="dot"></span>Preuve forte<em>8.67 ventes/jour estimées sur 11 jours de suivi</em></div>
+ 
+ <div class="metrics">
+  <div><span>Coût réel</span><b>150 DH</b><i>eGRO : étagère 12 bocaux 150 MAD (HAZAR GO)</i></div>
+  <div><span>Marge unitaire</span><b>49 DH</b></div>
+  <div><span>Multiple</span><b>×1.33</b></div>
+  <div class="hi"><span>CPA maximum</span><b>6.0 DH</b></div>
+  <div><span>Net / livrée</span><b>8.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-epices">Copier</button></div>
+   <pre class="ar-b" id="m-epices">كل مرة كتطيب، كتقلب ف الطيروار على العطريات و ما كتلقاش 😤
+
+طقم 12 بوكال ديال العطريات بالستاند — كيتلصق ف الحيط أو داخل باب البلاكار، بلا مسامر بلا تقب.
+
+✅ 12 بوكال بنفس القياس + 12 معلقة صغيرة
+✅ ستاند بلاصق قوي — بلا ما تقب الحيط
+✅ إتيكيتات مكتوبين — الكمون، الكركم، راس الحانوت، الفلفل...
+✅ غطا محكم — الريحة ما كتخرجش و العطريات ما كتيبساش
+✅ كتشد ف الحيط، ف الباب، ولا فوق الطابلة
+
+الثمن: 199 درهم بدل 285 درهم
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن
+
+سير دابا قبل ما تسالي 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-epices">Copier</button></div>
+     <p class="mono" id="mh-epices">12 Pots à Épices + Support — 199 DH</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-epices">Copier</button></div>
+     <p class="mono" id="md-epices">Paiement à la livraison · Sans percer le mur</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">راس الحانوت فين؟ الكمون فين؟ كل نهار نفس القلبة 🤦</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-epices">Copier</button></div>
+   <pre class="ar-b" id="tk-epices">ما بقيتش نقلب على العطريات 🧂 الستاند هادا بدل ليا الكوزينة #كوزينة #عطريات #المغرب #ترتيب #cod</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-epices">Copier</button></div>
+   <pre class="ar-b" id="hs-epices">#المغرب #كوزينة #عطريات #راس_الحانوت #ترتيب #دارنا #maroc #codmaroc #cuisinemarocaine</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-3 s</td><td class="b">HOOK</td><td>Main qui fouille frénétiquement un tiroir d&#x27;épices en vrac. « الكمون فين؟ »</td></tr><tr><td class="t">3-8 s</td><td class="b">AGITATION</td><td>Trois sachets d&#x27;épices s&#x27;ouvrent et se renversent. « كل نهار نفس المشكل »</td></tr><tr><td class="t">8-15 s</td><td class="b">SOLUTION</td><td>On colle le support sur la porte du placard, on clipse les 12 pots un par un. Son satisfaisant.</td></tr><tr><td class="t">15-22 s</td><td class="b">DÉMO</td><td>Main qui prend un pot, dose avec la petite cuillère intégrée, remet. Une seconde. « ثانية وحدة »</td></tr><tr><td class="t">22-27 s</td><td class="b">PREUVE</td><td>On tire fort sur le support : il tient. « بلاصق قوي، بلا ما تقب »</td></tr><tr><td class="t">27-30 s</td><td class="b">CTA</td><td>Prix 199 DH. « الدفع عند الاستلام »</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Douze pots identiques, étiquetés, avec leur support autocollant : vos épices passent du tiroir au mur, à hauteur de main.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Support autocollant : pas de perceuse, pas de trou dans le carrelage</li><li>Les 12 pots sont identiques et étiquetés : vous trouvez en une seconde</li><li>Petite cuillère doseuse fournie avec chaque pot</li><li>Couvercle hermétique : le cumin garde son parfum, le paprika ne durcit pas</li><li>Se pose au mur, dans la porte du placard ou sur le plan de travail</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« L&#x27;adhésif va tomber avec le poids »</p><p>L&#x27;adhésif 3M supporte 5 kg sur surface lisse et sèche (carrelage, mélaminé, verre). Les 12 pots pleins pèsent 2,4 kg.</p></div><div class="obj"><p class="q">« Les pots sont trop petits »</p><p>110 ml chacun, soit l&#x27;équivalent d&#x27;un sachet d&#x27;épices du souk. C&#x27;est fait pour la rotation, pas pour le stock.</p></div><div class="obj"><p class="q">« Je paie avant ? »</p><p>Non. Vous payez au livreur, après avoir ouvert le colis.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Contenance</td><td>110 ml × 12</td></tr><tr><td>Support</td><td>Adhésif 3M, capacité 5 kg</td></tr><tr><td>Accessoires</td><td>12 cuillères doseuses + étiquettes</td></tr><tr><td>Matière</td><td>PET alimentaire + ABS</td></tr><tr><td>Montage</td><td>Sans perçage</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Ça tient sur du carrelage gras ?</p><p>Nettoyez à l&#x27;alcool avant de coller. Sur une surface propre, ça tient des années.</p></div><div class="qa"><p class="q">On peut les mettre au lave-vaisselle ?</p><p>Oui, les pots et les cuillères. Le support se nettoie à l&#x27;éponge.</p></div><div class="qa"><p class="q">Les étiquettes sont en arabe ou en français ?</p><p>Les deux sont fournies, plus des étiquettes vierges.</p></div><div class="qa"><p class="q">Livraison ?</p><p>24-48 h grandes villes, 48-72 h ailleurs. Paiement à la réception.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/epices.html</code>
+    — créas : <code>creas/epices-feed.png</code>, <code>creas/epices-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="massage">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Espion COD · gula.ma</p>
+   <h3>Pistolet de Massage Chaud &amp; Froid — La Séance de Détente à la Maison</h3>
+   <p class="ar-t">بيستوليه المساج بالسخون والبارد — جلسة استرخاء ف دارك</p>
+   <p class="angle"><b>Angle —</b> Le dos qui tire après 8 h assis ou debout — sans rendez-vous, sans 300 DH la séance</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">349<small>DH</small></div>
+   
+   <div class="score"><div class="sbar"><i style="width:86%"></i></div><span>86<small>/100</small></span></div>
+  </div>
+ </header>
+ <div class="ev ev-faible"><span class="dot"></span>Preuve faible<em>0.8 ventes/jour — signal de vente ténu, le score porte le dossier</em></div>
+ 
+ <div class="metrics">
+  <div><span>Coût réel</span><b>180 DH</b><i>eGRO : Massage Gun 6/12 têtes 180 MAD</i></div>
+  <div><span>Marge unitaire</span><b>169 DH</b></div>
+  <div><span>Multiple</span><b>×1.94</b></div>
+  <div class="hi"><span>CPA maximum</span><b>90.0 DH</b></div>
+  <div><span>Net / livrée</span><b>128.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-massage">Copier</button></div>
+   <pre class="ar-b" id="m-massage">نهار كامل واقف ولا كالس قدام الordinateur… و ف الليل الظهر و الكتاف مشدودين 😣
+
+بيستوليه المساج بالراس السخون والبارد — كيرخي العضلات ف 10 دقايق ف دارك.
+
+🔥 راس سخون — كيسخن العضلة و كيرخيها
+❄️ راس بارد — كيهدن من بعد المجهود
+💪 6 سرعات + 4 روس مختالفين (الظهر، الكتاف، الرجلين، الرقبة)
+🔋 بطارية كتدوم 6 ساعات — بلا فيل
+🔇 هادي بزاف — تقدر تستعملو و الدراري نعسين
+
+بدل 300 درهم ف كل جلسة — 349 درهم مرة وحدة و هو ديالك
+
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن 👇
+
+ملاحظة: هاد الجهاز ديال الاسترخاء و راحة العضلات. إلا عندك مشكل صحي، شاور الطبيب ديالك.</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-massage">Copier</button></div>
+     <p class="mono" id="mh-massage">Pistolet Massage Chaud/Froid — 349 DH</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-massage">Copier</button></div>
+     <p class="mono" id="md-massage">6 vitesses · 4 têtes · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">الظهر كيوجعك من بعد الخدمة؟ ما بقاش خاصك تمشي بعيد</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-massage">Copier</button></div>
+   <pre class="ar-b" id="tk-massage">10 دقايق و الكتاف ترخاو 😮‍💨 #مساج #استرخاء #المغرب #ظهر #cod #relax</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-massage">Copier</button></div>
+   <pre class="ar-b" id="hs-massage">#المغرب #مساج #استرخاء #الظهر #رياضة #صحة #maroc #codmaroc #massage #relax</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-3 s</td><td class="b">HOOK VISUEL</td><td>Personne qui se lève d&#x27;un bureau et porte la main aux lombaires en grimaçant. Voix : « نهار كامل قدام الordinateur »</td></tr><tr><td class="t">3-8 s</td><td class="b">AGITATION</td><td>Calendrier avec 3 rendez-vous barrés, billets de 300 DH qui s&#x27;envolent. « 300 درهم ف كل جلسة »</td></tr><tr><td class="t">8-16 s</td><td class="b">DEMO PRODUIT</td><td>Gros plan : on visse la tête chauffante, LED rouge, application sur le trapèze. Vibration visible. « الراس السخون كيرخي العضلة »</td></tr><tr><td class="t">16-22 s</td><td class="b">SECOND BENEFICE</td><td>Changement de tête, LED bleue, application sur le mollet. « و الراس البارد كيهدن »</td></tr><tr><td class="t">22-26 s</td><td class="b">PREUVE SILENCE</td><td>On pose le pistolet en marche à côté d&#x27;un enfant qui dort. Icône décibels. « هادي بزاف »</td></tr><tr><td class="t">26-30 s</td><td class="b">CTA</td><td>Prix 349 DH + badge « الدفع عند الاستلام ».</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Un pistolet percussif avec tête chauffante et tête froide : on chauffe le muscle, on le travaille, on l&#x27;apaise. Dix minutes, chez vous.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Tête chauffante puis tête froide : on relâche le muscle, puis on apaise</li><li>6 vitesses, de la détente légère au travail profond des lombaires</li><li>4 têtes interchangeables selon la zone : dos, épaules, cuisses, nuque</li><li>Batterie 6 h : plusieurs semaines d&#x27;utilisation sans recharge</li><li>Silencieux (moins de 45 dB) : utilisable devant la télé ou le soir</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« C&#x27;est un appareil médical ? »</p><p>Non. C&#x27;est un appareil de bien-être et de relaxation musculaire. Pour une douleur persistante, consultez un médecin.</p></div><div class="obj"><p class="q">« Ça va être trop fort et faire mal ? »</p><p>Six niveaux. On commence au niveau 1 et on monte selon le ressenti. Les têtes en mousse sont douces.</p></div><div class="obj"><p class="q">« La batterie va lâcher au bout d&#x27;un mois »</p><p>Batterie lithium 2500 mAh rechargeable en USB-C. À raison de 10 min par jour, une charge tient environ trois semaines.</p></div><div class="obj"><p class="q">« Je paie d&#x27;avance ? »</p><p>Non, paiement en espèces au livreur, après ouverture du colis.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Vitesses</td><td>6 niveaux</td></tr><tr><td>Têtes</td><td>4 dont 1 chauffante et 1 froide</td></tr><tr><td>Batterie</td><td>2500 mAh, ~6 h</td></tr><tr><td>Charge</td><td>USB-C</td></tr><tr><td>Bruit</td><td>moins de 45 dB</td></tr><tr><td>Livré avec</td><td>Mallette de transport</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Combien de temps par séance ?</p><p>5 à 10 minutes par zone, pas plus. C&#x27;est suffisant.</p></div><div class="qa"><p class="q">On peut l&#x27;utiliser tous les jours ?</p><p>Oui, en usage de détente. Évitez les os, la colonne vertébrale et les zones enflammées.</p></div><div class="qa"><p class="q">Il chauffe à combien ?</p><p>La tête chauffante monte à environ 45 °C, une chaleur confortable, jamais brûlante.</p></div><div class="qa"><p class="q">Que contient la boîte ?</p><p>Le pistolet, 4 têtes, le chargeur USB-C, la mallette de rangement et la notice.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/massage.html</code>
+    — créas : <code>creas/massage-feed.png</code>, <code>creas/massage-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="photo">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Espion COD · mariotoys.ma</p>
+   <h3>Appareil Photo Numérique pour Enfant — Il Lâche Enfin Votre Téléphone</h3>
+   <p class="ar-t">أباري فوطو ديال الدراري — باش يخلي ليك التيليفون ديالك</p>
+   <p class="angle"><b>Angle —</b> Rentrée : rendre l&#x27;écran actif au lieu de passif — l&#x27;enfant crée au lieu de scroller</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">329<small>DH</small></div>
+   
+   <div class="score"><div class="sbar"><i style="width:80%"></i></div><span>80<small>/100</small></span></div>
+  </div>
+ </header>
+ <div class="ev ev-correcte"><span class="dot"></span>Preuve correcte<em>2.3 ventes/jour estimées, boutique à faible trafic</em></div>
+ 
+ <div class="metrics">
+  <div><span>Coût estimé</span><b>140 DH</b><i>ESTIMATION — aucune source de gros marocaine trouvée</i></div>
+  <div><span>Marge unitaire</span><b>189 DH</b></div>
+  <div><span>Multiple</span><b>×2.35</b></div>
+  <div class="hi"><span>CPA maximum</span><b>104.0 DH</b></div>
+  <div><span>Net / livrée</span><b>148.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-photo">Copier</button></div>
+   <pre class="ar-b" id="m-photo">الولد ديالك كيقلك « عطيني التيليفون » 20 مرة ف النهار؟ 📱😩
+
+أباري فوطو نمريك ديال الدراري — بحال ديال الكبار، ولكن ديالو هو.
+
+📸 تصوير فوطو + فيديو HD
+🎮 فيه ألعاب داخليين
+🖼️ فيلطرات و إطارات كيعجبو الدراري
+🔋 بطارية كتشحن بالUSB
+💾 كارط ميموار داخلة معاه
+🛡️ سيليكون قوي — إلا طاح ما كيتهرسش
+
+بدل ما يبقى كيسكرولي ف التيليفون ديالك، غادي يخرج يصور و يخلق.
+
+الثمن: 329 درهم
+🎒 هدية الدخول المدرسي
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-photo">Copier</button></div>
+     <p class="mono" id="mh-photo">Appareil Photo Enfant — 329 DH</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-photo">Copier</button></div>
+     <p class="mono" id="md-photo">Photo + vidéo + jeux · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">الدراري ما بغاوش يخليو ليك التيليفون؟ عطيهم واحد ديالهم 📸</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-photo">Copier</button></div>
+   <pre class="ar-b" id="tk-photo">عطيتو ليه و ما بقاش كيطلب التيليفون 😅📸 #الدراري #هدية #الدخول_المدرسي #المغرب #cod</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-photo">Copier</button></div>
+   <pre class="ar-b" id="hs-photo">#المغرب #الدراري #هدية #الدخول_المدرسي #أطفال #maroc #codmaroc #cadeauenfant #rentree</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-3 s</td><td class="b">HOOK</td><td>Enfant qui tire sur le bras d&#x27;un parent : « عطيني التيليفون ». Parent excédé.</td></tr><tr><td class="t">3-7 s</td><td class="b">AGITATION</td><td>Montage rapide : l&#x27;enfant scrolle, visage éteint, lumière bleue sur le visage.</td></tr><tr><td class="t">7-13 s</td><td class="b">REVELATION</td><td>Le parent tend une petite boîte. L&#x27;enfant déballe l&#x27;appareil photo. Vrai sourire.</td></tr><tr><td class="t">13-21 s</td><td class="b">USAGE</td><td>L&#x27;enfant court dehors, photographie un chat, sa sœur, une fleur. Plans réellement pris par l&#x27;appareil, un peu imparfaits — c&#x27;est ce qui fait vrai.</td></tr><tr><td class="t">21-25 s</td><td class="b">PREUVE SOLIDITE</td><td>L&#x27;appareil tombe de la table sur le carrelage. On le ramasse, il marche. « سيليكون قوي »</td></tr><tr><td class="t">25-30 s</td><td class="b">CTA</td><td>Prix 329 DH + « هدية الدخول المدرسي » + badge paiement à la livraison.</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Un vrai appareil photo à lui : il photographie, il filme, il joue — et votre téléphone reste dans votre poche.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Un appareil à lui : plus de négociation autour de votre téléphone</li><li>Photo et vidéo HD, avec filtres et cadres qui amusent vraiment les enfants</li><li>Jeux intégrés pour les trajets et les salles d&#x27;attente</li><li>Coque silicone antichoc : conçu pour tomber</li><li>Carte mémoire incluse et recharge USB : prêt à l&#x27;emploi dès l&#x27;ouverture</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« La qualité photo doit être mauvaise »</p><p>C&#x27;est un appareil d&#x27;enfant, pas un reflex. Les photos sont nettes en extérieur, et c&#x27;est exactement le but : qu&#x27;il crée, pas qu&#x27;il fasse de la photo d&#x27;art.</p></div><div class="obj"><p class="q">« Il va s&#x27;en lasser en une semaine »</p><p>Les jeux et les filtres relancent l&#x27;intérêt. Et contrairement à une tablette, il doit sortir et regarder autour de lui pour s&#x27;en servir.</p></div><div class="obj"><p class="q">« C&#x27;est pour quel âge ? »</p><p>3 à 12 ans. Avant 5 ans, l&#x27;enfant utilise surtout les filtres et les jeux.</p></div><div class="obj"><p class="q">« Et si ça ne marche pas ? »</p><p>Vous ouvrez le colis devant le livreur, vous testez, et vous ne payez que si ça fonctionne.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Âge</td><td>3–12 ans</td></tr><tr><td>Photo</td><td>Capteur HD</td></tr><tr><td>Vidéo</td><td>Oui</td></tr><tr><td>Jeux</td><td>Intégrés</td></tr><tr><td>Mémoire</td><td>Carte incluse</td></tr><tr><td>Batterie</td><td>Rechargeable USB</td></tr><tr><td>Protection</td><td>Coque silicone</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">La carte mémoire est incluse ?</p><p>Oui, une carte est fournie dans la boîte.</p></div><div class="qa"><p class="q">Comment récupérer les photos ?</p><p>Par le câble USB sur un ordinateur, ou en sortant la carte mémoire.</p></div><div class="qa"><p class="q">Quelle autonomie ?</p><p>Environ 2 h d&#x27;utilisation continue, plusieurs jours en usage normal.</p></div><div class="qa"><p class="q">Disponible en plusieurs couleurs ?</p><p>Oui, précisez votre choix lors de la confirmation par téléphone.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/photo.html</code>
+    — créas : <code>creas/photo-feed.png</code>, <code>creas/photo-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="tondeuse">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Extension Radar · jamla24.com</p>
+   <h3>Tondeuse Professionnelle Sans Fil Lame en T — Le Barbier à la Maison</h3>
+   <p class="ar-t">طوندوز احترافية بلا فيل — الحلاق ف دارك</p>
+   <p class="angle"><b>Angle —</b> Le coût cumulé du coiffeur : 60 DH x 2 fois par mois x 12 mois = 1440 DH par an</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">229<small>DH</small></div>
+   
+   <div class="score"><div class="sbar"><i style="width:74%"></i></div><span>74<small>/100</small></span></div>
+  </div>
+ </header>
+ <div class="ev ev-moyenne"><span class="dot"></span>Preuve moyenne<em>Capturé par l&#x27;extension Radar — score de fiche, pas de série de ventes</em></div>
+ 
+ <div class="metrics">
+  <div><span>Coût réel</span><b>100 DH</b><i>eGRO : Hair Clipper Grooming set 88–100 MAD</i></div>
+  <div><span>Marge unitaire</span><b>129 DH</b></div>
+  <div><span>Multiple</span><b>×2.29</b></div>
+  <div class="hi"><span>CPA maximum</span><b>62.0 DH</b></div>
+  <div><span>Net / livrée</span><b>88.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-tondeuse">Copier</button></div>
+   <pre class="ar-b" id="m-tondeuse">60 درهم ف كل مرة عند الحلاق × جوج مرات ف الشهر × 12 شهر = 1440 درهم ف العام 💸
+
+و إلا عندك جوج ولاد؟ ضرب ف 3.
+
+طوندوز احترافية بلا فيل، بلامة T — نفس اللي كيخدم بيها الحلاق.
+
+⚡ لامة T ديال السطيل — كتقص قريب من الجلد بلا ما تقرص
+🔋 بطارية ليثيوم — 4 ساعات خدمة على شحنة وحدة
+📏 مجموعة ديال الأمشاط (1.5 مم حتى 12 مم)
+🔇 موتور هادي — الدراري ما كيخافوش منها
+💧 اللامة كتغسل بالما
+🎁 معاها: فرشة، زيت، شارجور USB، مشط
+
+الثمن: 229 درهم — كتخلصها ف 4 ديال الحلاقات
+
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-tondeuse">Copier</button></div>
+     <p class="mono" id="mh-tondeuse">Tondeuse Pro Lame en T — 229 DH</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-tondeuse">Copier</button></div>
+     <p class="mono" id="md-tondeuse">Amortie en 4 coupes · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">شحال كتخسر عند الحلاق ف العام؟ حسبها معايا 💈</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-tondeuse">Copier</button></div>
+   <pre class="ar-b" id="tk-tondeuse">حسبت و لقيت كنخسر 1440 درهم ف العام عند الحلاق 💈 #حلاقة #المغرب #barber #cod #دارنا</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-tondeuse">Copier</button></div>
+   <pre class="ar-b" id="hs-tondeuse">#المغرب #حلاقة #barber #الحلاق #رجال #maroc #codmaroc #tondeuse #barbershop</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-4 s</td><td class="b">HOOK CHIFFRE</td><td>Calculatrice à l&#x27;écran : 60 × 2 × 12 = 1440. « شحال كتخسر عند الحلاق ف العام؟ »</td></tr><tr><td class="t">4-9 s</td><td class="b">AGITATION</td><td>File d&#x27;attente chez le barbier, horloge qui tourne. « و الوقت اللي كتضيع؟ »</td></tr><tr><td class="t">9-18 s</td><td class="b">DEMO</td><td>Vraie coupe filmée : dégradé sur la nuque, lame en T qui passe. Plans serrés, gestes lents et nets.</td></tr><tr><td class="t">18-23 s</td><td class="b">DETAIL QUI VEND</td><td>On retire la lame, on la passe sous le robinet, on la remonte. « كتغسل بالما »</td></tr><tr><td class="t">23-27 s</td><td class="b">RESULTAT</td><td>Le sujet se regarde dans la glace et passe la main sur la nuque. Sourire.</td></tr><tr><td class="t">27-30 s</td><td class="b">CTA</td><td>229 DH + « كتخلصها ف 4 ديال الحلاقات » + paiement à la livraison.</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Une tondeuse à lame en T, la même que celle du barbier, avec ses guides et sa batterie longue durée. Vous l&#x27;amortissez en quatre coupes.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Lame en T en acier : la coupe de contour nette que font les barbiers</li><li>Amortie en quatre coupes — puis c&#x27;est gratuit, pour toute la famille</li><li>Batterie lithium 4 h : des semaines d&#x27;usage entre deux recharges</li><li>Jeu de guides de 1,5 à 12 mm pour le dégradé</li><li>Lame rinçable à l&#x27;eau, moteur silencieux : les enfants ne la craignent pas</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« Je ne sais pas couper les cheveux »</p><p>Commencez par le sabot 6 mm sur toute la tête : impossible de se rater. Le dégradé vient après, en deux ou trois essais.</p></div><div class="obj"><p class="q">« Les tondeuses pas chères tirent les cheveux »</p><p>C&#x27;est un problème de lame émoussée. La lame en T en acier de celle-ci coupe au lieu d&#x27;arracher, et elle se règle.</p></div><div class="obj"><p class="q">« La batterie va mourir »</p><p>Batterie lithium-ion rechargeable en USB. Elle s&#x27;utilise aussi branchée si elle est vide.</p></div><div class="obj"><p class="q">« Et le service après-vente ? »</p><p>Vous testez à la livraison avant de payer. La lame et les accessoires sont standard et se remplacent.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Lame</td><td>Acier, forme T</td></tr><tr><td>Batterie</td><td>Lithium-ion, ~4 h</td></tr><tr><td>Charge</td><td>USB</td></tr><tr><td>Sabots</td><td>1,5 – 12 mm</td></tr><tr><td>Entretien</td><td>Lame rinçable</td></tr><tr><td>Inclus</td><td>Brosse, huile, peigne, câble</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Elle coupe la barbe aussi ?</p><p>Oui, la lame en T est faite pour les contours de barbe et la nuque.</p></div><div class="qa"><p class="q">Combien de sabots ?</p><p>Un jeu complet de 1,5 mm à 12 mm, plus le peigne et la brosse de nettoyage.</p></div><div class="qa"><p class="q">Elle marche branchée ?</p><p>Oui, en filaire si la batterie est vide.</p></div><div class="qa"><p class="q">Livraison et paiement ?</p><p>24 à 72 h selon la ville, paiement en espèces au livreur.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/tondeuse.html</code>
+    — créas : <code>creas/tondeuse-feed.png</code>, <code>creas/tondeuse-story.png</code></p>
+  </section>
+ </div>
+</article>
+
+<section class="sect">
+ <h2>Les cinq packs</h2>
+ <p class="sub">Chaque pack relève le CPA maximum bien au-dessus de celui de ses composants : c'est
+  la seule raison valable de faire un pack en COD. Le panier moyen monte, le coût de livraison ne bouge pas.</p>
+</section>
+
+<article class="item" id="pack-cuisine">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Composé · —</p>
+   <h3>Pack Cuisine Organisée — 12 Bocaux + 12 Pots à Épices</h3>
+   <p class="ar-t">باك الكوزينة المرتبة — 12 بوكال + 12 ديال العطريات</p>
+   <p class="angle"><b>Angle —</b> Ne pas régler la moitié du problème : les placards ET les épices, en une seule livraison</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">399<small>DH</small></div>
+   <s>448 DH</s>
+   
+  </div>
+ </header>
+ 
+ <ul class="compo"><li><span>Set 12 bocaux carrés 1700 ml</span><b>249 DH</b></li><li><span>Set 12 pots à épices + support</span><b>199 DH</b></li><li class="tot"><span>Valeur séparée</span><b>448 DH</b></li></ul>
+ <div class="metrics">
+  <div><span>Coût estimé</span><b>285 DH</b></div>
+  <div><span>Marge unitaire</span><b>114 DH</b></div>
+  <div><span>Multiple</span><b>×1.4</b></div>
+  <div class="hi"><span>CPA maximum</span><b>51.5 DH</b></div>
+  <div><span>Net / livrée</span><b>73.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-pack-cuisine">Copier</button></div>
+   <pre class="ar-b" id="m-pack-cuisine">حيت ترتيب نص الكوزينة ماشي ترتيب 🙃
+
+باك الكوزينة المرتبة — الجوج ديال المشاكل ف شحنة وحدة:
+
+📦 12 بوكال مربع 1700 مل — للرز، السكر، الدقيق، القطاني
+🧂 12 بوكال ديال العطريات + ستاند بلاصق — للكمون، الكركم، راس الحانوت
+
+بوحدهم: 448 درهم
+ف الباك: 399 درهم — كتربح 49 درهم
+
+✅ مربعين = تربح ثلث البلاصة
+✅ غطا محكم ف الجوج
+✅ الستاند بلا ما تقب الحيط
+✅ إتيكيتات داخلين
+
+🚚 الدفع عند الاستلام
+📦 شحنة وحدة، توصيل وحد المرة 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-pack-cuisine">Copier</button></div>
+     <p class="mono" id="mh-pack-cuisine">Pack Cuisine Organisée — 399 DH au lieu de 448</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-pack-cuisine">Copier</button></div>
+     <p class="mono" id="md-pack-cuisine">24 contenants · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">رتبتي البلاكار و بقات العطريات مخلطين؟ دير الجوج مرة وحدة</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-pack-cuisine">Copier</button></div>
+   <pre class="ar-b" id="tk-pack-cuisine">رتبت الكوزينة كاملة ف نهار واحد 🤍 الباك ب 399 درهم #كوزينة #ترتيب #المغرب #cod</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-pack-cuisine">Copier</button></div>
+   <pre class="ar-b" id="hs-pack-cuisine">#المغرب #كوزينة #ترتيب_الكوزينة #تنظيم #دارنا #maroc #codmaroc</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-3 s</td><td class="b">HOOK</td><td>Plan large d&#x27;une cuisine : placard en vrac à gauche, tiroir d&#x27;épices en vrac à droite. « جوج مشاكل »</td></tr><tr><td class="t">3-8 s</td><td class="b">AGITATION</td><td>Montage rapide des deux galères : sachet de riz qui se renverse, main qui cherche le cumin.</td></tr><tr><td class="t">8-20 s</td><td class="b">TRANSFORMATION</td><td>Time-lapse en split-screen : à gauche les 12 bocaux se remplissent et s&#x27;empilent, à droite les 12 pots se clipsent sur le support.</td></tr><tr><td class="t">20-25 s</td><td class="b">RESULTAT</td><td>Plan large final de la même cuisine, rangée. Silence, puis souffle satisfait.</td></tr><tr><td class="t">25-30 s</td><td class="b">CTA</td><td>Carton : 448 DH barré → 399 DH. « الدفع عند الاستلام »</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Les deux moitiés du même problème réglées d&#x27;un coup : les provisions dans douze bocaux carrés, les épices dans douze pots au mur.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>24 contenants assortis : les provisions et les épices traitées d&#x27;un coup</li><li>49 DH d&#x27;économie par rapport aux deux achetés séparément</li><li>Une seule livraison, un seul paiement, un seul rendez-vous avec le livreur</li><li>Forme carrée pour les grands bocaux : un tiers de place gagnée</li><li>Support d&#x27;épices adhésif : aucun perçage, aucun outil</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« Je n&#x27;ai pas la place pour 24 contenants »</p><p>Les 12 bocaux tiennent dans un placard de 60 cm et les 12 pots à épices sont au mur ou dans la porte : ils ne prennent aucune place de rangement.</p></div><div class="obj"><p class="q">« Je préfère commencer par un seul »</p><p>Vous pouvez. Mais les deux arrivent ensemble pour 49 DH de moins et une seule livraison, alors que deux commandes séparées coûtent deux fois le déplacement.</p></div><div class="obj"><p class="q">« Comment je paie ? »</p><p>En espèces au livreur, après avoir ouvert et vérifié le colis.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Contenu</td><td>12 bocaux 1700 ml + 12 pots 110 ml</td></tr><tr><td>Support</td><td>Adhésif 3M, 5 kg</td></tr><tr><td>Accessoires</td><td>12 cuillères + étiquettes</td></tr><tr><td>Lave-vaisselle</td><td>Oui</td></tr><tr><td>Colis</td><td>Unique</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Tout arrive en une seule fois ?</p><p>Oui, un seul colis et un seul paiement.</p></div><div class="qa"><p class="q">Les étiquettes sont fournies ?</p><p>Oui, pour les deux sets, en arabe et en français, plus des étiquettes vierges.</p></div><div class="qa"><p class="q">Lave-vaisselle ?</p><p>Oui, pour les bocaux comme pour les pots à épices.</p></div><div class="qa"><p class="q">Délai ?</p><p>24 à 48 h à Casablanca et Rabat, 48 à 72 h ailleurs.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/pack-cuisine.html</code>
+    — créas : <code>creas/pack-cuisine-feed.png</code>, <code>creas/pack-cuisine-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="pack-detente">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Composé · —</p>
+   <h3>Pack Détente Totale — Pistolet de Massage + Oreiller Massant Chauffant</h3>
+   <p class="ar-t">باك الاسترخاء الكامل — بيستوليه المساج + وسادة المساج السخونة</p>
+   <p class="angle"><b>Angle —</b> Deux gestes complémentaires : le pistolet travaille en profondeur, l&#x27;oreiller entretient tous les soirs</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">449<small>DH</small></div>
+   <s>548 DH</s>
+   
+  </div>
+ </header>
+ 
+ <ul class="compo"><li><span>Pistolet de massage chaud/froid</span><b>349 DH</b></li><li><span>Oreiller massant U chauffant</span><b>199 DH</b></li><li class="tot"><span>Valeur séparée</span><b>548 DH</b></li></ul>
+ <div class="metrics">
+  <div><span>Coût estimé</span><b>275 DH</b></div>
+  <div><span>Marge unitaire</span><b>174 DH</b></div>
+  <div><span>Multiple</span><b>×1.63</b></div>
+  <div class="hi"><span>CPA maximum</span><b>93.5 DH</b></div>
+  <div><span>Net / livrée</span><b>133.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-pack-detente">Copier</button></div>
+   <pre class="ar-b" id="m-pack-detente">الظهر و الرقبة ما كيتعافاوش بجلسة وحدة ف الشهر 🙃
+
+باك الاسترخاء الكامل — جوج أجهزة كيكملو بعضياتهم:
+
+🔫 بيستوليه المساج بالسخون والبارد
+   6 سرعات، 4 روس — للجلسة اللي كتحل العقدة
+
+🛋️ وسادة المساج على شكل U بالسخانة
+   كتلبسها ف الرقبة و كتشوف التيليفزيون — 10 دقايق كل ليلة
+
+بوحدهم: 548 درهم
+ف الباك: 449 درهم — كتربح 99 درهم
+
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن 👇
+
+ملاحظة: أجهزة ديال الاسترخاء. إلا عندك مشكل صحي، شاور الطبيب.</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-pack-detente">Copier</button></div>
+     <p class="mono" id="mh-pack-detente">Pack Détente — 449 DH au lieu de 548</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-pack-detente">Copier</button></div>
+     <p class="mono" id="md-pack-detente">Pistolet + oreiller chauffant · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">جلسة وحدة ما كتكفيش — خاصك شي حاجة كل نهار</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-pack-detente">Copier</button></div>
+   <pre class="ar-b" id="tk-pack-detente">الروتين ديالي ديال الليل ولا 10 دقايق 😮‍💨 #استرخاء #مساج #المغرب #cod #relax</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-pack-detente">Copier</button></div>
+   <pre class="ar-b" id="hs-pack-detente">#المغرب #مساج #استرخاء #الرقبة #الظهر #maroc #codmaroc #relax</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-4 s</td><td class="b">HOOK</td><td>Personne qui roule les épaules en grimaçant devant son écran. « كل ليلة نفس الشي »</td></tr><tr><td class="t">4-10 s</td><td class="b">ACTE 1 — LE PISTOLET</td><td>Séance courte : tête chauffante sur le trapèze, LED rouge. « الجلسة اللي كتحل العقدة »</td></tr><tr><td class="t">10-18 s</td><td class="b">ACTE 2 — L&#x27;OREILLER</td><td>La personne enfile l&#x27;oreiller en U, s&#x27;assoit devant la télé, ferme les yeux. Rouleaux visibles qui tournent.</td></tr><tr><td class="t">18-24 s</td><td class="b">COMPLEMENTARITE</td><td>Split-screen des deux usages avec les libellés « الجلسة » et « كل ليلة ».</td></tr><tr><td class="t">24-30 s</td><td class="b">CTA</td><td>548 DH barré → 449 DH, badge paiement à la livraison.</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Le pistolet pour la séance qui débloque, l&#x27;oreiller en U pour les dix minutes du soir. L&#x27;un ne remplace pas l&#x27;autre.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Deux usages différents : la séance profonde et l&#x27;entretien quotidien</li><li>99 DH d&#x27;économie sur le prix des deux séparés</li><li>Le pistolet cible dos, cuisses et épaules ; l&#x27;oreiller reste sur la nuque sans les mains</li><li>Chaleur sur les deux appareils : le muscle se relâche plus vite</li><li>Tous deux rechargeables, sans fil, utilisables devant la télévision</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« Deux appareils, c&#x27;est redondant »</p><p>Non : le pistolet demande de tenir et de viser, l&#x27;oreiller se porte les mains libres. On ne sort pas le pistolet tous les soirs, l&#x27;oreiller si.</p></div><div class="obj"><p class="q">« Ce sont des appareils médicaux ? »</p><p>Non, ce sont des appareils de bien-être et de relaxation musculaire. Pour une douleur persistante, consultez un médecin.</p></div><div class="obj"><p class="q">« 449 DH d&#x27;un coup, c&#x27;est beaucoup »</p><p>C&#x27;est une séance et demie chez un praticien. Et vous payez à la livraison, pas avant.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Pistolet</td><td>6 vitesses, 4 têtes, 2500 mAh</td></tr><tr><td>Oreiller</td><td>Forme U, chauffant, rouleaux massants</td></tr><tr><td>Alimentation</td><td>USB rechargeable</td></tr><tr><td>Arrêt auto</td><td>Oui, sur l&#x27;oreiller</td></tr><tr><td>Colis</td><td>Unique</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">On peut les utiliser le même soir ?</p><p>Oui. L&#x27;usage courant est : pistolet 5 minutes, puis oreiller 10 minutes.</p></div><div class="qa"><p class="q">L&#x27;oreiller chauffe fort ?</p><p>Chaleur douce, autour de 40 °C, avec arrêt automatique.</p></div><div class="qa"><p class="q">Ils se rechargent comment ?</p><p>Les deux en USB, chargeurs fournis.</p></div><div class="qa"><p class="q">Le paiement ?</p><p>En espèces au livreur, après vérification du colis.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/pack-detente.html</code>
+    — créas : <code>creas/pack-detente-feed.png</code>, <code>creas/pack-detente-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="pack-rentree">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Composé · —</p>
+   <h3>Pack Rentrée Créative — Appareil Photo Enfant + Consommables</h3>
+   <p class="ar-t">باك الدخول المدرسي — أباري فوطو ديال الدراري + اللوازم</p>
+   <p class="angle"><b>Angle —</b> Le cadeau de rentrée qui ne finit pas dans un tiroir : de quoi imprimer et transporter</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">379<small>DH</small></div>
+   <s>408 DH</s>
+   
+  </div>
+ </header>
+ 
+ <ul class="compo"><li><span>Appareil photo numérique enfant</span><b>329 DH</b></li><li><span>3 rouleaux papier thermique + housse</span><b>79 DH</b></li><li class="tot"><span>Valeur séparée</span><b>408 DH</b></li></ul>
+ <div class="metrics">
+  <div><span>Coût estimé</span><b>175 DH</b></div>
+  <div><span>Marge unitaire</span><b>204 DH</b></div>
+  <div><span>Multiple</span><b>×2.17</b></div>
+  <div class="hi"><span>CPA maximum</span><b>114.5 DH</b></div>
+  <div><span>Net / livrée</span><b>163.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-pack-rentree">Copier</button></div>
+   <pre class="ar-b" id="m-pack-rentree">أغلب الهدايا ديال الدخول المدرسي كيلعبو بيها 3 أيام و من بعد كتمشي ل الطيروار 🎒
+
+هاد الباك لا.
+
+📸 أباري فوطو نمريك ديال الدراري — تصوير، فيديو، ألعاب، فيلطرات
+🧾 3 ديال الرولوات ديال الورق — باش يطبع التصاور ديالو
+🎒 حقيبة ديال الحماية — يديها معاه ل المدرسة و ل الخرجة
+
+بوحدهم: 408 درهم
+ف الباك: 379 درهم
+
+الفرق؟ ما غاديش يقلك « سالا الورق » من بعد نهارين.
+
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-pack-rentree">Copier</button></div>
+     <p class="mono" id="mh-pack-rentree">Pack Rentrée Créative — 379 DH</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-pack-rentree">Copier</button></div>
+     <p class="mono" id="md-pack-rentree">Appareil + 3 rouleaux + housse · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">هدية الدخول المدرسي اللي ما غاديش تبقى ف الطيروار 🎒</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-pack-rentree">Copier</button></div>
+   <pre class="ar-b" id="tk-pack-rentree">هدية الدخول المدرسي اللي عجباتو بزاف 📸🎒 #الدخول_المدرسي #الدراري #هدية #المغرب #cod</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-pack-rentree">Copier</button></div>
+   <pre class="ar-b" id="hs-pack-rentree">#المغرب #الدخول_المدرسي #الدراري #هدية #أطفال #maroc #codmaroc #rentree</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-4 s</td><td class="b">HOOK</td><td>Tiroir qu&#x27;on ouvre : trois jouets de rentrée abandonnés. « كل عام نفس الشي »</td></tr><tr><td class="t">4-9 s</td><td class="b">PROMESSE</td><td>On referme le tiroir, on pose le pack sur la table. Déballage : appareil, rouleaux, housse.</td></tr><tr><td class="t">9-18 s</td><td class="b">USAGE</td><td>L&#x27;enfant photographie, imprime une photo, la colle sur son cahier. Plans réels.</td></tr><tr><td class="t">18-24 s</td><td class="b">TRANSPORT</td><td>Il range l&#x27;appareil dans la housse, la glisse dans le cartable, part à l&#x27;école.</td></tr><tr><td class="t">24-30 s</td><td class="b">CTA</td><td>408 DH barré → 379 DH + « الدفع عند الاستلام ».</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">L&#x27;appareil photo, plus les trois rouleaux de papier et la housse : il peut créer dès le premier jour et emmener l&#x27;appareil partout.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Trois rouleaux fournis : il crée pendant des semaines, pas deux jours</li><li>Housse de protection : l&#x27;appareil voyage dans le cartable sans casse</li><li>29 DH d&#x27;économie et surtout un seul achat, sans recommande de consommables</li><li>Photo, vidéo, filtres et jeux : l&#x27;intérêt tient dans la durée</li><li>Coque silicone antichoc sur l&#x27;appareil lui-même</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« Les rouleaux vont coûter cher ensuite »</p><p>Les trois fournis couvrent plusieurs centaines de tirages. Les recharges sont un consommable standard et bon marché.</p></div><div class="obj"><p class="q">« C&#x27;est pour quel âge ? »</p><p>3 à 12 ans. Les plus jeunes utilisent surtout les filtres et les jeux.</p></div><div class="obj"><p class="q">« Et si l&#x27;appareil ne plaît pas ? »</p><p>Vous ouvrez le colis devant le livreur et vous testez avant de payer.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Appareil</td><td>Photo + vidéo HD, jeux, filtres</td></tr><tr><td>Consommables</td><td>3 rouleaux papier thermique</td></tr><tr><td>Protection</td><td>Housse de transport + coque silicone</td></tr><tr><td>Mémoire</td><td>Carte incluse</td></tr><tr><td>Âge</td><td>3–12 ans</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Le papier d&#x27;impression est spécial ?</p><p>C&#x27;est du papier thermique, sans encre. Les rouleaux de rechange sont courants.</p></div><div class="qa"><p class="q">Il imprime en couleur ?</p><p>L&#x27;impression thermique est en noir et blanc ; les photos restent en couleur sur la carte mémoire.</p></div><div class="qa"><p class="q">La carte mémoire est incluse ?</p><p>Oui, dans la boîte.</p></div><div class="qa"><p class="q">Délai de livraison ?</p><p>24 à 72 h selon la ville, paiement à la réception.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/pack-rentree.html</code>
+    — créas : <code>creas/pack-rentree-feed.png</code>, <code>creas/pack-rentree-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="pack-barbier">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Composé · —</p>
+   <h3>Pack Barbier Maison — Tondeuse Pro + Kit Coiffure Complet</h3>
+   <p class="ar-t">باك الحلاق ف الدار — طوندوز احترافية + طقم الحلاقة</p>
+   <p class="angle"><b>Angle —</b> La tondeuse seule ne suffit pas : sans cape ni peignes, on ne coupe pas, on bricole</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">279<small>DH</small></div>
+   <s>318 DH</s>
+   
+  </div>
+ </header>
+ 
+ <ul class="compo"><li><span>Tondeuse cheveux sans fil pro (lame T)</span><b>229 DH</b></li><li><span>Cape + 8 peignes + ciseaux + brosse</span><b>89 DH</b></li><li class="tot"><span>Valeur séparée</span><b>318 DH</b></li></ul>
+ <div class="metrics">
+  <div><span>Coût estimé</span><b>130 DH</b></div>
+  <div><span>Marge unitaire</span><b>149 DH</b></div>
+  <div><span>Multiple</span><b>×2.15</b></div>
+  <div class="hi"><span>CPA maximum</span><b>76.0 DH</b></div>
+  <div><span>Net / livrée</span><b>108.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-pack-barbier">Copier</button></div>
+   <pre class="ar-b" id="m-pack-barbier">الناس كيشريو الطوندوز بوحدها… و من بعد كيلقاو راسهم ناقصهم الكاب، الأمشاط، المقص 🤦
+
+باك الحلاق ف الدار — كلشي ف شحنة وحدة:
+
+💈 طوندوز احترافية بلامة T — بطارية 4 ساعات
+🧥 كاب ديال الحلاقة — الشعر ما كيطيحش ف الدار
+🪮 8 ديال الأمشاط (1.5 مم → 12 مم)
+✂️ مقص + فرشة + زيت + شارجور
+
+بوحدهم: 318 درهم
+ف الباك: 279 درهم
+
+60 درهم ف كل حلاقة × 2 ف الشهر = كتخلص الباك ف أقل من 3 شهور، و من بعد كلشي فابور.
+
+🚚 الدفع عند الاستلام
+📦 توصيل لجميع المدن 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-pack-barbier">Copier</button></div>
+     <p class="mono" id="mh-pack-barbier">Pack Barbier Maison — 279 DH au lieu de 318</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-pack-barbier">Copier</button></div>
+     <p class="mono" id="md-pack-barbier">Tondeuse + cape + 8 peignes · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">شريتي طوندوز بوحدها؟ غادي تلقى راسك ناقصك كلشي 💈</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-pack-barbier">Copier</button></div>
+   <pre class="ar-b" id="tk-pack-barbier">ما بقيتش نمشي للحلاق 💈 الباك كامل ب 279 درهم #حلاقة #barber #المغرب #cod</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-pack-barbier">Copier</button></div>
+   <pre class="ar-b" id="hs-pack-barbier">#المغرب #حلاقة #barber #الحلاق #رجال #maroc #codmaroc #barbershop</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-4 s</td><td class="b">HOOK</td><td>Quelqu&#x27;un déballe une tondeuse seule, cherche autour de lui, ne trouve rien. « و الباقي فين؟ »</td></tr><tr><td class="t">4-9 s</td><td class="b">AGITATION</td><td>Cheveux partout sur le carrelage, balai. « و شكون غادي يقم؟ »</td></tr><tr><td class="t">9-14 s</td><td class="b">LE PACK</td><td>Déballage complet : tondeuse, cape, 8 peignes alignés, ciseaux, brosse, huile.</td></tr><tr><td class="t">14-23 s</td><td class="b">DEMO</td><td>Vraie coupe : cape enfilée, sabot clipsé, dégradé sur la nuque. Plans serrés.</td></tr><tr><td class="t">23-27 s</td><td class="b">PROPRETE</td><td>On retire la cape, on la secoue dehors : le sol est net.</td></tr><tr><td class="t">27-30 s</td><td class="b">CTA</td><td>318 DH barré → 279 DH + paiement à la livraison.</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">La tondeuse à lame en T et tout ce qu&#x27;il faut autour : la cape, les huit peignes, les ciseaux et la brosse. Vous ouvrez et vous coupez.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Tout ce qu&#x27;il faut d&#x27;un coup : plus de deuxième commande pour la cape ou les peignes</li><li>39 DH d&#x27;économie et une seule livraison</li><li>Huit guides de 1,5 à 12 mm : le dégradé devient possible</li><li>La cape évite le nettoyage après chaque coupe</li><li>Amorti en moins de trois mois pour un homme, bien plus vite pour une famille</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« Je ne sais pas couper »</p><p>Commencez au sabot 6 mm sur toute la tête : le résultat est régulier d&#x27;office. Le dégradé s&#x27;apprend en deux ou trois coupes.</p></div><div class="obj"><p class="q">« La tondeuse va tirer les cheveux »</p><p>La lame en T en acier coupe au lieu d&#x27;arracher, et elle est réglable.</p></div><div class="obj"><p class="q">« Les ciseaux sont de mauvaise qualité ? »</p><p>Ce sont des ciseaux d&#x27;appoint pour les finitions, pas des ciseaux de coiffeur professionnel. La tondeuse fait le travail principal.</p></div><div class="obj"><p class="q">« Je paie avant ? »</p><p>Non. Vous vérifiez le colis, vous testez la tondeuse, puis vous payez.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Tondeuse</td><td>Lame T acier, lithium ~4 h</td></tr><tr><td>Peignes</td><td>8 guides, 1,5 – 12 mm</td></tr><tr><td>Cape</td><td>Lavable en machine</td></tr><tr><td>Accessoires</td><td>Ciseaux, brosse, huile, câble USB</td></tr><tr><td>Colis</td><td>Unique</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">La cape est lavable ?</p><p>Oui, en machine à froid.</p></div><div class="qa"><p class="q">La tondeuse marche branchée ?</p><p>Oui, en filaire si la batterie est vide.</p></div><div class="qa"><p class="q">Ça convient pour la barbe ?</p><p>Oui, la lame en T est conçue pour les contours.</p></div><div class="qa"><p class="q">Livraison ?</p><p>24 à 72 h selon la ville, paiement en espèces au livreur.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/pack-barbier.html</code>
+    — créas : <code>creas/pack-barbier-feed.png</code>, <code>creas/pack-barbier-story.png</code></p>
+  </section>
+ </div>
+</article>
+<article class="item" id="pack-foyer">
+ <header class="ih">
+  <div class="ihl">
+   <p class="eyebrow">Composé · —</p>
+   <h3>Pack Nouveau Foyer — Bocaux + Épices + Étendoir Mural</h3>
+   <p class="ar-t">باك الدار الجديدة — البوكالات + العطريات + النشارة</p>
+   <p class="angle"><b>Angle —</b> Cadeau de mariage / emménagement : les trois achats que tout nouveau foyer fait dans le premier mois</p>
+  </div>
+  <div class="ihr">
+   <div class="pxbig">599<small>DH</small></div>
+   <s>697 DH</s>
+   
+  </div>
+ </header>
+ 
+ <ul class="compo"><li><span>Set 12 bocaux carrés 1700 ml</span><b>249 DH</b></li><li><span>Set 12 pots à épices + support</span><b>199 DH</b></li><li><span>Étendoir mural pliable 80 cm</span><b>249 DH</b></li><li class="tot"><span>Valeur séparée</span><b>697 DH</b></li></ul>
+ <div class="metrics">
+  <div><span>Coût estimé</span><b>375 DH</b></div>
+  <div><span>Marge unitaire</span><b>224 DH</b></div>
+  <div><span>Multiple</span><b>×1.6</b></div>
+  <div class="hi"><span>CPA maximum</span><b>128.6 DH</b></div>
+  <div><span>Net / livrée</span><b>183.6 DH</b></div>
+ </div>
+
+ <div class="tabs" data-tabs>
+  <nav role="tablist">
+   <button role="tab" aria-selected="true" data-p="meta">Annonce Meta</button>
+   <button role="tab" aria-selected="false" data-p="tk">TikTok</button>
+   <button role="tab" aria-selected="false" data-p="sc">Script vidéo</button>
+   <button role="tab" aria-selected="false" data-p="fp">Fiche produit</button>
+  </nav>
+
+  <section role="tabpanel" data-p="meta">
+   <div class="fieldrow"><label>Texte principal</label>
+    <button class="cp" type="button" data-copy="m-pack-foyer">Copier</button></div>
+   <pre class="ar-b" id="m-pack-foyer">كل واحد داير دار جديدة كيشري نفس 3 حوايج ف الشهر اللول 🏠
+
+قررنا نجمعوهم:
+
+📦 12 بوكال مربع 1700 مل — البلاكار مرتب من النهار اللول
+🧂 12 بوكال ديال العطريات + ستاند — بلا ما تقب الحيط
+👕 نشارة ديال الحيط كتطوى 80 سم — للبلكون ولا الحمام
+
+بوحدهم: 697 درهم
+ف الباك: 599 درهم — كتربح 98 درهم
+
+هدية ديال العرس ولا ديال الدار الجديدة اللي كتخدم بصح.
+
+🚚 الدفع عند الاستلام
+📦 شحنة وحدة 👇</pre>
+   <div class="two">
+    <div><div class="fieldrow"><label>Titre</label>
+      <button class="cp" type="button" data-copy="mh-pack-foyer">Copier</button></div>
+     <p class="mono" id="mh-pack-foyer">Pack Nouveau Foyer — 599 DH au lieu de 697</p></div>
+    <div><div class="fieldrow"><label>Description</label>
+      <button class="cp" type="button" data-copy="md-pack-foyer">Copier</button></div>
+     <p class="mono" id="md-pack-foyer">3 essentiels · Paiement à la livraison</p></div>
+   </div>
+   <div class="hookline"><span>Hook</span><p class="ar-b">داير دار جديدة؟ هادو 3 حوايج غادي تشريهم على كل حال 🏠</p></div>
+  </section>
+
+  <section role="tabpanel" data-p="tk" hidden>
+   <div class="fieldrow"><label>Légende</label>
+    <button class="cp" type="button" data-copy="tk-pack-foyer">Copier</button></div>
+   <pre class="ar-b" id="tk-pack-foyer">3 حوايج خاصك تشريهم ملي تدير دار جديدة 🏠 #دار_جديدة #عرس #هدية #المغرب #cod</pre>
+   <div class="fieldrow"><label>Hashtags</label>
+    <button class="cp" type="button" data-copy="hs-pack-foyer">Copier</button></div>
+   <pre class="ar-b" id="hs-pack-foyer">#المغرب #دار_جديدة #عرس #هدية #ترتيب #maroc #codmaroc #mariage</pre>
+  </section>
+
+  <section role="tabpanel" data-p="sc" hidden>
+   <table class="sct"><thead><tr><th>Temps</th><th>Beat</th><th>Ce qu'on filme</th></tr></thead>
+   <tbody><tr><td class="t">0-4 s</td><td class="b">HOOK</td><td>Cartons de déménagement empilés dans un appartement vide. « داير دار جديدة؟ »</td></tr><tr><td class="t">4-10 s</td><td class="b">LISTE</td><td>Trois cartons-titres qui apparaissent un par un : rangement, épices, séchage.</td></tr><tr><td class="t">10-22 s</td><td class="b">INSTALLATION</td><td>Time-lapse : les bocaux remplissent le placard, le support d&#x27;épices se colle, l&#x27;étendoir se fixe au mur du balcon.</td></tr><tr><td class="t">22-26 s</td><td class="b">RESULTAT</td><td>Plan large de l&#x27;appartement, maintenant fonctionnel. Linge qui sèche au balcon.</td></tr><tr><td class="t">26-30 s</td><td class="b">CTA</td><td>697 DH barré → 599 DH + « الدفع عند الاستلام ».</td></tr></tbody></table>
+  </section>
+
+  <section role="tabpanel" data-p="fp" hidden>
+   <p class="promesse">Les trois équipements qu&#x27;on finit toujours par acheter en emménageant, réunis dans un seul colis et à un seul prix.</p>
+   <h4>Bénéfices</h4><ul class="ben"><li>Les trois achats du premier mois d&#x27;emménagement en un colis</li><li>98 DH d&#x27;économie et une seule livraison au lieu de trois</li><li>Idéal comme cadeau de mariage : utile, visible, et qui sert tous les jours</li><li>L&#x27;étendoir se replie à plat : il disparaît quand il ne sert pas</li><li>Aucun outil requis pour le support d&#x27;épices, montage mural simple pour l&#x27;étendoir</li></ul>
+   <h4>Objections traitées</h4><div class="obj"><p class="q">« 599 DH, c&#x27;est mon plus gros panier »</p><p>C&#x27;est trois produits. Pris séparément ils coûtent 697 DH plus trois livraisons. Et vous payez à la réception, pas avant.</p></div><div class="obj"><p class="q">« L&#x27;étendoir demande de percer ? »</p><p>Oui, deux chevilles pour l&#x27;étendoir mural — c&#x27;est le seul des trois qui demande une perceuse. Le support d&#x27;épices est adhésif.</p></div><div class="obj"><p class="q">« Comme cadeau, ça fait quoi ? »</p><p>Un colis unique, trois produits présentables. Beaucoup de clients le commandent pour un mariage.</p></div>
+   <h4>Caractéristiques</h4><table class="spec"><tr><td>Bocaux</td><td>12 × 1700 ml</td></tr><tr><td>Épices</td><td>12 × 110 ml + support adhésif</td></tr><tr><td>Étendoir</td><td>Mural pliable 80 cm, ~10 kg</td></tr><tr><td>Montage</td><td>Adhésif + 2 chevilles</td></tr><tr><td>Colis</td><td>Unique</td></tr></table>
+   <h4>FAQ</h4><div class="qa"><p class="q">Tout arrive ensemble ?</p><p>Oui, un colis, un paiement.</p></div><div class="qa"><p class="q">L&#x27;étendoir supporte combien ?</p><p>Environ 10 kg de linge mouillé, replié à plat quand il ne sert pas.</p></div><div class="qa"><p class="q">On peut retirer un article du pack ?</p><p>Le pack est vendu tel quel. Les produits sont aussi disponibles à l&#x27;unité sur la boutique.</p></div><div class="qa"><p class="q">Délai ?</p><p>24 à 48 h grandes villes, 48 à 72 h ailleurs.</p></div>
+   <p class="lpnote">Landing page complète générée : <code>landing/pack-foyer.html</code>
+    — créas : <code>creas/pack-foyer-feed.png</code>, <code>creas/pack-foyer-story.png</code></p>
+  </section>
+ </div>
+</article>
+
+<section class="sect"><h2>Plan de lancement</h2></section>
+<div class="plan">
+ <ol>
+  <li><b>Vérifier les coûts d'abord.</b> Les coûts d'achat ci-dessus sont des estimations
+   (prix usine × 1,45 d'import, méthode du Comptoir COD). Faites chiffrer les cinq références
+   chez un grossiste de Derb Omar et sur 1688 avant d'engager le moindre dirham de publicité.
+   Si un coût réel dépasse l'estimation de plus de 20 %, le CPA maximum s'effondre.</li>
+  <li><b>Tester trois produits, pas cinq.</b> Bocaux, pots à épices et appareil photo enfant
+   d'abord : ce sont les trois qui portent une vraie série de ventes. 150 DH par jour et par produit
+   pendant 4 jours, en CBO, une seule audience large.</li>
+  <li><b>Un angle par créa.</b> Chaque produit a un hook darija et un script de 30 s. Lancez
+   trois créas par produit, coupez celles sous 1 % de CTR au bout de 48 h.</li>
+  <li><b>Ne pas lancer les packs en acquisition.</b> Mettez-les en upsell sur la page de commande
+   et en relance WhatsApp. Un pack se vend à quelqu'un qui a déjà décidé d'acheter, pas à un inconnu
+   qui découvre la marque.</li>
+  <li><b>Confirmer par téléphone sous 2 h.</b> Le taux de 85 % de confirmation retenu dans le calcul
+   n'est atteignable qu'avec un appel rapide. Passé 24 h, il tombe autour de 60 % et tous les CPA
+   maximum ci-dessus deviennent faux.</li>
+ </ol>
+</div>
+
+<section class="sect"><h2>Ce qui reste à vérifier</h2></section>
+<div class="warn">
+ <h3>Les limites de ce dossier, sans enrobage</h3>
+ <ul>
+  <li><b>Aucun coût d'achat n'est vérifié.</b> Le champ coût est vide sur les 58 400 produits de la base :
+   les marges, multiples et CPA maximum reposent sur des estimations de sourcing, pas sur des devis.
+   C'est la première chose à corriger.</li>
+  <li><b>Les ventes par jour ne sont pas comparables entre boutiques.</b> Elles sont estimées à partir
+   des ruptures de stock observées. justyol.com reçoit 250 000 visites par mois, gula.ma n'a pas de
+   classement Tranco : un même produit y affichera des chiffres très différents sans que la demande diffère.</li>
+  <li><b>La fenêtre d'observation est courte</b> — du 1<sup>er</sup> au 4 septembre 2026, 11 jours de
+   séries au maximum. Assez pour repérer un mouvement, pas pour établir une tendance saisonnière.</li>
+  <li><b>Les photos des créas sont celles des fournisseurs.</b> Deux créas utilisent les images
+   téléchargées par l'extension sur jamla24.com. À remplacer par vos propres packshots avant diffusion :
+   droits d'usage et différenciation.</li>
+  <li><b>Le pistolet de massage est un produit de bien-être, pas un dispositif médical.</b>
+   Les textes évitent toute promesse thérapeutique — Meta refuse les annonces qui en font, et c'est aussi
+   la position honnête.</li>
+ </ul>
+</div>
+
+<footer>
+ Sources : base Espion COD (<code>espion.db</code>, 4 septembre 2026) et captures de l'extension
+ Radar Produit Gagnant (<code>Downloads/COD search WEB</code>). Landing pages, créas et scripts générés
+ dans <code>Documents/Lancement-COD-Sept2026</code>.
+</footer>
+</div>
+
+<script>
+document.querySelectorAll('[data-tabs]').forEach(function(box){
+ var tabs=box.querySelectorAll('button[role=tab]');
+ var panes=box.querySelectorAll('section[role=tabpanel]');
+ tabs.forEach(function(t){
+  t.addEventListener('click',function(){
+   tabs.forEach(function(x){x.setAttribute('aria-selected','false')});
+   t.setAttribute('aria-selected','true');
+   panes.forEach(function(p){p.hidden = p.dataset.p !== t.dataset.p});
+  });
+ });
+});
+document.querySelectorAll('.cp').forEach(function(b){
+ b.addEventListener('click',function(){
+  var el=document.getElementById(b.dataset.copy); if(!el) return;
+  var done=function(){
+   var old=b.textContent; b.textContent='Copié'; b.classList.add('ok');
+   setTimeout(function(){b.textContent=old;b.classList.remove('ok')},1400);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(el.innerText).then(done,function(){});
+  } else {
+   var r=document.createRange(); r.selectNodeContents(el);
+   var s=getSelection(); s.removeAllRanges(); s.addRange(r);
+   try{document.execCommand('copy');done()}catch(e){}
+  }
+ });
+});
+</script>
+</body></html>

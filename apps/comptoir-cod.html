@@ -1,0 +1,1309 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>Comptoir COD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style id="app-css">
+:root{
+  --paper:#F0F1EC; --surface:#FFFFFF; --surface-2:#F7F8F4; --ink:#141B18; --ink-2:#3A453F;
+  --muted:#5C6760; --line:#D5D9D0; --line-2:#E6E9E2;
+  --accent:#0E5A48; --accent-soft:#DCEBE4; --accent-ink:#0B4437;
+  --brass:#8C6A14; --brass-soft:#F2E9CE;
+  --good:#1C7A52; --warn:#96700A; --bad:#9E3226;
+  --shadow:0 1px 2px rgba(20,27,24,.06), 0 8px 24px -18px rgba(20,27,24,.5);
+  --r:3px;
+  --fs-xs:.71rem; --fs-sm:.82rem; --fs-base:.94rem; --fs-md:1.06rem; --fs-lg:1.35rem; --fs-xl:1.95rem;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1513; --surface:#141D1A; --surface-2:#18231F; --ink:#E7ECE7; --ink-2:#C2CCC5;
+    --muted:#8B9791; --line:#26332E; --line-2:#1E2A26;
+    --accent:#43C2A0; --accent-soft:#12302A; --accent-ink:#8FE3CB;
+    --brass:#D3A73F; --brass-soft:#2C2413;
+    --good:#4FBF8A; --warn:#D6A93C; --bad:#E0776A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1513; --surface:#141D1A; --surface-2:#18231F; --ink:#E7ECE7; --ink-2:#C2CCC5;
+  --muted:#8B9791; --line:#26332E; --line-2:#1E2A26;
+  --accent:#43C2A0; --accent-soft:#12302A; --accent-ink:#8FE3CB;
+  --brass:#D3A73F; --brass-soft:#2C2413;
+  --good:#4FBF8A; --warn:#D6A93C; --bad:#E0776A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:var(--fs-base);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","Public Sans",sans-serif;margin:0;text-wrap:balance;letter-spacing:-.01em}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.lbl{font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+
+/* ---- chrome ---- */
+.top{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:9px;margin-right:auto}
+.brand b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.12rem;font-weight:800;letter-spacing:-.02em}
+.brand span{font-size:var(--fs-xs);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.tabs{display:flex;gap:2px;flex-wrap:wrap}
+.tab{background:none;border:1px solid transparent;padding:6px 11px;border-radius:var(--r);cursor:pointer;font-size:var(--fs-sm);font-weight:500;color:var(--muted)}
+.tab:hover{color:var(--ink);background:var(--surface-2)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .tab[aria-selected="true"],:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#0B1512}
+.icon-btn{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);width:32px;height:32px;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+.icon-btn:hover{color:var(--ink);border-color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 18px 90px}
+
+/* ---- console de recherche ---- */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.console-head{padding:14px 18px 0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.console-head h1{font-size:var(--fs-lg);font-weight:700}
+.console-head p{margin:0;color:var(--muted);font-size:var(--fs-sm)}
+.console-body{padding:14px 18px 18px;background:
+  repeating-linear-gradient(to bottom,transparent 0 31px,var(--line-2) 31px 32px);
+  background-position:0 8px}
+.row-q{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+.q-field{flex:1 1 320px;display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--ink);border-radius:var(--r);padding:0 12px}
+.q-field input{flex:1;border:0;background:none;padding:13px 0;font-size:var(--fs-md);min-width:0}
+.q-field input:focus{outline:none}
+.q-field svg{flex:none;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:9px 14px;cursor:pointer;font-size:var(--fs-sm);font-weight:600;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:#0B1512}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:none}
+.btn.sm{padding:5px 9px;font-size:var(--fs-xs);font-weight:600}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.seg button{background:none;border:0;border-right:1px solid var(--line);padding:9px 13px;cursor:pointer;font-size:var(--fs-sm);font-weight:500;color:var(--muted)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
+.row-opts{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-top:14px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field select,.field input{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 10px;font-size:var(--fs-sm)}
+.hint{font-size:var(--fs-xs);color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:100px;padding:4px 11px;font-size:var(--fs-xs);cursor:pointer;color:var(--muted);font-weight:500}
+.chip:hover{border-color:var(--muted);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* ---- layout resultats ---- */
+.split{display:grid;grid-template-columns:232px 1fr;gap:22px;margin-top:22px;align-items:start}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.rail{position:sticky;top:70px;display:flex;flex-direction:column;gap:18px}
+@media (max-width:860px){.rail{position:static}}
+.rail h3{font-size:var(--fs-sm);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.check{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);padding:3px 0;cursor:pointer;color:var(--ink-2)}
+.check input{accent-color:var(--accent);width:15px;height:15px}
+.result-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.result-head strong{font-family:"Bricolage Grotesque",sans-serif;font-size:var(--fs-md)}
+.list{display:flex;flex-direction:column;gap:9px}
+.sep{display:flex;align-items:center;gap:10px;margin:16px 0 3px}
+.sep:first-child{margin-top:0}
+.sep span{font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700;white-space:nowrap}
+.sep b{color:var(--accent-ink);font-weight:700}
+.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* ---- carte source ---- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:grid;grid-template-columns:46px 1fr;overflow:hidden}
+.card:hover{border-color:var(--muted)}
+.card.best{border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}
+.rank{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 0;border-right:1px solid var(--line-2);background:var(--surface-2)}
+.rank b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.15rem;font-weight:700;line-height:1;color:var(--muted)}
+.card.best .rank b{color:var(--brass)}
+.card-body{padding:12px 14px 13px;min-width:0}
+.card-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.card-top h4{font-size:var(--fs-md);font-weight:700}
+.tag{font-size:var(--fs-xs);border:1px solid var(--line);border-radius:2px;padding:1px 6px;color:var(--muted);font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.tag.ma{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+.tag.intl{border-color:var(--brass);color:var(--brass);background:var(--brass-soft)}
+.card-desc{color:var(--ink-2);font-size:var(--fs-sm);margin:6px 0 0}
+.metrics{display:flex;gap:18px;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px dotted var(--line)}
+.metric{min-width:78px}
+.metric .lbl{display:block;margin-bottom:2px}
+.metric .val{font-size:var(--fs-sm);font-weight:600;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.gauge{display:flex;gap:2px;margin-top:3px}
+.gauge i{width:11px;height:7px;background:var(--line);border-radius:1px;display:block}
+.gauge i.on{background:var(--accent)}
+.gauge.price i.on{background:var(--brass)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.est{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--brass)}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--muted)}
+
+/* ---- panneaux / tableaux ---- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:18px}
+.panel > h2{font-size:var(--fs-md);font-weight:700;padding-bottom:9px;margin-bottom:14px;border-bottom:1px solid var(--ink);position:relative}
+.panel > h2::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--line)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:var(--fs-sm);min-width:620px}
+th{text-align:left;font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;padding:0 10px 7px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr.best td{background:var(--brass-soft)}
+td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.pill{display:inline-block;font-size:var(--fs-xs);font-weight:600;padding:1px 7px;border-radius:100px;border:1px solid var(--line);color:var(--muted)}
+.pill.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.pill.warn{background:var(--brass-soft);border-color:var(--brass);color:var(--brass)}
+.pill.bad{border-color:var(--bad);color:var(--bad)}
+.stars{color:var(--brass);letter-spacing:1px;font-size:var(--fs-sm)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.stat{border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;background:var(--surface-2)}
+.stat .v{font-family:"Bricolage Grotesque",sans-serif;font-size:var(--fs-lg);font-weight:700;line-height:1.1;margin-top:3px}
+.stat .v.good{color:var(--good)} .stat .v.bad{color:var(--bad)}
+.note{border-left:2px solid var(--accent);background:var(--surface-2);padding:10px 13px;font-size:var(--fs-sm);color:var(--ink-2);border-radius:0 var(--r) var(--r) 0}
+.note.warn{border-color:var(--brass)}
+ul.ticks{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ul.ticks li{padding-left:18px;position:relative;font-size:var(--fs-sm);color:var(--ink-2)}
+ul.ticks li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border:1.5px solid var(--accent);border-radius:1px}
+ul.ticks.warn li::before{border-color:var(--brass);border-radius:100px}
+.acc{border:1px solid var(--line);border-radius:var(--r);margin-bottom:8px;background:var(--surface)}
+.acc summary{cursor:pointer;padding:11px 14px;font-weight:600;font-size:var(--fs-sm);list-style:none;display:flex;justify-content:space-between;gap:10px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";color:var(--muted);font-family:"IBM Plex Mono",monospace}
+.acc[open] summary::after{content:"–"}
+.acc .acc-in{padding:0 14px 14px;font-size:var(--fs-sm);color:var(--ink-2)}
+
+/* ---- modal ---- */
+.scrim{position:fixed;inset:0;background:rgba(10,16,14,.55);z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:24px 14px;overflow-y:auto}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);width:100%;max-width:640px;box-shadow:0 24px 60px -20px rgba(0,0,0,.5)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.modal-head h3{font-size:var(--fs-md)}
+.modal-body{padding:18px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.form-grid .full{grid-column:1/-1}
+.form-grid label{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.form-grid input,.form-grid select,.form-grid textarea{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 10px;font-size:var(--fs-sm);text-transform:none;letter-spacing:0;color:var(--ink);font-weight:400}
+.form-grid textarea{min-height:64px;resize:vertical}
+.modal-foot{display:flex;gap:8px;justify-content:flex-end;padding:14px 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:100px;font-size:var(--fs-sm);z-index:80;box-shadow:var(--shadow)}
+@media (prefers-reduced-motion:no-preference){.toast{animation:pop .22s ease-out}}
+@keyframes pop{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+.savebar{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 8px 6px 14px;box-shadow:var(--shadow)}
+.savebar span{font-size:var(--fs-xs);color:var(--muted)}
+</style>
+
+<div id="root"></div>
+
+<script id="app-state" type="application/json">{"v":1}</script>
+<script id="app-code">
+(function(){
+"use strict";
+
+/* ============================ DONNÉES ============================ */
+
+var CATS = [
+  {id:"maison",  n:"Maison & cuisine",        kw:["maison","cuisine","ustensile","casserole","poele","vaisselle","assiette","verre","tapis","rideau","nappe","menage","nettoyage","balai","serpillere","cintre","salle de bain","douche","robinet","dar","matbakh","kitchen","home"]},
+  {id:"rangement",n:"Rangement & organisation",kw:["rangement","organiseur","boite","panier","etagere","tiroir","sac sous vide","support","crochet","placard","storage","organizer"]},
+  {id:"beaute",  n:"Beauté & cosmétique",     kw:["beaute","cosmetique","creme","serum","maquillage","rouge a levres","parfum","shampoing","masque","cheveux","ongle","vernis","henne","ghassoul","argan","savon","peau","beauty","skincare"]},
+  {id:"appareils",n:"Appareils de beauté",    kw:["epilateur","lisseur","boucleur","seche cheveux","tondeuse","rasoir","brosse chauffante","massage","masseur","led","luminotherapie","microneedling","derma","appareil"]},
+  {id:"bebe",    n:"Bébé & enfant",           kw:["bebe","enfant","biberon","couche","poussette","siege auto","jouet bebe","tapis eveil","chauffe biberon","tire lait","baby","kids","sadr"]},
+  {id:"auto",    n:"Auto & moto",             kw:["auto","voiture","moto","tapis voiture","housse","support telephone voiture","chargeur voiture","aspirateur voiture","led voiture","car","tomobil"]},
+  {id:"tech",    n:"Téléphonie & tech",       kw:["telephone","portable","coque","chargeur","cable","ecouteur","casque","airpods","montre connectee","smartwatch","powerbank","batterie","enceinte","bluetooth","camera","tablette","phone","tech"]},
+  {id:"fitness", n:"Fitness & sport",         kw:["fitness","sport","musculation","haltere","tapis yoga","elastique","corde a sauter","velo","abdo","ceinture","gym","riyada"]},
+  {id:"animal",  n:"Animalerie",              kw:["chien","chat","animal","laisse","gamelle","litiere","aquarium","oiseau","pet","brosse poils"]},
+  {id:"sante",   n:"Santé & bien-être",       kw:["sante","orthopedique","genouillere","ceinture lombaire","tensiometre","thermometre","inhalateur","correcteur posture","semelle","coussin","sommeil","anti ronflement","health"]},
+  {id:"mode",    n:"Textile & mode",          kw:["vetement","robe","djellaba","caftan","abaya","jelaba","pyjama","tshirt","pantalon","jean","veste","manteau","hijab","foulard","tissu","textile","confection","lingerie","fashion","kswa"]},
+  {id:"chaussure",n:"Chaussures & maroquinerie",kw:["chaussure","basket","sandale","babouche","cuir","sac a main","portefeuille","ceinture cuir","valise","cartable","sabot","shoes","bag"]},
+  {id:"bijoux",  n:"Bijoux & accessoires",    kw:["bijou","bague","collier","bracelet","boucle","montre","lunette","accessoire","argent","plaque or","jewelry"]},
+  {id:"jouet",   n:"Jouets & loisirs",        kw:["jouet","jeu","puzzle","peluche","lego","voiture telecommandee","drone","ballon","coloriage","toy","game","l3ba"]},
+  {id:"bureau",  n:"Papeterie & bureau",      kw:["papeterie","cahier","stylo","bureau","fourniture scolaire","cartable","imprimante","agenda","rentree","school","office"]},
+  {id:"electro", n:"Électroménager",          kw:["electromenager","mixeur","blender","friteuse","air fryer","cafetiere","bouilloire","robot","aspirateur","ventilateur","chauffage","micro onde","machine a laver","hachoir","presse agrumes"]},
+  {id:"outil",   n:"Outillage & quincaillerie",kw:["outil","outillage","perceuse","visseuse","tournevis","cle","quincaillerie","bricolage","peinture","led panneau","electricite","plomberie","tools"]},
+  {id:"pack",    n:"Emballage & packaging",   kw:["emballage","packaging","carton","sachet","boite carton","etiquette","scotch","sticker","papier bulle","flacon","pot","pompe","bouteille","tube"]},
+  {id:"agro",    n:"Alimentaire & épicerie",  kw:["alimentaire","epice","miel","huile","dattes","the","cafe","fruit sec","amande","olive","conserve","complement","food","3sel","zit"]},
+  {id:"terroir", n:"Terroir & artisanat",     kw:["artisanat","terroir","poterie","zellige","tapis berbere","vannerie","dinanderie","cooperative","argan bio","amlou","safran","souvenir","handmade","artisan"]},
+  {id:"deco",    n:"Décoration & luminaire",  kw:["decoration","deco","lampe","luminaire","veilleuse","guirlande","cadre","miroir","horloge","plante artificielle","bougie","tableau","neon","light"]},
+  {id:"saison",  n:"Saisonnier & religieux",  kw:["ramadan","aid","achoura","mariage","rentree","noel","cadeau","tapis priere","chapelet","coran","fanous","decoration ramadan","aid al adha"]}
+];
+
+var TYPES = [
+  {id:"hub",     n:"Marché / quartier de gros"},
+  {id:"usine",   n:"Usine / fabricant"},
+  {id:"b2b",     n:"Marketplace B2B"},
+  {id:"annonces",n:"Petites annonces"},
+  {id:"annuaire",n:"Annuaire d'entreprises"},
+  {id:"social",  n:"Réseaux sociaux"},
+  {id:"foire",   n:"Foire / salon"},
+  {id:"dropship",n:"Dropshipping / stock local"},
+  {id:"repere",  n:"Repère de prix (détail)"}
+];
+
+/* idx = indice de prix indicatif, en multiple du prix usine Chine (1,00 = prix usine).
+   qual = 1 à 4. Ce sont des ordres de grandeur de la filière, pas des prix relevés. */
+var SRC = [
+/* ---------- MAROC : hubs physiques ---------- */
+{id:"derbomar",n:"Derb Omar",t:"hub",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["tous"],idx:1.80,qual:2,delai:"Immédiat",moq:"Au carton",lang:"fr",
+ d:"Le plus grand quartier de gros du Maroc : environ 10 000 boutiques et 40 000 commerçants, dont près de la moitié importent eux-mêmes (autour de 240 conteneurs par jour).",
+ f:["Tout se trouve sur place, sans import ni douane","Achat au carton : pas de commande conteneur","Prix qui se négocient, surtout en cash et en fin de journée"],
+ a:["Qualité très variable d'une boutique à l'autre : toujours ouvrir le carton","Exiger une facture avec ICE, beaucoup vendent sans","Les meilleurs prix sont dans les rues intérieures, pas sur les façades"],
+ s:"https://www.google.com/maps/search/{q}+gros+Derb+Omar+Casablanca",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Derb+Omar+Casablanca"}},
+
+{id:"garageallal",n:"Garage Allal",t:"hub",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["mode","chaussure","bijoux","saison"],idx:1.75,qual:2,delai:"Immédiat",moq:"Au lot",lang:"fr",
+ d:"Marché de gros historique du prêt-à-porter, des chaussures et des accessoires, voisin de Derb Omar.",
+ f:["Lots de vêtements et chaussures à prix bas","Renouvellement rapide des modèles","Possibilité d'acheter par tailles assorties"],
+ a:["Beaucoup de fins de série : le réassort n'est pas garanti","Vérifier les coutures et les tailles réelles avant de prendre un lot"],
+ s:"https://www.google.com/maps/search/{q}+gros+Garage+Allal+Casablanca",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Garage+Allal+Casablanca"}},
+
+{id:"derbghallef",n:"Kissariat Derb Ghallef",t:"hub",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["tech","electro","jouet","outil"],idx:1.90,qual:2,delai:"Immédiat",moq:"À l'unité / carton",lang:"fr",
+ d:"Le marché de référence pour la téléphonie, l'informatique et les accessoires électroniques, en gros comme au détail.",
+ f:["Accessoires téléphone et tech à prix cassés","On peut tester le produit sur place","Réassort possible à l'unité"],
+ a:["Beaucoup de copies et de reconditionné vendus pour du neuf","Garantie rarement écrite : demander un bon avec cachet","Comparer 3 boutiques, l'écart de prix va du simple au double"],
+ s:"https://www.google.com/maps/search/{q}+Derb+Ghallef+Casablanca",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Derb+Ghallef+Casablanca"}},
+
+{id:"korea",n:"Marché Korea",t:"hub",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["beaute","bijoux","deco","jouet","maison"],idx:1.85,qual:2,delai:"Immédiat",moq:"Au carton",lang:"fr",
+ d:"Marché de gros du bazar, de la cosmétique d'import et des accessoires, dans le prolongement de Derb Omar.",
+ f:["Cosmétique et accessoires en petites quantités","Bon pour tester un produit avant d'importer"],
+ a:["Cosmétique d'import : vérifier l'étiquetage et la date de péremption","Attention aux contrefaçons de marques"],
+ s:"https://www.google.com/maps/search/{q}+march%C3%A9+Korea+Casablanca",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Marche+Korea+Casablanca"}},
+
+{id:"babmarrakech",n:"Bab Marrakech",t:"hub",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["maison","deco","jouet","saison","bureau","rangement"],idx:1.90,qual:2,delai:"Immédiat",moq:"Au carton",lang:"fr",
+ d:"Bazar de gros de la médina de Casablanca : articles de maison, jouets, saisonnier, décoration.",
+ f:["Très fort sur le saisonnier (Ramadan, Aïd, rentrée)","Petites quantités acceptées"],
+ a:["Peu de factures","Les prix montent fortement à l'approche des fêtes : acheter en avance"],
+ s:"https://www.google.com/maps/search/{q}+gros+Bab+Marrakech+Casablanca",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Bab+Marrakech+Casablanca"}},
+
+{id:"casabarata",n:"Casabarata",t:"hub",m:"ma",ville:"Tanger",pays:"Maroc",cats:["mode","chaussure","maison","tech","jouet"],idx:1.75,qual:2,delai:"Immédiat",moq:"Au lot",lang:"fr",
+ d:"Grand marché de gros du Nord, alimenté par la proximité de l'Espagne et de Tanger Med.",
+ f:["Arrivages européens plus fréquents qu'ailleurs","Intéressant si vous êtes dans le Nord : pas de transport Casablanca"],
+ a:["Origine des marchandises pas toujours claire : demander la facture","Stock irrégulier, difficile de bâtir un réassort dessus"],
+ s:"https://www.google.com/maps/search/{q}+gros+Casabarata+Tanger",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Casabarata+Tanger"}},
+
+{id:"marchegros",n:"Marché de gros",t:"hub",m:"ma",ville:"Casablanca / villes",pays:"Maroc",cats:["agro"],idx:1.40,qual:3,delai:"Immédiat",moq:"Au colis",lang:"fr",
+ d:"Marchés de gros municipaux : fruits, légumes, fruits secs, épices. Le prix de référence de l'alimentaire frais au Maroc.",
+ f:["Prix producteur, sans intermédiaire","Volumes disponibles toute l'année"],
+ a:["Produits périssables : incompatible avec un délai de livraison COD long","Vente très tôt le matin"],
+ s:"https://www.google.com/maps/search/march%C3%A9+de+gros+{q}",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/marche+de+gros+Casablanca"}},
+
+{id:"ainsebaa",n:"Zone industrielle Aïn Sebaâ / Sidi Bernoussi",t:"usine",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["pack","maison","agro","beaute","outil","rangement"],idx:1.30,qual:3,delai:"7 à 21 jours",moq:"Élevé",lang:"fr",
+ d:"Le premier bassin industriel du pays : plasturgie, emballage, agroalimentaire, produits d'entretien, cosmétique à façon.",
+ f:["Fabrication locale : pas de douane, pas de délai maritime","Possibilité de faire produire sous votre marque","Facture et ICE systématiques"],
+ a:["MOQ souvent élevé (plusieurs milliers de pièces)","Il faut un cahier des charges écrit","Compter un moule ou un outillage pour du sur-mesure"],
+ s:"https://www.google.com/maps/search/usine+{q}+A%C3%AFn+Sebaa+Casablanca",av:{t:"Registre : vérifier ICE et RC",u:"https://www.google.com/search?q=v%C3%A9rifier+ICE+entreprise+Maroc"}},
+
+{id:"confection",n:"Ateliers de confection",t:"usine",m:"ma",ville:"Casablanca, Fès, Tanger",pays:"Maroc",cats:["mode","chaussure"],idx:1.40,qual:3,delai:"10 à 30 jours",moq:"50 à 300 pièces",lang:"fr",
+ d:"Ateliers de façon textile (Aïn Sebaâ, Hay Mohammadi, médina de Fès, zone de Tanger) qui produisent à partir de votre modèle et de votre tissu.",
+ f:["MOQ bas comparé à la Chine : 50 à 300 pièces","Prototype en quelques jours, corrections faciles","Réassort rapide sur un modèle qui marche"],
+ a:["Le prix de façon se négocie à la pièce : faire chiffrer 3 ateliers","Fournir un patron et un échantillon cousu, sinon les tailles dérivent","Prévoir 5 à 10 % de pièces ratées sur la première série"],
+ s:"https://www.google.com/maps/search/atelier+de+confection+{q}+Casablanca",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/atelier+confection+Casablanca"}},
+
+{id:"tangermed",n:"Zone franche Tanger Med",t:"usine",m:"ma",ville:"Tanger",pays:"Maroc",cats:["mode","tech","auto","pack","outil"],idx:1.25,qual:4,delai:"15 à 45 jours",moq:"Très élevé",lang:"fr",
+ d:"Usines exportatrices : textile, câblage, plasturgie, sous-traitance automobile. Pour des volumes industriels ou une production sous marque.",
+ f:["Niveau de qualité et de certification export","Capacité de production importante"],
+ a:["Peu adapté à un lancement COD : MOQ et engagements lourds","Beaucoup d'usines ne servent que leurs donneurs d'ordre étrangers"],
+ s:"https://www.google.com/search?q=usine+{q}+Tanger+Free+Zone+fournisseur",av:{t:"AMDIE / annuaires industriels",u:"https://www.google.com/search?q=annuaire+industriel+Tanger+Free+Zone"}},
+
+{id:"fes",n:"Médina de Fès & Aïn Nokbi",t:"hub",m:"ma",ville:"Fès",pays:"Maroc",cats:["terroir","chaussure","deco","maison"],idx:1.50,qual:3,delai:"3 à 15 jours",moq:"Faible",lang:"fr",
+ d:"Le pôle artisanal du cuir, de la babouche, de la dinanderie, de la poterie et du zellige. Les tanneries et ateliers ont été regroupés à Aïn Nokbi.",
+ f:["Savoir-faire unique, produit non copiable par un concurrent","Petites séries possibles","Argument « fait main au Maroc » pour l'export"],
+ a:["Qualité liée à l'artisan, pas à l'atelier : garder le même","Délais artisanaux, à sécuriser par écrit","Négocier le prix hors circuit touristique"],
+ s:"https://www.google.com/maps/search/{q}+artisan+F%C3%A8s",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/artisanat+Fes+Ain+Nokbi"}},
+
+{id:"sidighanem",n:"Sidi Ghanem",t:"usine",m:"ma",ville:"Marrakech",pays:"Maroc",cats:["deco","terroir","beaute","maison"],idx:1.60,qual:4,delai:"7 à 30 jours",moq:"Moyen",lang:"fr",
+ d:"Zone industrielle et créative de Marrakech : ateliers de décoration, cosmétique naturelle, textile de maison, souvent tournés vers l'export.",
+ f:["Finition supérieure à la moyenne du marché","Habitude des standards export et de l'étiquetage","Beaucoup d'ateliers acceptent la marque blanche"],
+ a:["Prix plus élevés que Derb Omar : viser le haut de gamme, pas l'impulsion à 149 MAD","Vérifier la capacité de réassort avant de lancer la pub"],
+ s:"https://www.google.com/maps/search/{q}+Sidi+Ghanem+Marrakech",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Sidi+Ghanem+Marrakech"}},
+
+{id:"souhad",n:"Souk El Had",t:"hub",m:"ma",ville:"Agadir",pays:"Maroc",cats:["agro","terroir","beaute","maison"],idx:1.60,qual:2,delai:"Immédiat",moq:"Faible",lang:"fr",
+ d:"L'un des plus grands souks du pays : épices, argan, produits du terroir, artisanat, bazar.",
+ f:["Porte d'entrée vers les coopératives du Souss","Prix bas sur l'épicerie et le terroir"],
+ a:["Beaucoup de revendeurs se présentent comme producteurs : demander à voir l'unité","Huile d'argan : exiger une analyse et un lot"],
+ s:"https://www.google.com/maps/search/{q}+Souk+El+Had+Agadir",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Souk+El+Had+Agadir"}},
+
+{id:"coop",n:"Coopératives (argan, safran, ghassoul…)",t:"usine",m:"ma",ville:"Souss-Massa, Atlas",pays:"Maroc",cats:["terroir","beaute","agro"],idx:1.35,qual:3,delai:"5 à 20 jours",moq:"Faible à moyen",lang:"fr",
+ d:"Coopératives et groupements de producteurs, recensés notamment par l'ODCO. Source directe pour l'argan, l'amlou, le safran, le miel, le ghassoul.",
+ f:["Prix producteur et histoire de marque authentique","Éligible aux circuits export et aux labels","Petites quantités possibles"],
+ a:["Vérifier l'agrément ONSSA pour tout ce qui se mange ou s'applique sur la peau","Capacité limitée : une pub qui marche peut vider la coopérative","Demander une analyse laboratoire par lot"],
+ s:"https://www.google.com/search?q=coop%C3%A9rative+{q}+Maroc+contact",av:{t:"ODCO / registre des coopératives",u:"http://www.odco.gov.ma/"}},
+
+/* ---------- MAROC : en ligne ---------- */
+{id:"avito",n:"Avito.ma",t:"annonces",m:"ma",ville:"Tout le Maroc",pays:"Maroc",cats:["tous"],idx:2.20,qual:2,delai:"1 à 5 jours",moq:"Aucun",lang:"fr",
+ d:"Le site d'annonces le plus utilisé du pays. La rubrique « Stocks et vente en gros » est remplie de grossistes et de destockeurs joignables par téléphone.",
+ f:["Numéro de téléphone direct, réponse en quelques minutes","Beaucoup de destockage à prix bas","Gratuit et sans intermédiaire"],
+ a:["Aucune vérification des vendeurs : ne jamais payer d'avance à distance","Photos souvent reprises d'AliExpress : demander une photo réelle avec la date","Privilégier une rencontre ou un paiement à la livraison"],
+ s:"https://www.avito.ma/fr/maroc/%C3%A0_vendre?q={q}", dom:"avito.ma",av:{t:"Ancienneté du profil vendeur",u:"https://www.avito.ma/fr/casablanca/derb_omar/stocks_et_vente_en_gros-%C3%A0_vendre"}},
+
+{id:"jemla",n:"JemlaMaroc",t:"b2b",m:"ma",ville:"Casablanca + 40 villes",pays:"Maroc",cats:["tous"],idx:2.00,qual:2,delai:"2 à 7 jours",moq:"Variable",lang:"fr",
+ d:"Marketplace de mise en relation avec des grossistes marocains présentés comme vérifiés, sur une quarantaine de villes.",
+ f:["Recherche par catégorie et par ville","Contact direct avec le fournisseur, sans commission"],
+ a:["« Vérifié » veut dire inscrit, pas audité : refaire vos contrôles","Comparer le prix affiché avec celui obtenu de vive voix à Derb Omar"],
+ s:"", dom:"jemlamaroc.com", av:{t:"Fiche fournisseur sur la plateforme",u:"https://jemlamaroc.com/"}},
+
+{id:"egro",n:"eGRO",t:"b2b",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["tech","maison","beaute","auto","jouet","fitness","rangement","deco"],idx:2.00,qual:2,delai:"2 à 7 jours",moq:"Faible",lang:"fr",
+ d:"Marketplace de gros orientée e-commerce, alimentée par des vendeurs de Derb Omar, Derb Sultan et Garage Allal.",
+ f:["Catalogue pensé pour les produits qui se vendent en ligne","Prix affichés : utile pour cadrer une négociation"],
+ a:["Marge d'intermédiation possible face au même vendeur en direct","Vérifier le stock réel avant de lancer une campagne"],
+ s:"https://egro.ma/search?q={q}", dom:"egro.ma", av:{t:"Fiche vendeur",u:"https://egro.ma/"}},
+
+{id:"3awnin",n:"3awninl9a",t:"b2b",m:"ma",ville:"Casablanca",pays:"Maroc",cats:["tous"],idx:2.05,qual:2,delai:"2 à 7 jours",moq:"Variable",lang:"fr",
+ d:"Place de marché marocaine d'achat en gros, orientée revendeurs et e-commerçants.",
+ f:["Interface en français, catalogue local","Contact rapide des vendeurs"],
+ a:["Catalogue plus restreint que les marchés physiques","Toujours demander un échantillon avant une commande de volume"],
+ s:"", dom:"3awninl9a.com", av:{t:"Fiche vendeur",u:"https://3awninl9a.com/"}},
+
+{id:"evollume",n:"Evollume Marketplace",t:"b2b",m:"ma",ville:"Maroc / Afrique",pays:"Maroc",cats:["tous"],idx:2.05,qual:2,delai:"3 à 10 jours",moq:"Variable",lang:"fr",
+ d:"Marketplace B2B marocaine ouverte sur l'Afrique, pour l'achat et la vente en gros entre professionnels.",
+ f:["Ouverture sur des fournisseurs africains","Demandes de devis groupées"],
+ a:["Vérifier que le vendeur a un stock au Maroc, sinon les délais tuent le COD"],
+ s:"", dom:"evollume.com", av:{t:"Profil entreprise",u:"https://www.evollume.com/marketplace/"}},
+
+{id:"dropma",n:"Fournisseurs COD avec stock au Maroc",t:"dropship",m:"ma",ville:"Casablanca principalement",pays:"Maroc",cats:["tous"],idx:2.40,qual:2,delai:"24 à 72 h",moq:"1 pièce",lang:"fr",
+ d:"Sociétés qui stockent au Maroc et expédient à votre place, commande par commande, avec encaissement COD. Le marché bouge vite : la recherche ouvre les offres actuelles.",
+ f:["Aucune trésorerie immobilisée en stock","Expédition en 24-72 h, taux de refus mieux maîtrisé","Idéal pour tester un produit avant d'acheter un carton"],
+ a:["Le prix unitaire est le plus élevé de toute la filière : marge COD très serrée","Vous ne contrôlez ni la qualité ni le stock réel : commander 1 pièce chez soi d'abord","Fuir toute société qui demande un abonnement avant la moindre commande"],
+ s:"https://www.google.com/search?q=fournisseur+dropshipping+{q}+stock+Maroc+COD+livraison",av:{t:"Groupes Facebook e-commerce Maroc",u:"https://www.facebook.com/search/groups/?q=dropshipping%20maroc"}},
+
+{id:"kerix",n:"Kerix.net",t:"annuaire",m:"ma",ville:"Tout le Maroc",pays:"Maroc",cats:["tous"],idx:null,qual:3,delai:"—",moq:"—",lang:"fr",
+ d:"Annuaire des entreprises marocaines par activité. Sert à remonter jusqu'au fabricant ou à l'importateur officiel plutôt qu'au revendeur.",
+ f:["Trouve les fabricants qui n'ont ni site ni réseaux sociaux","Recherche par secteur d'activité"],
+ a:["Fiches parfois anciennes : vérifier le numéro avant de vous déplacer"],
+ s:"", dom:"kerix.net", av:{t:"Recouper avec l'ICE et le registre du commerce",u:"https://www.google.com/search?q=v%C3%A9rifier+ICE+entreprise+Maroc"}},
+
+{id:"telecontact",n:"Telecontact.ma",t:"annuaire",m:"ma",ville:"Tout le Maroc",pays:"Maroc",cats:["tous"],idx:null,qual:3,delai:"—",moq:"—",lang:"fr",
+ d:"Les pages jaunes marocaines : coordonnées, adresses et plans des professionnels, ville par ville.",
+ f:["Couverture des petites villes","Numéros fixes vérifiables"],
+ a:["Beaucoup de détaillants mélangés aux grossistes : filtrer par activité"],
+ s:"", dom:"telecontact.ma", av:{t:"Avis Google Maps de l'adresse",u:"https://www.google.com/maps"}},
+
+{id:"fbgroups",n:"Groupes Facebook de grossistes",t:"social",m:"ma",ville:"Tout le Maroc",pays:"Maroc",cats:["tous"],idx:2.10,qual:1,delai:"1 à 5 jours",moq:"Faible",lang:"fr",
+ d:"Les groupes « jomla / جملة » et les groupes e-commerce marocains sont la place où circulent les arrivages et les destockages, souvent avant tout le monde.",
+ f:["Arrivages annoncés en temps réel","On voit les retours des autres vendeurs sur un fournisseur"],
+ a:["Terrain d'arnaques : jamais d'avance par virement à un inconnu","Vérifier l'ancienneté du compte et demander des références","Les prix annoncés en public sont rarement les vrais prix"],
+ s:"https://www.facebook.com/search/groups/?q={q}%20gros%20maroc",av:{t:"Réputation dans le groupe",u:"https://www.facebook.com/search/groups/?q=grossiste%20maroc"}},
+
+{id:"insta",n:"Instagram — comptes grossistes",t:"social",m:"ma",ville:"Tout le Maroc",pays:"Maroc",cats:["tous"],idx:2.10,qual:1,delai:"1 à 5 jours",moq:"Faible",lang:"fr",
+ d:"Beaucoup de grossistes marocains n'ont qu'un compte Instagram et un WhatsApp. Ils publient les arrivages en story.",
+ f:["Catalogue visuel à jour","WhatsApp direct dans la bio"],
+ a:["Photos volées fréquentes : demander une vidéo du stock","Aucune traçabilité : exiger une facture à la commande"],
+ s:"https://www.instagram.com/explore/search/keyword/?q={q}%20gros%20maroc",av:{t:"Commentaires et mentions",u:"https://www.instagram.com/"}},
+
+{id:"jumia",n:"Jumia.ma",t:"repere",m:"ma",ville:"Tout le Maroc",pays:"Maroc",cats:["tous"],idx:3.20,qual:2,delai:"—",moq:"—",lang:"fr",
+ d:"Ce n'est pas un fournisseur : c'est le plafond de prix. Si votre prix COD dépasse celui de Jumia, le client compare et annule.",
+ f:["Donne le prix public à ne pas dépasser","Les avis clients y sont réels et utiles pour repérer les défauts d'un produit"],
+ a:["Ne jamais s'approvisionner ici pour revendre : marge impossible"],
+ s:"https://www.jumia.ma/catalog/?q={q}", dom:"jumia.ma",av:{t:"Avis clients Jumia",u:"https://www.jumia.ma/"}},
+
+/* ---------- INTERNATIONAL ---------- */
+{id:"1688",n:"1688.com",t:"b2b",m:"intl",ville:"Chine",pays:"Chine",cats:["tous"],idx:1.00,qual:2,delai:"25 à 45 j (mer)",moq:"Moyen",lang:"zh",
+ d:"Le marché de gros intérieur chinois, en chinois : c'est là que les vendeurs Alibaba et AliExpress s'approvisionnent. Les prix les plus bas de la filière.",
+ f:["Prix usine réels, souvent 30 à 50 % sous Alibaba","Choix immense sur tout produit de grande consommation"],
+ a:["Site en chinois et paiement local : il faut un agent ou un service de transit","Ne livre pas à l'étranger : prévoir un entrepôt de groupage en Chine","Vérifier l'ancienneté du vendeur et le taux de retour affichés"],
+ s:"https://s.1688.com/selloffer/offer_search.htm?keywords={q}", dom:"1688.com",av:{t:"Note et taux de litige du vendeur",u:"https://www.1688.com/"}},
+
+{id:"alibaba",n:"Alibaba.com",t:"b2b",m:"intl",ville:"Chine et Asie",pays:"International",cats:["tous"],idx:1.15,qual:3,delai:"20 à 45 j (mer) / 7 à 12 j (air)",moq:"Moyen à élevé",lang:"en",
+ d:"La référence mondiale du sourcing usine, en anglais, avec paiement sécurisé Trade Assurance et notation des fournisseurs.",
+ f:["Trade Assurance : remboursement si la marchandise ne correspond pas","Devis personnalisés via la demande RFQ","Échantillons payants faciles à obtenir"],
+ a:["Filtrer sur Verified Supplier + Trade Assurance + plusieurs années d'ancienneté","Le prix affiché n'est jamais le prix final : toujours négocier par message","Ne jamais payer hors plateforme, même avec une remise promise"],
+ s:"https://www.alibaba.com/trade/search?SearchText={q}", dom:"alibaba.com",av:{t:"Note fournisseur + avis de transactions",u:"https://www.alibaba.com/"}},
+
+{id:"madeinchina",n:"Made-in-China.com",t:"b2b",m:"intl",ville:"Chine",pays:"Chine",cats:["tous"],idx:1.15,qual:3,delai:"20 à 45 jours",moq:"Moyen à élevé",lang:"en",
+ d:"Annuaire d'usines chinoises avec audits par tiers, plus orienté industrie et équipement qu'Alibaba.",
+ f:["Fournisseurs audités identifiés","Bon sur l'outillage, l'électroménager, les pièces"],
+ a:["Moins de petits MOQ qu'Alibaba","Demander systématiquement les certificats (CE, RoHS) en PDF"],
+ s:"https://www.made-in-china.com/productdirectory.html?word={q}", dom:"made-in-china.com",av:{t:"Rapport d'audit fournisseur",u:"https://www.made-in-china.com/"}},
+
+{id:"globalsources",n:"Global Sources",t:"b2b",m:"intl",ville:"Hong Kong / Chine",pays:"Chine",cats:["tech","electro","auto","appareils","outil"],idx:1.20,qual:3,delai:"20 à 45 jours",moq:"Moyen",lang:"en",
+ d:"Plateforme historique orientée électronique et high-tech, adossée à des salons professionnels à Hong Kong.",
+ f:["Fournisseurs sérieux sur l'électronique","Fiches techniques détaillées"],
+ a:["Catalogue plus étroit hors électronique","Prix rarement affichés : passer par la demande de devis"],
+ s:"https://www.globalsources.com/searchList/products?keyWord={q}", dom:"globalsources.com",av:{t:"Vérification fournisseur de la plateforme",u:"https://www.globalsources.com/"}},
+
+{id:"yiwugo",n:"Yiwugo (marché de Yiwu)",t:"b2b",m:"intl",ville:"Yiwu",pays:"Chine",cats:["deco","jouet","bijoux","saison","bureau","maison","pack"],idx:1.05,qual:2,delai:"20 à 40 jours",moq:"Faible",lang:"en",
+ d:"Le catalogue en ligne du marché de Yiwu, plus grand marché de petits articles au monde : cadeaux, décoration, saisonnier, bijouterie fantaisie.",
+ f:["MOQ très bas : quelques cartons suffisent","Idéal pour le saisonnier et l'article d'impulsion","Groupage facile avec d'autres acheteurs"],
+ a:["Qualité d'entrée de gamme : contrôler avant expédition","Descriptions approximatives : demander photos et vidéo du lot"],
+ s:"", dom:"yiwugo.com", av:{t:"Ancienneté de la boutique du marché",u:"https://www.yiwugo.com/"}},
+
+{id:"aliexpress",n:"AliExpress",t:"b2b",m:"intl",ville:"Chine",pays:"Chine",cats:["tous"],idx:1.60,qual:2,delai:"10 à 30 jours",moq:"1 pièce",lang:"en",
+ d:"Pour l'échantillon, pas pour le stock. Une pièce commandée ici vous dit si le produit tient la route avant d'engager un carton.",
+ f:["Commande à l'unité, sans négociation","Avis clients avec photos : une mine pour repérer les défauts","Sert de comparateur de prix de détail mondial"],
+ a:["Prix unitaire trop élevé pour du COD en volume","Délai incompatible avec une livraison en 48 h"],
+ s:"https://www.aliexpress.com/wholesale?SearchText={q}", dom:"aliexpress.com",av:{t:"Avis clients avec photos",u:"https://www.aliexpress.com/"}},
+
+{id:"dhgate",n:"DHgate",t:"b2b",m:"intl",ville:"Chine",pays:"Chine",cats:["tous"],idx:1.50,qual:2,delai:"10 à 30 jours",moq:"Petits lots",lang:"en",
+ d:"Intermédiaire entre AliExpress et Alibaba : petits lots de gros, souvent 10 à 50 pièces, paiement sécurisé.",
+ f:["Lots de test à prix dégressif","Paiement protégé"],
+ a:["Contrefaçons nombreuses sur certaines catégories : à éviter pour les marques"],
+ s:"https://www.dhgate.com/wholesale/search.do?searchkey={q}", dom:"dhgate.com",av:{t:"Note vendeur et historique",u:"https://www.dhgate.com/"}},
+
+{id:"indiamart",n:"IndiaMART",t:"b2b",m:"intl",ville:"Inde",pays:"Inde",cats:["mode","terroir","agro","beaute","bijoux","maison","pack","outil"],idx:1.25,qual:2,delai:"20 à 40 jours",moq:"Moyen",lang:"en",
+ d:"Le plus grand annuaire B2B indien : textile, cuivre et laiton, cosmétique ayurvédique, épices, emballage.",
+ f:["Alternative à la Chine sur le textile et la cosmétique naturelle","Fabricants joignables directement par téléphone"],
+ a:["Beaucoup d'intermédiaires se déclarent fabricants : demander photos de l'usine","Qualité très inégale : l'échantillon est obligatoire"],
+ s:"https://dir.indiamart.com/search.mp?ss={q}", dom:"indiamart.com",av:{t:"Statut TrustSEAL / années d'activité",u:"https://www.indiamart.com/"}},
+
+{id:"cobo",n:"Cobo Calleja (Madrid)",t:"hub",m:"intl",ville:"Fuenlabrada, Madrid",pays:"Espagne",cats:["tous"],idx:1.50,qual:2,delai:"5 à 12 jours",moq:"Au carton",lang:"es",
+ d:"Le plus grand pôle de grossistes chinois d'Europe. Beaucoup de commerçants marocains s'y approvisionnent et rapatrient par camion via Tanger Med.",
+ f:["Marchandise chinoise sans attendre 40 jours de mer","Achat au carton, sans conteneur","Marchandise déjà dédouanée en Europe"],
+ a:["Il faut y aller ou passer par un transitaire de confiance","Prix supérieur à la Chine directe : intéressant surtout pour le réassort rapide","Contrôler les droits et la TVA à l'entrée au Maroc"],
+ s:"https://www.google.com/search?q={q}+mayorista+Cobo+Calleja+Fuenlabrada",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Cobo+Calleja+Fuenlabrada"}},
+
+{id:"dragonmart",n:"Dragon Mart (Dubaï)",t:"hub",m:"intl",ville:"Dubaï",pays:"Émirats",cats:["tous"],idx:1.55,qual:2,delai:"7 à 20 jours",moq:"Au carton",lang:"en",
+ d:"Le plus grand centre de commerce chinois hors de Chine : deux kilomètres de grossistes, utile si vous visez aussi le Golfe.",
+ f:["Réassort rapide vers l'Afrique et le Golfe","Négociation directe, sans barrière de langue (anglais)"],
+ a:["Prix au-dessus de la Chine directe","Fret aérien cher : à réserver aux articles à forte valeur"],
+ s:"https://www.google.com/search?q={q}+wholesale+Dragon+Mart+Dubai",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Dragon+Mart+Dubai"}},
+
+{id:"turquie",n:"Laleli / Osmanbey (Istanbul)",t:"hub",m:"intl",ville:"Istanbul",pays:"Turquie",cats:["mode","chaussure","bijoux","maison","beaute"],idx:1.40,qual:3,delai:"7 à 15 jours",moq:"Faible à moyen",lang:"en",
+ d:"Le quartier du gros textile turc, référence pour la mode femme, la modest fashion et la maille de qualité moyenne-haute.",
+ f:["Qualité de confection nettement au-dessus de l'entrée de gamme chinoise","Délais courts vers le Maroc","MOQ accessibles (souvent 10 à 30 pièces par modèle)"],
+ a:["Prix plus élevés : viser un positionnement à partir de 299-399 MAD","Vérifier les droits de douane textile à l'import au Maroc"],
+ s:"https://www.google.com/search?q={q}+wholesale+Laleli+Istanbul+supplier",av:{t:"Avis Google Maps",u:"https://www.google.com/maps/search/Laleli+Istanbul+wholesale"}},
+
+{id:"ankorstore",n:"Ankorstore",t:"b2b",m:"intl",ville:"Europe",pays:"Europe",cats:["deco","beaute","maison","bijoux","agro","bebe","terroir"],idx:2.20,qual:4,delai:"5 à 15 jours",moq:"Bas (dès 100 €)",lang:"fr",
+ d:"Marketplace de gros des marques européennes indépendantes : cosmétique, épicerie fine, décoration, papeterie.",
+ f:["Produits de marque, très bonne qualité perçue","MOQ bas et paiement à 60 jours pour les revendeurs"],
+ a:["Prix incompatibles avec le COD d'impulsion : positionnement premium uniquement","Import Europe : droits et TVA à intégrer"],
+ s:"https://www.ankorstore.com/search?q={q}", dom:"ankorstore.com",av:{t:"Note de la marque sur la plateforme",u:"https://www.ankorstore.com/"}},
+
+{id:"faire",n:"Faire",t:"b2b",m:"intl",ville:"USA / Europe",pays:"International",cats:["deco","terroir","beaute","bijoux","bebe","maison"],idx:2.30,qual:4,delai:"7 à 21 jours",moq:"Bas",lang:"en",
+ d:"Équivalent américain d'Ankorstore. Sert aussi dans l'autre sens : c'est là que vous pouvez vendre en gros vos produits marocains à des boutiques étrangères.",
+ f:["Qualité et image de marque","Débouché export pour l'artisanat marocain"],
+ a:["Prix d'achat élevés pour une revente COD au Maroc"],
+ s:"https://www.faire.com/search?q={q}", dom:"faire.com",av:{t:"Avis boutiques acheteuses",u:"https://www.faire.com/"}},
+
+{id:"canton",n:"Foire de Canton",t:"foire",m:"intl",ville:"Guangzhou",pays:"Chine",cats:["tous"],idx:1.00,qual:3,delai:"Selon production",moq:"Négociable sur place",lang:"en",
+ d:"La plus grande foire commerciale du monde, deux sessions par an (avril et octobre). On y rencontre les usines en direct, sans intermédiaire.",
+ f:["Prix usine négociés en face à face","On touche et on compare les échantillons","Souvent des MOQ assouplis pour un premier contact"],
+ a:["Voyage et visa à prévoir : rentable à partir d'un certain volume","Y aller avec une liste de produits et un budget arrêté"],
+ s:"https://www.google.com/search?q=Canton+Fair+{q}+exhibitors",av:{t:"Liste officielle des exposants",u:"https://www.cantonfair.org.cn/"}},
+
+{id:"yiwumarket",n:"Marché de Futian (Yiwu)",t:"foire",m:"intl",ville:"Yiwu",pays:"Chine",cats:["deco","jouet","bijoux","saison","bureau","maison","pack"],idx:1.00,qual:2,delai:"Selon groupage",moq:"Très faible",lang:"en",
+ d:"75 000 stands de petits articles ouverts toute l'année. Le point de départ de la plupart des produits d'impulsion vendus en COD.",
+ f:["Le prix plancher mondial sur le petit article","Groupage et transit organisés sur place","MOQ minuscules par référence"],
+ a:["Qualité d'entrée de gamme : inspection avant expédition indispensable","Sans agent, la logistique devient vite ingérable"],
+ s:"https://www.google.com/search?q=Yiwu+market+{q}+supplier",av:{t:"Agents et forums d'acheteurs",u:"https://www.google.com/search?q=Yiwu+market+agent+reviews"}},
+
+{id:"agent",n:"Agent de sourcing en Chine",t:"foire",m:"intl",ville:"Guangzhou / Yiwu / Shenzhen",pays:"Chine",cats:["tous"],idx:1.10,qual:3,delai:"Selon production",moq:"Négocié",lang:"en",
+ d:"Un agent achète sur 1688 à votre place, contrôle la marchandise, groupe et expédie. Commission habituelle de 3 à 8 % de la valeur.",
+ f:["Ouvre l'accès aux prix 1688 sans parler chinois","Contrôle qualité avant expédition : le poste le plus rentable du sourcing","Groupage de plusieurs fournisseurs en un envoi"],
+ a:["Demander des références vérifiables auprès d'autres e-commerçants","Cadrer la commission par écrit, commission sur la valeur et non sur le fret","Commencer par une petite commande de test"],
+ s:"https://www.google.com/search?q=sourcing+agent+China+{q}+quality+control+reviews",av:{t:"Références clients à demander",u:"https://www.google.com/search?q=china+sourcing+agent+reviews"}}
+];
+
+var DEV = {MAD:1, USD:9.16, EUR:10.70, CNY:1.29, AED:2.49, TRY:0.26};
+
+/* ============================ ÉTAT ============================ */
+
+var DEF = {
+  v:1,
+  q:"", cat:"detect", marche:"les-deux", tri:"prix",
+  types:[], sansImport:false, grosOnly:false,
+  ref:{prix:"", devise:"USD"},
+  reglages:{fx:{USD:9.16,EUR:10.70,CNY:1.29,AED:2.49,TRY:0.26},
+            uplift:45, fraisLiv:33, tauxLiv:70, coutRetour:25, marge:2.8, theme:"auto"},
+  carnet:[], trad:{}, tab:"recherche", savedAt:null
+};
+
+var state = load();
+var ui = {modal:null, busy:false, toast:null, edit:null, detail:null, local:null, store:true};
+
+function load(){
+  var a=null,b=null;
+  try{ var el=document.getElementById("app-state"); if(el) a=JSON.parse(el.textContent||"{}"); }catch(e){}
+  try{ var s=localStorage.getItem("comptoir-cod-v1"); if(s) b=JSON.parse(s); }catch(e){}
+  var pick = a && a.savedAt ? a : null;
+  if(b && b.savedAt && (!pick || b.savedAt > pick.savedAt)) pick = b;
+  if(!pick || !pick.v) return JSON.parse(JSON.stringify(DEF));
+  var out = JSON.parse(JSON.stringify(DEF));
+  Object.keys(pick).forEach(function(k){
+    if(k==="reglages"){ Object.keys(pick.reglages||{}).forEach(function(r){ out.reglages[r]=pick.reglages[r]; }); }
+    else out[k]=pick[k];
+  });
+  return out;
+}
+function storageOK(){
+  try{ localStorage.setItem("__probe","1"); localStorage.removeItem("__probe"); return true; }
+  catch(e){ return false; }
+}
+function persist(){
+  state.savedAt = new Date().toISOString();
+  try{ localStorage.setItem("comptoir-cod-v1", JSON.stringify(state)); }catch(e){}
+}
+
+/* ============================ OUTILS ============================ */
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function norm(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function clamp5(v){ return Math.max(0,Math.min(5,Math.round(num(v)))); }
+function useCap(n){
+  try{ if(window.claude && typeof window.claude.use==="function") return window.claude.use(n); }catch(e){}
+  return Promise.resolve(null);
+}
+function num(v){ var n=parseFloat(String(v).replace(",",".")); return isFinite(n)?n:0; }
+function fmt(n,d){ if(n==null||!isFinite(n)) return "—";
+  return n.toLocaleString("fr-FR",{minimumFractionDigits:d==null?0:d,maximumFractionDigits:d==null?0:d}); }
+function uid(){ return "f"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function toast(msg){ ui.toast=msg; render(); setTimeout(function(){ if(ui.toast===msg){ui.toast=null;render();} },2600); }
+
+function detectCat(q){
+  var n=norm(q); if(!n.trim()) return null;
+  var toks=n.split(/[^a-z0-9]+/).filter(Boolean);
+  var best=null, sc=0;
+  CATS.forEach(function(c){
+    var s=0;
+    c.kw.forEach(function(k){
+      if(k.length>=4){ if(n.indexOf(k)>-1) s+=k.length; }
+      else if(toks.indexOf(k)>-1) s+=k.length+1;
+    });
+    if(s>sc){ sc=s; best=c.id; }
+  });
+  return sc>0?best:null;
+}
+function catName(id){ for(var i=0;i<CATS.length;i++) if(CATS[i].id===id) return CATS[i].n; return null; }
+function typeName(id){ for(var i=0;i<TYPES.length;i++) if(TYPES[i].id===id) return TYPES[i].n; return id; }
+
+function motCle(src){
+  var q=state.q.trim(); if(!q) return "";
+  var t=state.trad[norm(q)];
+  if(t && src.lang && t[src.lang]) return t[src.lang];
+  return q;
+}
+function lienRecherche(src){
+  var q=motCle(src);
+  if(!q) return src.s ? src.s.replace(/\{q\}/g,"") : (src.dom?("https://"+src.dom):"#");
+  if(src.s) return src.s.replace(/\{q\}/g, encodeURIComponent(q));
+  if(src.dom) return "https://www.google.com/search?q="+encodeURIComponent("site:"+src.dom+" "+q);
+  return "https://www.google.com/search?q="+encodeURIComponent(q);
+}
+function lienGoogle(src){
+  var q=motCle(src)||state.q;
+  var base = src.dom ? ("site:"+src.dom+" "+q) : (q+" "+src.n+" fournisseur gros");
+  return "https://www.google.com/search?q="+encodeURIComponent(base);
+}
+
+/* estimation du coût rendu au Maroc à partir d'un prix usine de référence */
+function estimation(src){
+  var p=num(state.ref.prix); if(!p||src.idx==null) return null;
+  var fx = state.reglages.fx[state.ref.devise]||1;
+  var mad = p*fx*src.idx;
+  if(src.m==="intl") mad = mad*(1+num(state.reglages.uplift)/100);
+  return mad;
+}
+
+var SECTIONS = ["Grossistes — achat en gros",
+                "Fabricants, ateliers et coopératives",
+                "Autres pistes — annonces, foires, annuaires, repères"];
+function rangType(t){
+  if(t==="hub"||t==="b2b") return 0;
+  if(t==="usine") return 1;
+  return 2;
+}
+function estGrossiste(s){ return rangType(s.t)===0; }
+
+function resultats(){
+  var cat = state.cat==="detect" ? detectCat(state.q) : (state.cat==="tous"?null:state.cat);
+  var out = SRC.filter(function(s){
+    if(state.marche==="ma" && s.m!=="ma") return false;
+    if(state.marche==="intl" && s.m!=="intl") return false;
+    if(state.sansImport && s.m==="intl") return false;
+    if(state.grosOnly && !estGrossiste(s)) return false;
+    if(state.types.length && state.types.indexOf(s.t)<0) return false;
+    if(cat && s.cats.indexOf("tous")<0 && s.cats.indexOf(cat)<0) return false;
+    return true;
+  });
+  var tri=state.tri;
+  out.sort(function(a,b){
+    var ra=rangType(a.t), rb=rangType(b.t);
+    if(ra!==rb) return ra-rb;
+    if(tri==="prix"){
+      var ai=a.idx==null?99:a.idx, bi=b.idx==null?99:b.idx;
+      if(ai!==bi) return ai-bi; return a.n.localeCompare(b.n);
+    }
+    if(tri==="qualite"){ if(b.qual!==a.qual) return b.qual-a.qual; return (a.idx||9)-(b.idx||9); }
+    if(tri==="rapide"){
+      var av=a.m==="ma"?0:1, bv=b.m==="ma"?0:1;
+      if(av!==bv) return av-bv; return (a.idx||9)-(b.idx||9);
+    }
+    return 0;
+  });
+  return {liste:out, cat:cat};
+}
+
+/* ============================ CARNET ============================ */
+
+function coutRendu(f){
+  var fx = state.reglages.fx[f.devise]||1;
+  var base = num(f.prix)*fx;
+  var douane = base*(num(f.douane)/100);
+  return base + douane + num(f.fret);
+}
+function margeCOD(f){
+  var pv=num(f.pv); if(!pv) return null;
+  var c=coutRendu(f), L=num(state.reglages.tauxLiv)/100, liv=num(state.reglages.fraisLiv), ret=num(state.reglages.coutRetour);
+  var margeLivree = pv - c - liv;
+  var parRecue = L*margeLivree - (1-L)*ret;
+  return {c:c, margeLivree:margeLivree, parRecue:parRecue, plancher:c*num(state.reglages.marge)};
+}
+function carnetTrie(){
+  var l = state.carnet.slice();
+  l.sort(function(a,b){
+    if((a.produit||"")!==(b.produit||"")) return (a.produit||"").localeCompare(b.produit||"");
+    return coutRendu(a)-coutRendu(b);
+  });
+  return l;
+}
+function meilleurParProduit(){
+  var m={};
+  state.carnet.forEach(function(f){
+    var k=norm(f.produit||"");
+    if(!m[k] || coutRendu(f)<coutRendu(m[k])) m[k]=f;
+  });
+  return m;
+}
+
+/* ============================ RENDU ============================ */
+
+function render(){
+  var a=document.activeElement, key=null, pos=null;
+  if(a && (a.tagName==="INPUT"||a.tagName==="TEXTAREA"||a.tagName==="SELECT")){
+    key = a.id ? ("#"+a.id)
+      : (a.getAttribute("data-act") ? ('[data-act="'+a.getAttribute("data-act")+'"]'+(a.getAttribute("data-k")?('[data-k="'+a.getAttribute("data-k")+'"]'):"")) : null);
+    try{ pos=a.selectionStart; }catch(e){}
+  }
+  var r=document.getElementById("root");
+  r.innerHTML = topbar() + '<div class="wrap">' + vue() + '</div>' + savebar()
+    + (ui.toast?('<div class="toast">'+esc(ui.toast)+'</div>'):"")
+    + (ui.modal||"");
+  if(state.reglages.theme==="auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", state.reglages.theme);
+  if(key){
+    var el2 = key.charAt(0)==="#" ? document.getElementById(key.slice(1)) : document.querySelector(key);
+    if(el2){ el2.focus(); if(pos!=null){ try{ el2.setSelectionRange(pos,pos); }catch(e){} } }
+  }
+}
+
+function topbar(){
+  var tabs=[["recherche","Recherche"],["carnet","Carnet ("+state.carnet.length+")"],["marge","Coût rendu"],["methode","Méthode"],["reglages","Réglages"]];
+  return '<header class="top"><div class="top-in">'
+    + '<div class="brand"><b>Comptoir COD</b><span>Sourcing Maroc &amp; international</span></div>'
+    + '<nav class="tabs">'+tabs.map(function(t){
+        return '<button class="tab" role="tab" aria-selected="'+(state.tab===t[0])+'" data-act="tab" data-v="'+t[0]+'">'+esc(t[1])+'</button>';
+      }).join("")+'</nav>'
+    + '<button class="icon-btn" data-act="theme" title="Thème clair / sombre" aria-label="Changer le thème">◐</button>'
+    + '</div></header>';
+}
+
+function savebar(){
+  var d = state.savedAt ? new Date(state.savedAt) : null;
+  var ou = ui.local===true ? " · ce navigateur" : (ui.local===false ? " · dans la page" : "");
+  return '<div class="savebar"><span>'+(d?("Enregistré "+d.toLocaleDateString("fr-FR")+" "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})+ou):"Non enregistré")+'</span>'
+    + '<button class="btn sm primary" data-act="save">Enregistrer</button></div>';
+}
+
+function vue(){
+  if(state.tab==="carnet")   return vueCarnet();
+  if(state.tab==="marge")    return vueMarge();
+  if(state.tab==="methode")  return vueMethode();
+  if(state.tab==="reglages") return vueReglages();
+  return vueRecherche();
+}
+
+/* ---------- onglet recherche ---------- */
+function vueRecherche(){
+  var res=resultats();
+  var catAuto = state.cat==="detect" ? res.cat : null;
+  var opts = '<option value="detect">Détection automatique'+(catAuto?" — "+catName(catAuto):"")+'</option><option value="tous">Toutes catégories</option>'
+    + CATS.map(function(c){ return '<option value="'+c.id+'"'+(state.cat===c.id?" selected":"")+'>'+esc(c.n)+'</option>'; }).join("");
+  var t=state.trad[norm(state.q)];
+
+  var h = '<section class="console">'
+   + '<div class="console-head"><h1>Chercher un fournisseur</h1><p>Un produit ou une catégorie. L\'app choisit les sources, traduit le mot-clé et les classe.</p></div>'
+   + '<div class="console-body">'
+   + '<div class="row-q">'
+   + '<div class="q-field"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+   + '<input id="q" type="search" placeholder="veilleuse lune 3D, tapis de prière, air fryer, djellaba…" value="'+esc(state.q)+'" autocomplete="off"></div>'
+   + '<div class="seg" role="group" aria-label="Marché">'
+   +   [["ma","Maroc"],["les-deux","Les deux"],["intl","International"]].map(function(o){
+         return '<button data-act="marche" data-v="'+o[0]+'" aria-pressed="'+(state.marche===o[0])+'">'+esc(o[1])+'</button>';
+       }).join("")
+   + '</div>'
+   + '<button class="btn primary" data-act="traduire">Traduire le mot-clé</button>'
+   + '</div>'
+   + '<div class="row-opts">'
+   + '<div class="field"><span class="lbl">Catégorie</span><select data-act="cat">'+opts+'</select></div>'
+   + '<div class="field"><span class="lbl">Prix usine estimé (facultatif)</span>'
+   +   '<span style="display:flex;gap:6px"><input type="number" step="0.01" min="0" style="width:110px" data-act="refprix" value="'+esc(state.ref.prix)+'" placeholder="3.20">'
+   +   '<select data-act="refdev">'+["USD","CNY","EUR","MAD"].map(function(d){return '<option'+(state.ref.devise===d?" selected":"")+'>'+d+'</option>';}).join("")+'</select></span></div>'
+   + '<div class="field"><span class="lbl">Classer par</span><select data-act="tri">'
+   +   [["prix","Prix le plus bas"],["qualite","Meilleure qualité"],["rapide","Le plus rapide à livrer"]].map(function(o){
+         return '<option value="'+o[0]+'"'+(state.tri===o[0]?" selected":"")+'>'+o[1]+'</option>'; }).join("")
+   + '</select></div>'
+   + '<label class="check" style="padding-bottom:8px"><input type="checkbox" data-act="sansimport"'+(state.sansImport?" checked":"")+'> Sans import (livrable tout de suite)</label>'
+   + '</div>';
+
+  if(t){
+    h += '<div class="chips" style="margin-top:14px">'
+      + ["fr","ar","en","zh","es","tr"].filter(function(k){return t[k];}).map(function(k){
+          return '<span class="chip" style="cursor:default" aria-pressed="false"><b class="lbl" style="margin-right:6px">'+k+'</b>'+esc(t[k])+'</span>'; }).join("")
+      + (t.conseil?('<span class="chip" style="cursor:default;border-style:dashed">'+esc(t.conseil)+'</span>'):"")
+      + '</div>';
+  }
+  h += '</div></section>';
+
+  h += '<div class="split"><aside class="rail">'
+    + '<div><h3>Type de source</h3>'
+    + '<label class="check" style="font-weight:600;color:var(--ink);margin-bottom:4px"><input type="checkbox" data-act="grosonly"'+(state.grosOnly?" checked":"")+'> Grossistes uniquement</label>'
+    + TYPES.map(function(t2){
+        return '<label class="check"><input type="checkbox" data-act="type" data-v="'+t2.id+'"'+(state.types.indexOf(t2.id)>-1?" checked":"")+'> '+esc(t2.n)+'</label>';
+      }).join("")
+    + '</div>'
+    + '<div><h3>Lire le classement</h3><p class="hint" style="margin:0 0 8px">'
+    + "Les grossistes passent toujours en premier, puis les fabricants, puis les autres pistes. À l'intérieur de chaque groupe, le tri choisi s'applique."
+    + '</p><p class="hint" style="margin:0">'
+    + "L'indice de prix est un ordre de grandeur de la filière, en multiple du prix usine (1,00 = usine chinoise). Le vrai classement, c'est celui de vos devis : ajoutez-les au carnet."
+    + '</p></div>'
+    + '</aside><div>';
+
+  h += '<div class="result-head">'+enTeteResultats(res)+'</div>';
+
+  if(!res.liste.length){
+    h += '<div class="empty">Aucune source avec ces filtres. Élargissez la catégorie ou décochez un type.</div>';
+  } else {
+    h += listeHTML(res);
+  }
+  h += '</div></div>';
+  return h;
+}
+
+function listeHTML(res){
+  var out="", vu={};
+  res.liste.forEach(function(s,i){
+    var g=rangType(s.t);
+    if(!vu[g]){ vu[g]=1; out += '<div class="sep"><span>'+esc(SECTIONS[g])+'</span></div>'; }
+    out += carte(s,i);
+  });
+  return '<div class="list">'+out+'</div>';
+}
+function enTeteResultats(res){
+  var g=0; res.liste.forEach(function(s){ if(estGrossiste(s)) g++; });
+  return '<strong>'+res.liste.length+' source'+(res.liste.length>1?"s":"")+'</strong>'
+   + '<span class="hint"><b style="color:var(--accent-ink)">'+g+' grossiste'+(g>1?"s":"")+' en tête</b>'
+   + (res.cat&&state.cat==="detect"?(" · catégorie détectée : "+esc(catName(res.cat))):"")+'</span>';
+}
+function carte(s,i){
+  var est=estimation(s);
+  var best = i===0 && state.tri==="prix";
+  var g=function(v,max,cls){ var o=""; for(var k=1;k<=max;k++) o+='<i class="'+(k<=v?"on":"")+'"></i>'; return '<span class="gauge '+(cls||"")+'">'+o+'</span>'; };
+  var prixNiv = s.idx==null?0:Math.max(1,Math.min(5,Math.round(s.idx/0.7)));
+  return '<article class="card'+(best?" best":"")+'">'
+   + '<div class="rank"><b>'+(i+1)+'</b>'+(best?'<span class="lbl" style="writing-mode:vertical-rl;margin-top:6px;color:var(--brass);font-size:.6rem">MOINS CHER</span>':"")+'</div>'
+   + '<div class="card-body">'
+   + '<div class="card-top"><h4>'+esc(s.n)+'</h4>'
+   +   '<span class="tag '+(s.m==="ma"?"ma":"intl")+'">'+(s.m==="ma"?"Maroc":esc(s.pays))+'</span>'
+   +   '<span class="tag">'+esc(typeName(s.t))+'</span>'
+   +   '<span class="hint" style="margin-left:auto">'+esc(s.ville)+'</span></div>'
+   + '<p class="card-desc">'+esc(s.d)+'</p>'
+   + '<div class="metrics">'
+   +   '<div class="metric"><span class="lbl">Niveau de prix</span>'+g(prixNiv,5,"price")
+   +     '<div class="val">'+(s.idx==null?"—":"×"+s.idx.toFixed(2))+(est?' <span class="est">≈ '+fmt(est,0)+' MAD</span>':"")+'</div></div>'
+   +   '<div class="metric"><span class="lbl">Qualité type</span>'+g(s.qual,4)+'<div class="val">'+["","à contrôler","correcte","bonne","export"][s.qual]+'</div></div>'
+   +   '<div class="metric"><span class="lbl">Délai</span><div class="val">'+esc(s.delai)+'</div></div>'
+   +   '<div class="metric"><span class="lbl">Quantité mini</span><div class="val">'+esc(s.moq)+'</div></div>'
+   +   '<div class="metric"><span class="lbl">Avis</span><div class="val" style="font-weight:500;font-family:inherit"><a href="'+esc(s.av.u)+'" target="_blank" rel="noopener">'+esc(s.av.t)+'</a></div></div>'
+   + '</div>'
+   + '<div class="acts">'
+   +   '<a class="btn sm primary" href="'+esc(lienRecherche(s))+'" target="_blank" rel="noopener">Ouvrir la recherche</a>'
+   +   '<a class="btn sm" href="'+esc(lienGoogle(s))+'" target="_blank" rel="noopener">Google</a>'
+   +   '<button class="btn sm ghost" data-act="detail" data-v="'+s.id+'">Ce qu\'il faut savoir</button>'
+   +   '<button class="btn sm ghost" data-act="ajouter" data-v="'+s.id+'">+ Carnet</button>'
+   + '</div></div></article>';
+}
+
+/* ---------- onglet carnet ---------- */
+function vueCarnet(){
+  var l=carnetTrie(), best=meilleurParProduit();
+  var h='<section class="panel"><h2>Carnet de fournisseurs</h2>'
+   + '<p class="hint" style="margin:-8px 0 14px">Vos vrais devis, convertis en coût rendu au Maroc et classés du moins cher au plus cher. C\'est ce tableau qui décide, pas les estimations de la recherche.</p>'
+   + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">'
+   +   '<button class="btn primary" data-act="new">+ Ajouter un fournisseur</button>'
+   +   '<button class="btn" data-act="csv">Exporter en CSV</button>'
+   +   '<button class="btn ghost" data-act="devis">Modèle de demande de devis</button>'
+   + '</div>';
+
+  if(!l.length){
+    h += '<div class="empty">Rien encore. Chaque fois qu\'un grossiste vous donne un prix — au téléphone, sur WhatsApp, à Derb Omar — ajoutez-le ici avec sa quantité minimum. Au troisième devis, le classement devient utile.</div></section>';
+    return h;
+  }
+  h += '<div class="tablewrap"><table><thead><tr>'
+    + '<th>Produit / fournisseur</th><th>Contact</th><th>Prix</th><th>Coût rendu MAD</th><th>Mini</th><th>Qualité</th><th>Fiabilité</th><th>Statut</th><th></th>'
+    + '</tr></thead><tbody>';
+  l.forEach(function(f){
+    var isBest = best[norm(f.produit||"")]===f;
+    var wa = f.tel ? ("https://wa.me/"+String(f.tel).replace(/[^0-9]/g,"")) : null;
+    h += '<tr class="'+(isBest?"best":"")+'">'
+      + '<td><strong>'+esc(f.nom||"—")+'</strong>'+(isBest?' <span class="pill warn">moins cher</span>':"")
+      +   '<div class="hint">'+esc(f.produit||"")+(f.ville?" · "+esc(f.ville):"")+(f.pays&&f.pays!=="Maroc"?" · "+esc(f.pays):"")+'</div></td>'
+      + '<td>'+(f.tel?('<a href="tel:'+esc(f.tel)+'">'+esc(f.tel)+'</a>'):"—")
+      +   (wa?(' · <a href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a>'):"")
+      +   (f.site?('<div class="hint"><a href="'+esc(/^https?:/.test(f.site)?f.site:"https://"+f.site)+'" target="_blank" rel="noopener">site</a></div>'):"")
+      +   (f.adresse?('<div class="hint"><a href="https://www.google.com/maps/search/'+encodeURIComponent(f.adresse)+'" target="_blank" rel="noopener">'+esc(f.adresse)+'</a></div>'):"")
+      + '</td>'
+      + '<td class="num">'+fmt(num(f.prix),2)+' '+esc(f.devise||"MAD")+'</td>'
+      + '<td class="num"><strong>'+fmt(coutRendu(f),2)+'</strong></td>'
+      + '<td class="num">'+esc(f.moq||"—")+'</td>'
+      + '<td><span class="stars">'+"★".repeat(clamp5(f.qualite))+"☆".repeat(5-clamp5(f.qualite))+'</span></td>'
+      + '<td><span class="stars">'+"★".repeat(clamp5(f.fiabilite))+"☆".repeat(5-clamp5(f.fiabilite))+'</span></td>'
+      + '<td><span class="pill '+(f.statut==="Validé"?"on":(f.statut==="Écarté"?"bad":""))+'">'+esc(f.statut||"À contacter")+'</span></td>'
+      + '<td style="white-space:nowrap"><button class="btn sm ghost" data-act="edit" data-v="'+f.id+'">Modifier</button></td>'
+      + '</tr>';
+    if(f.notes||f.avisUrl){
+      h += '<tr><td colspan="9" style="padding-top:0"><div class="hint">'+esc(f.notes||"")
+        + (f.avisUrl?(' · <a href="'+esc(f.avisUrl)+'" target="_blank" rel="noopener">avis / références</a>'):"")+'</div></td></tr>';
+    }
+  });
+  h += '</tbody></table></div></section>';
+
+  var m=null, ref=null;
+  l.forEach(function(f){ var r=margeCOD(f); if(r && (!m || r.parRecue>m.parRecue)){ m=r; ref=f; } });
+  if(m){
+    h += '<section class="panel"><h2>Meilleure combinaison actuelle</h2><div class="grid2">'
+      + '<div class="stat"><span class="lbl">Fournisseur</span><div class="v" style="font-size:var(--fs-md)">'+esc(ref.nom)+'</div></div>'
+      + '<div class="stat"><span class="lbl">Coût rendu</span><div class="v">'+fmt(m.c,2)+' MAD</div></div>'
+      + '<div class="stat"><span class="lbl">Marge sur colis livré</span><div class="v '+(m.margeLivree>0?"good":"bad")+'">'+fmt(m.margeLivree,0)+' MAD</div></div>'
+      + '<div class="stat"><span class="lbl">Reste par commande reçue</span><div class="v '+(m.parRecue>0?"good":"bad")+'">'+fmt(m.parRecue,0)+' MAD</div>'
+      + '<div class="hint">C\'est votre budget publicité maximum par commande.</div></div>'
+      + '</div></section>';
+  }
+  return h;
+}
+
+/* ---------- onglet coût rendu ---------- */
+function vueMarge(){
+  var c=state.calc||{prix:"3.20",devise:"USD",qte:"100",fret:"1800",douane:"25",divers:"300",pv:"249"};
+  state.calc=c;
+  var fx=state.reglages.fx[c.devise]||1;
+  var achat=num(c.prix)*fx*num(c.qte);
+  var douane=achat*(num(c.douane)/100);
+  var total=achat+douane+num(c.fret)+num(c.divers);
+  var unit=num(c.qte)?total/num(c.qte):0;
+  var L=num(state.reglages.tauxLiv)/100, liv=num(state.reglages.fraisLiv), ret=num(state.reglages.coutRetour);
+  var margeLivree=num(c.pv)-unit-liv;
+  var parRecue=L*margeLivree-(1-L)*ret;
+  var plancher=unit*num(state.reglages.marge)+liv;
+
+  function f(lbl,key,unit2,step){
+    return '<label>'+lbl+'<input type="number" step="'+(step||"1")+'" data-act="calc" data-k="'+key+'" value="'+esc(c[key])+'">'
+      +(unit2?('<span class="hint" style="text-transform:none;letter-spacing:0">'+unit2+'</span>'):"")+'</label>';
+  }
+  return '<section class="panel"><h2>Coût rendu &amp; prix plancher</h2>'
+   + '<p class="hint" style="margin:-8px 0 14px">Un prix fournisseur ne veut rien dire tant que le fret, la douane et le taux de refus ne sont pas dedans. Ce calcul rend deux devis comparables, l\'un de Derb Omar et l\'autre de Chine.</p>'
+   + '<div class="form-grid">'
+   + '<label>Prix unitaire<input type="number" step="0.01" data-act="calc" data-k="prix" value="'+esc(c.prix)+'"></label>'
+   + '<label>Devise<select data-act="calc" data-k="devise">'+["USD","CNY","EUR","MAD","AED","TRY"].map(function(d){return '<option'+(c.devise===d?" selected":"")+'>'+d+'</option>';}).join("")+'</select></label>'
+   + f("Quantité","qte")
+   + f("Fret total (MAD)","fret")
+   + f("Droits de douane (%)","douane")
+   + f("Frais divers (MAD)","divers")
+   + f("Prix de vente COD (MAD)","pv")
+   + '</div>'
+   + '<div class="grid2" style="margin-top:18px">'
+   +   '<div class="stat"><span class="lbl">Marchandise</span><div class="v">'+fmt(achat,0)+' MAD</div></div>'
+   +   '<div class="stat"><span class="lbl">Douane estimée</span><div class="v">'+fmt(douane,0)+' MAD</div></div>'
+   +   '<div class="stat"><span class="lbl">Total posé au Maroc</span><div class="v">'+fmt(total,0)+' MAD</div></div>'
+   +   '<div class="stat"><span class="lbl">Coût rendu unitaire</span><div class="v" style="color:var(--brass)">'+fmt(unit,2)+' MAD</div></div>'
+   + '</div>'
+   + '<div class="grid2" style="margin-top:14px">'
+   +   '<div class="stat"><span class="lbl">Marge sur colis livré</span><div class="v '+(margeLivree>0?"good":"bad")+'">'+fmt(margeLivree,0)+' MAD</div>'
+   +     '<div class="hint">prix de vente − coût rendu − '+fmt(liv,0)+' MAD de livraison</div></div>'
+   +   '<div class="stat"><span class="lbl">Reste par commande reçue</span><div class="v '+(parRecue>0?"good":"bad")+'">'+fmt(parRecue,0)+' MAD</div>'
+   +     '<div class="hint">à '+fmt(L*100,0)+' % de livraison, refus compté à '+fmt(ret,0)+' MAD. C\'est le plafond de votre coût publicitaire par commande.</div></div>'
+   +   '<div class="stat"><span class="lbl">Prix de vente plancher</span><div class="v">'+fmt(plancher,0)+' MAD</div>'
+   +     '<div class="hint">coût rendu × '+state.reglages.marge+' + livraison</div></div>'
+   +   '<div class="stat"><span class="lbl">Trésorerie à sortir</span><div class="v">'+fmt(total,0)+' MAD</div>'
+   +     '<div class="hint">immobilisée jusqu\'à écoulement des '+fmt(num(c.qte),0)+' pièces</div></div>'
+   + '</div>'
+   + '<div class="note warn" style="margin-top:16px">Les droits de douane dépendent du code SH du produit et peuvent aller de 2,5 % à plus de 30 %, hors TVA à l\'import. Faites confirmer le taux par votre transitaire avant d\'engager une commande : c\'est l\'erreur qui coûte le plus cher sur une première importation.</div>'
+   + '</section>';
+}
+
+/* ---------- onglet méthode ---------- */
+function vueMethode(){
+  var etapes=[
+   ["Cadrer le prix avant de chercher","Partez du prix de vente COD visé (149-499 MAD) et divisez : le coût rendu doit tenir sous le tiers du prix de vente pour absorber la livraison, les refus et la publicité. Vous saurez alors si vous cherchez un produit à 15 MAD ou à 90 MAD."],
+   ["Chercher au bon étage de la filière","Le même article coûte 1 à l'usine chinoise, 1,5 à Cobo Calleja, 1,8 à Derb Omar, 2,4 chez un dropshipper local. Chaque étage achète du temps et de la souplesse. Pour un test : l'étage cher. Pour scaler : descendez."],
+   ["Trois devis minimum","Ne jamais s'arrêter au premier prix. Trois fournisseurs sur le même article, mêmes quantités, même délai : c'est le seul moyen de savoir si on vous a fait un prix ou un cadeau empoisonné."],
+   ["Échantillon payé de sa poche","Un fournisseur qui refuse de vendre un échantillon n'est pas un fournisseur. Commandez-le à votre adresse, ouvrez-le comme le ferait votre client, et testez-le une semaine."],
+   ["Vérifier l'existence légale","Au Maroc : demandez l'ICE et le numéro de registre du commerce, et exigez une facture. En Chine : nom légal de la société, licence d'exploitation, et paiement uniquement via la plateforme."],
+   ["Négocier autre chose que le prix","Le prix bouge peu. Le délai, le fractionnement des livraisons, l'emballage à votre marque, la reprise des invendus et le paiement à la livraison bougent beaucoup."],
+   ["Commander petit, puis doubler","Première commande : la quantité minimum, même si le prix est moins bon. La deuxième commande révèle le vrai fournisseur — celui qui livre pareil la deuxième fois."],
+   ["Toujours garder un second fournisseur","Un seul fournisseur sur un produit qui marche, c'est une boutique à l'arrêt le jour où il tombe en rupture. Gardez le deuxième au chaud, même 10 % plus cher."]
+  ];
+  var drapeaux=[
+   "Un prix très en dessous du marché sur un produit de marque : c'est de la contrefaçon, saisissable en douane.",
+   "Demande de virement sur un compte personnel, ou paiement hors plateforme contre une remise.",
+   "Refus de donner une adresse physique ou de faire une vidéo en direct du stock.",
+   "Photos identiques à celles d'AliExpress, sans une seule photo réelle.",
+   "Pression sur le temps : « il ne reste que 3 cartons, décidez aujourd'hui ».",
+   "Fournisseur dropshipping qui facture un abonnement avant la première commande.",
+   "Compte Instagram ou Facebook créé il y a moins de six mois, sans historique de clients."
+  ];
+  var controles=[
+   ["Alimentaire, cosmétique, complément","Agrément ONSSA obligatoire pour la commercialisation, étiquetage en arabe et en français, numéro de lot et date de péremption lisibles."],
+   ["Électrique et électronique","Marquage CE, chargeur au bon voltage (220V, prise européenne), et test réel : c'est la première cause de refus et de retour."],
+   ["Jouets et articles pour bébé","Normes de sécurité, absence de petites pièces détachables, matière non toxique. Un incident sur ce segment vous coûte la boutique."],
+   ["Textile","Mesurer les tailles réelles, laver un échantillon avant de commander : le rétrécissement et le dégorgement sont les motifs de retour numéro un."]
+  ];
+  var h='<section class="panel"><h2>La méthode, dans l\'ordre</h2>'
+   + etapes.map(function(e,i){
+      return '<details class="acc"'+(i===0?" open":"")+'><summary><span><span class="mono" style="color:var(--muted);margin-right:9px">'+(i+1<10?"0":"")+(i+1)+'</span>'+esc(e[0])+'</span></summary><div class="acc-in">'+esc(e[1])+'</div></details>';
+     }).join("")
+   + '</section>';
+  h += '<section class="panel"><h2>Signaux d\'alerte</h2><ul class="ticks warn">'
+    + drapeaux.map(function(d){ return '<li>'+esc(d)+'</li>'; }).join("") + '</ul></section>';
+  h += '<section class="panel"><h2>Contrôles obligatoires par famille de produit</h2><div class="grid2">'
+    + controles.map(function(c){ return '<div class="stat"><span class="lbl">'+esc(c[0])+'</span><p style="margin:6px 0 0;font-size:var(--fs-sm)">'+esc(c[1])+'</p></div>'; }).join("")
+    + '</div></section>';
+  h += '<section class="panel"><h2>Où sont les avis, vraiment</h2>'
+    + '<ul class="ticks">'
+    + '<li><strong>Marché physique</strong> — les avis Google Maps portent sur le marché, pas sur la boutique. La vraie réputation se demande aux vendeurs voisins et dans les groupes Facebook e-commerce.</li>'
+    + '<li><strong>Alibaba / Made-in-China</strong> — note du fournisseur, ancienneté, taux de réponse et historique de transactions. Une usine sérieuse a plusieurs années et des avis détaillés, pas cinq étoiles et trois avis.</li>'
+    + '<li><strong>AliExpress</strong> — les avis clients avec photos sont la meilleure source gratuite pour connaître les défauts d\'un produit avant de l\'acheter en gros.</li>'
+    + '<li><strong>Avito et réseaux sociaux</strong> — aucun système d\'avis. Ancienneté du compte, cohérence des annonces et rencontre physique remplacent la note.</li>'
+    + '<li><strong>Votre propre note</strong> — la seule qui compte à terme : notez chaque fournisseur dans le carnet après chaque commande, sur la qualité et sur la fiabilité.</li>'
+    + '</ul></section>';
+  return h;
+}
+
+/* ---------- onglet réglages ---------- */
+function vueReglages(){
+  var r=state.reglages;
+  return '<section class="panel"><h2>Hypothèses de calcul</h2>'
+   + '<div class="form-grid">'
+   + '<label>USD → MAD<input type="number" step="0.01" data-act="fx" data-k="USD" value="'+r.fx.USD+'"></label>'
+   + '<label>EUR → MAD<input type="number" step="0.01" data-act="fx" data-k="EUR" value="'+r.fx.EUR+'"></label>'
+   + '<label>CNY → MAD<input type="number" step="0.01" data-act="fx" data-k="CNY" value="'+r.fx.CNY+'"></label>'
+   + '<label>AED → MAD<input type="number" step="0.01" data-act="fx" data-k="AED" value="'+r.fx.AED+'"></label>'
+   + '<label>Majoration import (%)<input type="number" data-act="reg" data-k="uplift" value="'+r.uplift+'"><span class="hint" style="text-transform:none;letter-spacing:0">fret + douane appliqués aux estimations internationales</span></label>'
+   + '<label>Frais de livraison (MAD)<input type="number" data-act="reg" data-k="fraisLiv" value="'+r.fraisLiv+'"></label>'
+   + '<label>Taux de livraison (%)<input type="number" data-act="reg" data-k="tauxLiv" value="'+r.tauxLiv+'"></label>'
+   + '<label>Coût d\'un colis refusé (MAD)<input type="number" data-act="reg" data-k="coutRetour" value="'+r.coutRetour+'"></label>'
+   + '<label>Multiplicateur prix plancher<input type="number" step="0.1" data-act="reg" data-k="marge" value="'+r.marge+'"></label>'
+   + '</div>'
+   + '<div class="note" style="margin-top:16px">Taux de change saisis au 3 septembre 2026. Le taux de livraison à 70 % et le coût de refus reprennent vos hypothèses COD : le tiers des colis n\'arrive pas et la livraison reste due.</div>'
+   + '</section>'
+   + '<section class="panel"><h2>Données</h2>'
+   + '<p class="hint" style="margin:-8px 0 14px">'
+   +   (ui.local===true
+       ? "Application locale : tout reste dans ce navigateur, sur cet ordinateur, et rien n" + Q + "est envoyé nulle part. Exportez la sauvegarde JSON avant de changer de machine ou de vider les données du navigateur."
+       : "Le carnet est enregistré dans la page publiée et dans ce navigateur. La page est privée : elle contient des numéros de fournisseurs, ne partagez pas le lien.")
+   + '</p>'
+   + '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
+   +   '<button class="btn" data-act="csv">Exporter le carnet (CSV)</button>'
+   +   '<button class="btn" data-act="json">Exporter la sauvegarde (JSON)</button>'
+   +   '<button class="btn" data-act="import">Importer une sauvegarde</button>'
+   +   '<button class="btn ghost" data-act="reset">Vider le carnet</button>'
+   +   '<input type="file" id="imp" accept="application/json,.json" hidden>'
+   + '</div>'
+   + (ui.store===false ? '<div class="note warn" style="margin-top:14px">Ce navigateur bloque le stockage local : le carnet disparaîtra en fermant l' + Q + 'onglet. Exportez la sauvegarde JSON à chaque fin de session, et réimportez-la au début de la suivante.</div>' : "")
+   + (ui.local===true ? '<div class="note" style="margin-top:14px">Cette page fonctionne hors connexion. Seules deux choses demandent Internet : les polices de caractères (sinon la page s' + Q + 'affiche avec la police du système) et les liens qui ouvrent les sites fournisseurs.</div>' : "")
+   + '</section>';
+}
+
+/* ---------- modales ---------- */
+function modalDetail(id){
+  var s=null; SRC.forEach(function(x){ if(x.id===id) s=x; }); if(!s) return null;
+  return '<div class="scrim" data-act="close"><div class="modal" data-stop="1">'
+   + '<div class="modal-head"><h3>'+esc(s.n)+'</h3><button class="icon-btn" data-act="close">✕</button></div>'
+   + '<div class="modal-body">'
+   + '<p style="margin-top:0">'+esc(s.d)+'</p>'
+   + '<h4 class="lbl" style="margin-bottom:8px">Ce qui joue pour</h4><ul class="ticks">'+s.f.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>'
+   + '<h4 class="lbl" style="margin:16px 0 8px">À surveiller</h4><ul class="ticks warn">'+s.a.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>'
+   + '<div class="note" style="margin-top:16px">Avis et réputation : <a href="'+esc(s.av.u)+'" target="_blank" rel="noopener">'+esc(s.av.t)+'</a></div>'
+   + '</div>'
+   + '<div class="modal-foot"><a class="btn" href="'+esc(lienRecherche(s))+'" target="_blank" rel="noopener">Ouvrir la recherche</a>'
+   + '<button class="btn primary" data-act="ajouter" data-v="'+s.id+'">Ajouter au carnet</button></div>'
+   + '</div></div>';
+}
+
+function modalEdit(f){
+  var st=["À contacter","Devis reçu","Échantillon commandé","Validé","Écarté"];
+  function inp(lbl,k,type,ph,cls){
+    return '<label class="'+(cls||"")+'">'+lbl+'<input type="'+(type||"text")+'"'+(type==="number"?' step="0.01"':"")+' data-act="f" data-k="'+k+'" value="'+esc(f[k]==null?"":f[k])+'" placeholder="'+esc(ph||"")+'"></label>';
+  }
+  return '<div class="scrim" data-act="close"><div class="modal" data-stop="1">'
+   + '<div class="modal-head"><h3>'+(f.id?"Modifier":"Nouveau fournisseur")+'</h3><button class="icon-btn" data-act="close">✕</button></div>'
+   + '<div class="modal-body"><div class="form-grid">'
+   + inp("Produit","produit","text","veilleuse lune 3D","full")
+   + inp("Nom du fournisseur","nom","text","Bazar El Andalous")
+   + '<label>Type<select data-act="f" data-k="type">'+["Grossiste","Importateur","Fabricant","Atelier","Coopérative","Dropshipper","Marketplace"].map(function(o){return '<option'+(f.type===o?" selected":"")+'>'+o+'</option>';}).join("")+'</select></label>'
+   + inp("Ville","ville","text","Casablanca")
+   + inp("Pays","pays","text","Maroc")
+   + inp("Téléphone / WhatsApp","tel","text","2126…")
+   + inp("Email","email","text","")
+   + inp("Site web","site","text","")
+   + inp("Adresse","adresse","text","Rue 12, Derb Omar","full")
+   + inp("Prix unitaire","prix","number","")
+   + '<label>Devise<select data-act="f" data-k="devise">'+["MAD","USD","CNY","EUR","AED","TRY"].map(function(o){return '<option'+((f.devise||"MAD")===o?" selected":"")+'>'+o+'</option>';}).join("")+'</select></label>'
+   + inp("Quantité minimum","moq","text","50 pcs")
+   + inp("Fret par pièce (MAD)","fret","number","")
+   + inp("Douane (%)","douane","number","")
+   + inp("Délai annoncé","delai","text","7 jours")
+   + inp("Prix de vente visé (MAD)","pv","number","249")
+   + '<label>Qualité (0-5)<input type="number" min="0" max="5" data-act="f" data-k="qualite" value="'+esc(f.qualite||0)+'"></label>'
+   + '<label>Fiabilité (0-5)<input type="number" min="0" max="5" data-act="f" data-k="fiabilite" value="'+esc(f.fiabilite||0)+'"></label>'
+   + '<label>Statut<select data-act="f" data-k="statut">'+st.map(function(o){return '<option'+((f.statut||"À contacter")===o?" selected":"")+'>'+o+'</option>';}).join("")+'</select></label>'
+   + inp("Lien avis / références","avisUrl","text","","full")
+   + '<label class="full">Notes<textarea data-act="f" data-k="notes" placeholder="Qui vous l\'a recommandé, ce qu\'il a promis, ce qu\'il a livré.">'+esc(f.notes||"")+'</textarea></label>'
+   + '</div></div>'
+   + '<div class="modal-foot">'
+   + (f.id?'<button class="btn ghost" data-act="del" style="margin-right:auto;color:var(--bad)">Supprimer</button>':"")
+   + '<button class="btn" data-act="close">Annuler</button><button class="btn primary" data-act="savef">Enregistrer</button></div>'
+   + '</div></div>';
+}
+
+function modalDevis(){
+  var p=state.q||"[produit]";
+  var fr="Bonjour, je suis e-commerçant au Maroc et je cherche un fournisseur régulier pour : "+p+".\n\n"
+   +"Pouvez-vous me confirmer :\n1. Le prix unitaire pour 50, 200 et 500 pièces\n2. La quantité minimum de commande\n"
+   +"3. Le délai de livraison à Casablanca\n4. Si vous fournissez une facture avec ICE\n5. Le prix d'un échantillon, que je paie\n\n"
+   +"Merci de m'envoyer une photo ou une vidéo réelle du stock disponible. Cordialement.";
+  var en="Hello, I run an e-commerce store in Morocco and I am sourcing a regular supplier for: "+p+".\n\n"
+   +"Could you please confirm:\n1. Unit price for 100 / 500 / 1000 pcs\n2. MOQ\n3. Sample cost and lead time\n"
+   +"4. Production lead time and shipping options to Casablanca, Morocco\n5. Certifications available (CE, RoHS, test report)\n\n"
+   +"Please send real photos or a short video of the product. Thank you.";
+  var ar="السلام عليكم، عندي متجر إلكتروني في المغرب وكنقلب على مورد دائم لـ: "+p+".\n\n"
+   +"بغيت نعرف:\n1. الثمن بالوحدة ل 50 و 200 و 500 قطعة\n2. أقل كمية للطلب\n3. مدة التوصيل للدار البيضاء\n"
+   +"4. واش كتعطيو فاتورة ب ICE\n5. ثمن العينة\n\nعافاك صيفط تصويرة ولا فيديو حقيقي للسلعة. شكرا.";
+  function bloc(t,txt,id){
+    return '<h4 class="lbl" style="margin:14px 0 6px">'+t+'</h4>'
+     + '<textarea id="'+id+'" style="width:100%;min-height:130px;border:1px solid var(--line);border-radius:var(--r);padding:10px;background:var(--surface-2);font-size:var(--fs-sm)">'+esc(txt)+'</textarea>'
+     + '<button class="btn sm" data-act="copy" data-v="'+id+'" style="margin-top:6px">Copier</button>';
+  }
+  return '<div class="scrim" data-act="close"><div class="modal" data-stop="1">'
+   + '<div class="modal-head"><h3>Demande de devis</h3><button class="icon-btn" data-act="close">✕</button></div>'
+   + '<div class="modal-body"><p class="hint" style="margin-top:0">Les cinq questions qui font gagner du temps : prix par palier, quantité minimum, délai, facture, échantillon.</p>'
+   + bloc("Français — grossiste marocain",fr,"d-fr")
+   + bloc("Darija / arabe — WhatsApp",ar,"d-ar")
+   + bloc("Anglais — Alibaba, Turquie, Inde",en,"d-en")
+   + '</div><div class="modal-foot"><button class="btn" data-act="close">Fermer</button></div></div></div>';
+}
+
+/* ============================ ACTIONS ============================ */
+
+document.addEventListener("click", function(ev){
+  var el=ev.target.closest("[data-act]"); if(!el) return;
+  var act=el.getAttribute("data-act"), v=el.getAttribute("data-v");
+  if(act==="close"){ if(ev.target.closest("[data-stop]") && ev.target!==el && el.classList.contains("scrim")) return;
+    ui.modal=null; ui.edit=null; render(); return; }
+  if(el.tagName==="A") return;
+
+  switch(act){
+    case "tab": state.tab=v; ui.modal=null; render(); break;
+    case "theme":
+      state.reglages.theme = state.reglages.theme==="dark" ? "light" : (state.reglages.theme==="light" ? "auto" : "dark");
+      persist(); render(); break;
+    case "marche": state.marche=v; render(); break;
+    case "type":
+      var i=state.types.indexOf(v); if(i>-1) state.types.splice(i,1); else state.types.push(v); render(); break;
+    case "sansimport": state.sansImport=!state.sansImport; render(); break;
+    case "grosonly": state.grosOnly=!state.grosOnly; render(); break;
+    case "detail": ui.modal=modalDetail(v); render(); break;
+    case "devis": ui.modal=modalDevis(); render(); break;
+    case "copy":
+      var ta=document.getElementById(v);
+      if(ta){
+        ta.select();
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(ta.value).then(function(){ toast("Texte copié"); },
+            function(){ toast("Sélectionnez le texte puis copiez-le"); });
+        } else {
+          try{ document.execCommand("copy"); toast("Texte copié"); }
+          catch(e){ toast("Sélectionnez le texte puis copiez-le"); }
+        }
+      }
+      break;
+    case "ajouter":
+      var s=null; SRC.forEach(function(x){ if(x.id===v) s=x; });
+      ui.edit={produit:state.q, nom:"", type:(s&&s.t==="usine"?"Fabricant":(s&&s.t==="hub"?"Grossiste":"Marketplace")),
+        ville:s?s.ville:"", pays:s?s.pays:"Maroc", devise:s&&s.m==="intl"?"USD":"MAD",
+        douane:s&&s.m==="intl"?25:0, statut:"À contacter", notes:s?("Repéré via "+s.n):"", avisUrl:s?s.av.u:"",
+        qualite:0, fiabilite:0};
+      ui.modal=modalEdit(ui.edit); render(); break;
+    case "new": ui.edit={produit:state.q,devise:"MAD",pays:"Maroc",statut:"À contacter",qualite:0,fiabilite:0,douane:0}; ui.modal=modalEdit(ui.edit); render(); break;
+    case "edit":
+      state.carnet.forEach(function(f){ if(f.id===v) ui.edit=JSON.parse(JSON.stringify(f)); });
+      ui.modal=modalEdit(ui.edit); render(); break;
+    case "savef":
+      if(!ui.edit) break;
+      if(!ui.edit.nom){ toast("Donnez au moins un nom au fournisseur"); break; }
+      ui.edit.maj=new Date().toISOString();
+      if(ui.edit.id){ state.carnet=state.carnet.map(function(f){ return f.id===ui.edit.id?ui.edit:f; }); }
+      else { ui.edit.id=uid(); state.carnet.push(ui.edit); }
+      ui.modal=null; ui.edit=null; state.tab="carnet"; persist(); render(); toast("Fournisseur enregistré"); break;
+    case "del":
+      if(ui.edit&&ui.edit.id){ state.carnet=state.carnet.filter(function(f){ return f.id!==ui.edit.id; }); }
+      ui.modal=null; ui.edit=null; persist(); render(); toast("Supprimé"); break;
+    case "reset":
+      if(state.carnet.length && window.confirm("Vider le carnet ? "+state.carnet.length+" fournisseur(s) seront supprimés.")){
+        state.carnet=[]; persist(); render(); toast("Carnet vidé"); }
+      break;
+    case "csv": exportCSV(); break;
+    case "import": var fi=document.getElementById("imp"); if(fi) fi.click(); break;
+    case "json": exportJSON(); break;
+    case "traduire": traduire(); break;
+    case "save": sauver(); break;
+  }
+});
+
+document.addEventListener("input", function(ev){
+  if(ev.target.id==="q"){
+    state.q=ev.target.value;
+    clearTimeout(window.__t); window.__t=setTimeout(rerenderResults,220);
+    return;
+  }
+  var el=ev.target.closest("[data-act]"); if(!el) return;
+  var act=el.getAttribute("data-act"), k=el.getAttribute("data-k");
+  if(act==="refprix"){ state.ref.prix=el.value; rerenderResults(); return; }
+  if(act==="f" && ui.edit){ ui.edit[k]=el.value; return; }
+  if(act==="calc"){ state.calc[k]=el.value; render(); return; }
+  if(act==="fx"){ state.reglages.fx[k]=num(el.value); persist(); return; }
+  if(act==="reg"){ state.reglages[k]=num(el.value); persist(); return; }
+});
+
+document.addEventListener("change", function(ev){
+  if(ev.target.id==="imp"){ importer(ev.target.files && ev.target.files[0]); ev.target.value=""; return; }
+  var el=ev.target.closest("[data-act]"); if(!el) return;
+  var act=el.getAttribute("data-act"), k=el.getAttribute("data-k");
+  if(act==="cat"){ state.cat=el.value; render(); }
+  else if(act==="tri"){ state.tri=el.value; render(); }
+  else if(act==="refdev"){ state.ref.devise=el.value; render(); }
+  else if(act==="f" && ui.edit){ ui.edit[k]=el.value; }
+  else if(act==="calc"){ state.calc[k]=el.value; render(); }
+});
+
+/* rerendu partiel pour ne pas perdre le focus du champ de recherche */
+function rerenderResults(){
+  if(state.tab!=="recherche") return;
+  var res=resultats();
+  var sel=document.querySelector('select[data-act="cat"]');
+  if(sel && state.cat==="detect" && sel.options.length){
+    sel.options[0].textContent = "Détection automatique" + (res.cat ? (" — "+catName(res.cat)) : "");
+  }
+  var head=document.querySelector(".result-head");
+  var list=document.querySelector(".list")||document.querySelector(".empty");
+  if(head) head.innerHTML=enTeteResultats(res);
+  if(list){
+    if(!res.liste.length){ list.outerHTML='<div class="empty">Aucune source avec ces filtres. Élargissez la catégorie ou décochez un type.</div>'; }
+    else { list.outerHTML=listeHTML(res); }
+  }
+}
+
+/* ---------- traduction du mot-clé (capacité sample) ---------- */
+function traduire(){
+  var q=state.q.trim();
+  if(!q){ toast("Tapez d'abord un produit"); return; }
+  if(state.trad[norm(q)]){ toast("Mot-clé déjà traduit"); render(); return; }
+  toast("Traduction en cours…");
+  useCap("sample").then(function(sample){
+    if(!sample){ toast(ui.local===true ? "Traduction disponible seulement dans la version en ligne" : "Traduction indisponible dans cette vue"); return; }
+    return sample.json([{role:"user",content:
+      'Tu aides un e-commerçant marocain à chercher un fournisseur pour le produit : "'+q+'".\n'
+      +'Réponds UNIQUEMENT par un objet JSON, sans texte autour, avec exactement ces clés :\n'
+      +'{"fr":"terme de recherche en français","ar":"terme en arabe","en":"terme de recherche commercial en anglais tel qu\'utilisé sur Alibaba",'
+      +'"zh":"terme en chinois simplifié tel qu\'utilisé sur 1688","es":"terme en espagnol","tr":"terme en turc",'
+      +'"conseil":"une phrase de 15 mots maximum sur le point de vigilance qualité de ce produit"}\n'
+      +"N'invente aucun nom d'entreprise, aucun prix, aucun numéro de téléphone."}],
+      {modelTier:"quick"});
+  }).then(function(r){
+    if(!r) return;
+    state.trad[norm(q)]=r; persist(); render(); toast("Mot-clé traduit en 6 langues");
+  }).catch(function(e){
+    toast(e && e.code==="not_granted" ? "Traduction non autorisée ici" : "Traduction impossible pour le moment");
+  });
+}
+
+/* ---------- exports ---------- */
+function csvCarnet(){
+  var cols=["produit","nom","type","ville","pays","tel","email","site","adresse","prix","devise","fret","douane","moq","delai","pv","qualite","fiabilite","statut","avisUrl","notes"];
+  var head=["Produit","Fournisseur","Type","Ville","Pays","Telephone","Email","Site","Adresse","Prix","Devise","Fret/piece","Douane %","Qte mini","Delai","Prix vente","Qualite","Fiabilite","Statut","Avis","Notes","Cout rendu MAD"];
+  var lines=[head.join(";")];
+  carnetTrie().forEach(function(f){
+    var row=cols.map(function(c){ return '"'+String(f[c]==null?"":f[c]).replace(/"/g,'""')+'"'; });
+    row.push('"'+coutRendu(f).toFixed(2)+'"');
+    lines.push(row.join(";"));
+  });
+  return "\uFEFF"+lines.join("\r\n");
+}
+function telecharger(nom,data,mime){
+  useCap("downloads").then(function(d){
+    if(d) return d.save({filename:nom,data:data}).then(function(){ toast("Fichier proposé au téléchargement"); });
+    var b=new Blob([data],{type:mime||"text/plain;charset=utf-8"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download=nom;
+    document.body.appendChild(a); a.click(); a.remove(); toast("Fichier généré");
+  }).catch(function(){ toast("Téléchargement refusé"); });
+}
+function exportCSV(){
+  if(!state.carnet.length){ toast("Le carnet est vide"); return; }
+  telecharger("carnet-fournisseurs.csv", csvCarnet(), "text/csv;charset=utf-8");
+}
+function exportJSON(){ telecharger("comptoir-cod-sauvegarde.json", JSON.stringify(state,null,2), "application/json"); }
+function importer(file){
+  if(!file) return;
+  var r=new FileReader();
+  r.onload=function(){
+    var d=null;
+    try{ d=JSON.parse(String(r.result)); }catch(e){}
+    if(!d || !d.v){ toast("Fichier illisible : attendu un export JSON de cette app"); return; }
+    var n=(d.carnet||[]).length;
+    if(state.carnet.length && !window.confirm("Remplacer le carnet actuel ("+state.carnet.length+") par celui du fichier ("+n+") ?")) return;
+    state.carnet = d.carnet || [];
+    if(d.reglages) Object.keys(d.reglages).forEach(function(k){ state.reglages[k]=d.reglages[k]; });
+    if(d.trad) state.trad=d.trad;
+    if(d.calc) state.calc=d.calc;
+    persist(); render();
+    toast(n+" fournisseur"+(n>1?"s":"")+" import"+(n>1?"és":"é"));
+  };
+  r.onerror=function(){ toast("Lecture du fichier impossible"); };
+  r.readAsText(file);
+}
+
+/* ---------- publication ---------- */
+function buildDoc(){
+  var css=document.getElementById("app-css").textContent;
+  var code=document.getElementById("app-code").textContent;
+  var json=JSON.stringify(state).replace(/</g,"\\u003c");
+  return '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n'
+   + '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
+   + '<title>Comptoir COD</title>\n'
+   + '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+   + '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+   + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">\n'
+   + '<style id="app-css">'+css+'</style>\n</head>\n<body>\n<div id="root"></div>\n'
+   + '<script id="app-state" type="application/json">'+json+'<'+'/script>\n'
+   + '<script id="app-code">'+code+'<'+'/script>\n</body>\n</html>';
+}
+function sauver(){
+  persist(); render();
+  useCap("artifact").then(function(a){
+    if(!a){
+      toast(ui.store===false
+        ? "Ce navigateur refuse d" + Q + "enregistrer : exportez la sauvegarde JSON"
+        : "Enregistré dans ce navigateur");
+      return;
+    }
+    return a.publish(buildDoc()).then(function(){ toast("Enregistré dans la page"); });
+  }).catch(function(e){
+    toast(e && e.code==="conflict" ? "Une version plus récente existe" : "Enregistré dans ce navigateur seulement");
+  });
+}
+
+/* ============================ DÉMARRAGE ============================ */
+document.addEventListener("keydown", function(e){
+  if(e.key==="Escape" && ui.modal){ ui.modal=null; ui.edit=null; render(); }
+});
+ui.store = storageOK();
+render();
+useCap("artifact").then(function(a){ ui.local = !a; render(); });
+})();
+</script>
+
+</body></html>

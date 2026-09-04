@@ -1,0 +1,1844 @@
+{
+ "cats": [
+  {
+   "id": "maison",
+   "n": "Maison & cuisine",
+   "kw": [
+    "maison",
+    "cuisine",
+    "ustensile",
+    "casserole",
+    "poele",
+    "vaisselle",
+    "assiette",
+    "verre",
+    "tapis",
+    "rideau",
+    "nappe",
+    "menage",
+    "nettoyage",
+    "balai",
+    "serpillere",
+    "cintre",
+    "salle de bain",
+    "douche",
+    "robinet",
+    "dar",
+    "matbakh",
+    "kitchen",
+    "home"
+   ]
+  },
+  {
+   "id": "rangement",
+   "n": "Rangement & organisation",
+   "kw": [
+    "rangement",
+    "organiseur",
+    "boite",
+    "panier",
+    "etagere",
+    "tiroir",
+    "sac sous vide",
+    "support",
+    "crochet",
+    "placard",
+    "storage",
+    "organizer"
+   ]
+  },
+  {
+   "id": "beaute",
+   "n": "Beauté & cosmétique",
+   "kw": [
+    "beaute",
+    "cosmetique",
+    "creme",
+    "serum",
+    "maquillage",
+    "rouge a levres",
+    "parfum",
+    "shampoing",
+    "masque",
+    "cheveux",
+    "ongle",
+    "vernis",
+    "henne",
+    "ghassoul",
+    "argan",
+    "savon",
+    "peau",
+    "beauty",
+    "skincare"
+   ]
+  },
+  {
+   "id": "appareils",
+   "n": "Appareils de beauté",
+   "kw": [
+    "epilateur",
+    "lisseur",
+    "boucleur",
+    "seche cheveux",
+    "tondeuse",
+    "rasoir",
+    "brosse chauffante",
+    "massage",
+    "masseur",
+    "led",
+    "luminotherapie",
+    "microneedling",
+    "derma",
+    "appareil"
+   ]
+  },
+  {
+   "id": "bebe",
+   "n": "Bébé & enfant",
+   "kw": [
+    "bebe",
+    "enfant",
+    "biberon",
+    "couche",
+    "poussette",
+    "siege auto",
+    "jouet bebe",
+    "tapis eveil",
+    "chauffe biberon",
+    "tire lait",
+    "baby",
+    "kids",
+    "sadr"
+   ]
+  },
+  {
+   "id": "auto",
+   "n": "Auto & moto",
+   "kw": [
+    "auto",
+    "voiture",
+    "moto",
+    "tapis voiture",
+    "housse",
+    "support telephone voiture",
+    "chargeur voiture",
+    "aspirateur voiture",
+    "led voiture",
+    "car",
+    "tomobil"
+   ]
+  },
+  {
+   "id": "tech",
+   "n": "Téléphonie & tech",
+   "kw": [
+    "telephone",
+    "portable",
+    "coque",
+    "chargeur",
+    "cable",
+    "ecouteur",
+    "casque",
+    "airpods",
+    "montre connectee",
+    "smartwatch",
+    "powerbank",
+    "batterie",
+    "enceinte",
+    "bluetooth",
+    "camera",
+    "tablette",
+    "phone",
+    "tech"
+   ]
+  },
+  {
+   "id": "fitness",
+   "n": "Fitness & sport",
+   "kw": [
+    "fitness",
+    "sport",
+    "musculation",
+    "haltere",
+    "tapis yoga",
+    "elastique",
+    "corde a sauter",
+    "velo",
+    "abdo",
+    "ceinture",
+    "gym",
+    "riyada"
+   ]
+  },
+  {
+   "id": "animal",
+   "n": "Animalerie",
+   "kw": [
+    "chien",
+    "chat",
+    "animal",
+    "laisse",
+    "gamelle",
+    "litiere",
+    "aquarium",
+    "oiseau",
+    "pet",
+    "brosse poils"
+   ]
+  },
+  {
+   "id": "sante",
+   "n": "Santé & bien-être",
+   "kw": [
+    "sante",
+    "orthopedique",
+    "genouillere",
+    "ceinture lombaire",
+    "tensiometre",
+    "thermometre",
+    "inhalateur",
+    "correcteur posture",
+    "semelle",
+    "coussin",
+    "sommeil",
+    "anti ronflement",
+    "health"
+   ]
+  },
+  {
+   "id": "mode",
+   "n": "Textile & mode",
+   "kw": [
+    "vetement",
+    "robe",
+    "djellaba",
+    "caftan",
+    "abaya",
+    "jelaba",
+    "pyjama",
+    "tshirt",
+    "pantalon",
+    "jean",
+    "veste",
+    "manteau",
+    "hijab",
+    "foulard",
+    "tissu",
+    "textile",
+    "confection",
+    "lingerie",
+    "fashion",
+    "kswa"
+   ]
+  },
+  {
+   "id": "chaussure",
+   "n": "Chaussures & maroquinerie",
+   "kw": [
+    "chaussure",
+    "basket",
+    "sandale",
+    "babouche",
+    "cuir",
+    "sac a main",
+    "portefeuille",
+    "ceinture cuir",
+    "valise",
+    "cartable",
+    "sabot",
+    "shoes",
+    "bag"
+   ]
+  },
+  {
+   "id": "bijoux",
+   "n": "Bijoux & accessoires",
+   "kw": [
+    "bijou",
+    "bague",
+    "collier",
+    "bracelet",
+    "boucle",
+    "montre",
+    "lunette",
+    "accessoire",
+    "argent",
+    "plaque or",
+    "jewelry"
+   ]
+  },
+  {
+   "id": "jouet",
+   "n": "Jouets & loisirs",
+   "kw": [
+    "jouet",
+    "jeu",
+    "puzzle",
+    "peluche",
+    "lego",
+    "voiture telecommandee",
+    "drone",
+    "ballon",
+    "coloriage",
+    "toy",
+    "game",
+    "l3ba"
+   ]
+  },
+  {
+   "id": "bureau",
+   "n": "Papeterie & bureau",
+   "kw": [
+    "papeterie",
+    "cahier",
+    "stylo",
+    "bureau",
+    "fourniture scolaire",
+    "cartable",
+    "imprimante",
+    "agenda",
+    "rentree",
+    "school",
+    "office"
+   ]
+  },
+  {
+   "id": "electro",
+   "n": "Électroménager",
+   "kw": [
+    "electromenager",
+    "mixeur",
+    "blender",
+    "friteuse",
+    "air fryer",
+    "cafetiere",
+    "bouilloire",
+    "robot",
+    "aspirateur",
+    "ventilateur",
+    "chauffage",
+    "micro onde",
+    "machine a laver",
+    "hachoir",
+    "presse agrumes"
+   ]
+  },
+  {
+   "id": "outil",
+   "n": "Outillage & quincaillerie",
+   "kw": [
+    "outil",
+    "outillage",
+    "perceuse",
+    "visseuse",
+    "tournevis",
+    "cle",
+    "quincaillerie",
+    "bricolage",
+    "peinture",
+    "led panneau",
+    "electricite",
+    "plomberie",
+    "tools"
+   ]
+  },
+  {
+   "id": "pack",
+   "n": "Emballage & packaging",
+   "kw": [
+    "emballage",
+    "packaging",
+    "carton",
+    "sachet",
+    "boite carton",
+    "etiquette",
+    "scotch",
+    "sticker",
+    "papier bulle",
+    "flacon",
+    "pot",
+    "pompe",
+    "bouteille",
+    "tube"
+   ]
+  },
+  {
+   "id": "agro",
+   "n": "Alimentaire & épicerie",
+   "kw": [
+    "alimentaire",
+    "epice",
+    "miel",
+    "huile",
+    "dattes",
+    "the",
+    "cafe",
+    "fruit sec",
+    "amande",
+    "olive",
+    "conserve",
+    "complement",
+    "food",
+    "3sel",
+    "zit"
+   ]
+  },
+  {
+   "id": "terroir",
+   "n": "Terroir & artisanat",
+   "kw": [
+    "artisanat",
+    "terroir",
+    "poterie",
+    "zellige",
+    "tapis berbere",
+    "vannerie",
+    "dinanderie",
+    "cooperative",
+    "argan bio",
+    "amlou",
+    "safran",
+    "souvenir",
+    "handmade",
+    "artisan"
+   ]
+  },
+  {
+   "id": "deco",
+   "n": "Décoration & luminaire",
+   "kw": [
+    "decoration",
+    "deco",
+    "lampe",
+    "luminaire",
+    "veilleuse",
+    "guirlande",
+    "cadre",
+    "miroir",
+    "horloge",
+    "plante artificielle",
+    "bougie",
+    "tableau",
+    "neon",
+    "light"
+   ]
+  },
+  {
+   "id": "saison",
+   "n": "Saisonnier & religieux",
+   "kw": [
+    "ramadan",
+    "aid",
+    "achoura",
+    "mariage",
+    "rentree",
+    "noel",
+    "cadeau",
+    "tapis priere",
+    "chapelet",
+    "coran",
+    "fanous",
+    "decoration ramadan",
+    "aid al adha"
+   ]
+  }
+ ],
+ "types": [
+  {
+   "id": "hub",
+   "n": "Marché / quartier de gros"
+  },
+  {
+   "id": "usine",
+   "n": "Usine / fabricant"
+  },
+  {
+   "id": "b2b",
+   "n": "Marketplace B2B"
+  },
+  {
+   "id": "annonces",
+   "n": "Petites annonces"
+  },
+  {
+   "id": "annuaire",
+   "n": "Annuaire d'entreprises"
+  },
+  {
+   "id": "social",
+   "n": "Réseaux sociaux"
+  },
+  {
+   "id": "foire",
+   "n": "Foire / salon"
+  },
+  {
+   "id": "dropship",
+   "n": "Dropshipping / stock local"
+  },
+  {
+   "id": "repere",
+   "n": "Repère de prix (détail)"
+  }
+ ],
+ "sources": [
+  {
+   "id": "derbomar",
+   "n": "Derb Omar",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.8,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "Au carton",
+   "lang": "fr",
+   "d": "Le plus grand quartier de gros du Maroc : environ 10 000 boutiques et 40 000 commerçants, dont près de la moitié importent eux-mêmes (autour de 240 conteneurs par jour).",
+   "f": [
+    "Tout se trouve sur place, sans import ni douane",
+    "Achat au carton : pas de commande conteneur",
+    "Prix qui se négocient, surtout en cash et en fin de journée"
+   ],
+   "a": [
+    "Qualité très variable d'une boutique à l'autre : toujours ouvrir le carton",
+    "Exiger une facture avec ICE, beaucoup vendent sans",
+    "Les meilleurs prix sont dans les rues intérieures, pas sur les façades"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+gros+Derb+Omar+Casablanca",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Derb+Omar+Casablanca"
+   }
+  },
+  {
+   "id": "garageallal",
+   "n": "Garage Allal",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "mode",
+    "chaussure",
+    "bijoux",
+    "saison"
+   ],
+   "idx": 1.75,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "Au lot",
+   "lang": "fr",
+   "d": "Marché de gros historique du prêt-à-porter, des chaussures et des accessoires, voisin de Derb Omar.",
+   "f": [
+    "Lots de vêtements et chaussures à prix bas",
+    "Renouvellement rapide des modèles",
+    "Possibilité d'acheter par tailles assorties"
+   ],
+   "a": [
+    "Beaucoup de fins de série : le réassort n'est pas garanti",
+    "Vérifier les coutures et les tailles réelles avant de prendre un lot"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+gros+Garage+Allal+Casablanca",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Garage+Allal+Casablanca"
+   }
+  },
+  {
+   "id": "derbghallef",
+   "n": "Kissariat Derb Ghallef",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "tech",
+    "electro",
+    "jouet",
+    "outil"
+   ],
+   "idx": 1.9,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "À l'unité / carton",
+   "lang": "fr",
+   "d": "Le marché de référence pour la téléphonie, l'informatique et les accessoires électroniques, en gros comme au détail.",
+   "f": [
+    "Accessoires téléphone et tech à prix cassés",
+    "On peut tester le produit sur place",
+    "Réassort possible à l'unité"
+   ],
+   "a": [
+    "Beaucoup de copies et de reconditionné vendus pour du neuf",
+    "Garantie rarement écrite : demander un bon avec cachet",
+    "Comparer 3 boutiques, l'écart de prix va du simple au double"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+Derb+Ghallef+Casablanca",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Derb+Ghallef+Casablanca"
+   }
+  },
+  {
+   "id": "korea",
+   "n": "Marché Korea",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "beaute",
+    "bijoux",
+    "deco",
+    "jouet",
+    "maison"
+   ],
+   "idx": 1.85,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "Au carton",
+   "lang": "fr",
+   "d": "Marché de gros du bazar, de la cosmétique d'import et des accessoires, dans le prolongement de Derb Omar.",
+   "f": [
+    "Cosmétique et accessoires en petites quantités",
+    "Bon pour tester un produit avant d'importer"
+   ],
+   "a": [
+    "Cosmétique d'import : vérifier l'étiquetage et la date de péremption",
+    "Attention aux contrefaçons de marques"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+march%C3%A9+Korea+Casablanca",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Marche+Korea+Casablanca"
+   }
+  },
+  {
+   "id": "babmarrakech",
+   "n": "Bab Marrakech",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "maison",
+    "deco",
+    "jouet",
+    "saison",
+    "bureau",
+    "rangement"
+   ],
+   "idx": 1.9,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "Au carton",
+   "lang": "fr",
+   "d": "Bazar de gros de la médina de Casablanca : articles de maison, jouets, saisonnier, décoration.",
+   "f": [
+    "Très fort sur le saisonnier (Ramadan, Aïd, rentrée)",
+    "Petites quantités acceptées"
+   ],
+   "a": [
+    "Peu de factures",
+    "Les prix montent fortement à l'approche des fêtes : acheter en avance"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+gros+Bab+Marrakech+Casablanca",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Bab+Marrakech+Casablanca"
+   }
+  },
+  {
+   "id": "casabarata",
+   "n": "Casabarata",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Tanger",
+   "pays": "Maroc",
+   "cats": [
+    "mode",
+    "chaussure",
+    "maison",
+    "tech",
+    "jouet"
+   ],
+   "idx": 1.75,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "Au lot",
+   "lang": "fr",
+   "d": "Grand marché de gros du Nord, alimenté par la proximité de l'Espagne et de Tanger Med.",
+   "f": [
+    "Arrivages européens plus fréquents qu'ailleurs",
+    "Intéressant si vous êtes dans le Nord : pas de transport Casablanca"
+   ],
+   "a": [
+    "Origine des marchandises pas toujours claire : demander la facture",
+    "Stock irrégulier, difficile de bâtir un réassort dessus"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+gros+Casabarata+Tanger",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Casabarata+Tanger"
+   }
+  },
+  {
+   "id": "marchegros",
+   "n": "Marché de gros",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Casablanca / villes",
+   "pays": "Maroc",
+   "cats": [
+    "agro"
+   ],
+   "idx": 1.4,
+   "qual": 3,
+   "delai": "Immédiat",
+   "moq": "Au colis",
+   "lang": "fr",
+   "d": "Marchés de gros municipaux : fruits, légumes, fruits secs, épices. Le prix de référence de l'alimentaire frais au Maroc.",
+   "f": [
+    "Prix producteur, sans intermédiaire",
+    "Volumes disponibles toute l'année"
+   ],
+   "a": [
+    "Produits périssables : incompatible avec un délai de livraison COD long",
+    "Vente très tôt le matin"
+   ],
+   "s": "https://www.google.com/maps/search/march%C3%A9+de+gros+{q}",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/marche+de+gros+Casablanca"
+   }
+  },
+  {
+   "id": "ainsebaa",
+   "n": "Zone industrielle Aïn Sebaâ / Sidi Bernoussi",
+   "t": "usine",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "pack",
+    "maison",
+    "agro",
+    "beaute",
+    "outil",
+    "rangement"
+   ],
+   "idx": 1.3,
+   "qual": 3,
+   "delai": "7 à 21 jours",
+   "moq": "Élevé",
+   "lang": "fr",
+   "d": "Le premier bassin industriel du pays : plasturgie, emballage, agroalimentaire, produits d'entretien, cosmétique à façon.",
+   "f": [
+    "Fabrication locale : pas de douane, pas de délai maritime",
+    "Possibilité de faire produire sous votre marque",
+    "Facture et ICE systématiques"
+   ],
+   "a": [
+    "MOQ souvent élevé (plusieurs milliers de pièces)",
+    "Il faut un cahier des charges écrit",
+    "Compter un moule ou un outillage pour du sur-mesure"
+   ],
+   "s": "https://www.google.com/maps/search/usine+{q}+A%C3%AFn+Sebaa+Casablanca",
+   "av": {
+    "t": "Registre : vérifier ICE et RC",
+    "u": "https://www.google.com/search?q=v%C3%A9rifier+ICE+entreprise+Maroc"
+   }
+  },
+  {
+   "id": "confection",
+   "n": "Ateliers de confection",
+   "t": "usine",
+   "m": "ma",
+   "ville": "Casablanca, Fès, Tanger",
+   "pays": "Maroc",
+   "cats": [
+    "mode",
+    "chaussure"
+   ],
+   "idx": 1.4,
+   "qual": 3,
+   "delai": "10 à 30 jours",
+   "moq": "50 à 300 pièces",
+   "lang": "fr",
+   "d": "Ateliers de façon textile (Aïn Sebaâ, Hay Mohammadi, médina de Fès, zone de Tanger) qui produisent à partir de votre modèle et de votre tissu.",
+   "f": [
+    "MOQ bas comparé à la Chine : 50 à 300 pièces",
+    "Prototype en quelques jours, corrections faciles",
+    "Réassort rapide sur un modèle qui marche"
+   ],
+   "a": [
+    "Le prix de façon se négocie à la pièce : faire chiffrer 3 ateliers",
+    "Fournir un patron et un échantillon cousu, sinon les tailles dérivent",
+    "Prévoir 5 à 10 % de pièces ratées sur la première série"
+   ],
+   "s": "https://www.google.com/maps/search/atelier+de+confection+{q}+Casablanca",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/atelier+confection+Casablanca"
+   }
+  },
+  {
+   "id": "tangermed",
+   "n": "Zone franche Tanger Med",
+   "t": "usine",
+   "m": "ma",
+   "ville": "Tanger",
+   "pays": "Maroc",
+   "cats": [
+    "mode",
+    "tech",
+    "auto",
+    "pack",
+    "outil"
+   ],
+   "idx": 1.25,
+   "qual": 4,
+   "delai": "15 à 45 jours",
+   "moq": "Très élevé",
+   "lang": "fr",
+   "d": "Usines exportatrices : textile, câblage, plasturgie, sous-traitance automobile. Pour des volumes industriels ou une production sous marque.",
+   "f": [
+    "Niveau de qualité et de certification export",
+    "Capacité de production importante"
+   ],
+   "a": [
+    "Peu adapté à un lancement COD : MOQ et engagements lourds",
+    "Beaucoup d'usines ne servent que leurs donneurs d'ordre étrangers"
+   ],
+   "s": "https://www.google.com/search?q=usine+{q}+Tanger+Free+Zone+fournisseur",
+   "av": {
+    "t": "AMDIE / annuaires industriels",
+    "u": "https://www.google.com/search?q=annuaire+industriel+Tanger+Free+Zone"
+   }
+  },
+  {
+   "id": "fes",
+   "n": "Médina de Fès & Aïn Nokbi",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Fès",
+   "pays": "Maroc",
+   "cats": [
+    "terroir",
+    "chaussure",
+    "deco",
+    "maison"
+   ],
+   "idx": 1.5,
+   "qual": 3,
+   "delai": "3 à 15 jours",
+   "moq": "Faible",
+   "lang": "fr",
+   "d": "Le pôle artisanal du cuir, de la babouche, de la dinanderie, de la poterie et du zellige. Les tanneries et ateliers ont été regroupés à Aïn Nokbi.",
+   "f": [
+    "Savoir-faire unique, produit non copiable par un concurrent",
+    "Petites séries possibles",
+    "Argument « fait main au Maroc » pour l'export"
+   ],
+   "a": [
+    "Qualité liée à l'artisan, pas à l'atelier : garder le même",
+    "Délais artisanaux, à sécuriser par écrit",
+    "Négocier le prix hors circuit touristique"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+artisan+F%C3%A8s",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/artisanat+Fes+Ain+Nokbi"
+   }
+  },
+  {
+   "id": "sidighanem",
+   "n": "Sidi Ghanem",
+   "t": "usine",
+   "m": "ma",
+   "ville": "Marrakech",
+   "pays": "Maroc",
+   "cats": [
+    "deco",
+    "terroir",
+    "beaute",
+    "maison"
+   ],
+   "idx": 1.6,
+   "qual": 4,
+   "delai": "7 à 30 jours",
+   "moq": "Moyen",
+   "lang": "fr",
+   "d": "Zone industrielle et créative de Marrakech : ateliers de décoration, cosmétique naturelle, textile de maison, souvent tournés vers l'export.",
+   "f": [
+    "Finition supérieure à la moyenne du marché",
+    "Habitude des standards export et de l'étiquetage",
+    "Beaucoup d'ateliers acceptent la marque blanche"
+   ],
+   "a": [
+    "Prix plus élevés que Derb Omar : viser le haut de gamme, pas l'impulsion à 149 MAD",
+    "Vérifier la capacité de réassort avant de lancer la pub"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+Sidi+Ghanem+Marrakech",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Sidi+Ghanem+Marrakech"
+   }
+  },
+  {
+   "id": "souhad",
+   "n": "Souk El Had",
+   "t": "hub",
+   "m": "ma",
+   "ville": "Agadir",
+   "pays": "Maroc",
+   "cats": [
+    "agro",
+    "terroir",
+    "beaute",
+    "maison"
+   ],
+   "idx": 1.6,
+   "qual": 2,
+   "delai": "Immédiat",
+   "moq": "Faible",
+   "lang": "fr",
+   "d": "L'un des plus grands souks du pays : épices, argan, produits du terroir, artisanat, bazar.",
+   "f": [
+    "Porte d'entrée vers les coopératives du Souss",
+    "Prix bas sur l'épicerie et le terroir"
+   ],
+   "a": [
+    "Beaucoup de revendeurs se présentent comme producteurs : demander à voir l'unité",
+    "Huile d'argan : exiger une analyse et un lot"
+   ],
+   "s": "https://www.google.com/maps/search/{q}+Souk+El+Had+Agadir",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Souk+El+Had+Agadir"
+   }
+  },
+  {
+   "id": "coop",
+   "n": "Coopératives (argan, safran, ghassoul…)",
+   "t": "usine",
+   "m": "ma",
+   "ville": "Souss-Massa, Atlas",
+   "pays": "Maroc",
+   "cats": [
+    "terroir",
+    "beaute",
+    "agro"
+   ],
+   "idx": 1.35,
+   "qual": 3,
+   "delai": "5 à 20 jours",
+   "moq": "Faible à moyen",
+   "lang": "fr",
+   "d": "Coopératives et groupements de producteurs, recensés notamment par l'ODCO. Source directe pour l'argan, l'amlou, le safran, le miel, le ghassoul.",
+   "f": [
+    "Prix producteur et histoire de marque authentique",
+    "Éligible aux circuits export et aux labels",
+    "Petites quantités possibles"
+   ],
+   "a": [
+    "Vérifier l'agrément ONSSA pour tout ce qui se mange ou s'applique sur la peau",
+    "Capacité limitée : une pub qui marche peut vider la coopérative",
+    "Demander une analyse laboratoire par lot"
+   ],
+   "s": "https://www.google.com/search?q=coop%C3%A9rative+{q}+Maroc+contact",
+   "av": {
+    "t": "ODCO / registre des coopératives",
+    "u": "http://www.odco.gov.ma/"
+   }
+  },
+  {
+   "id": "avito",
+   "n": "Avito.ma",
+   "t": "annonces",
+   "m": "ma",
+   "ville": "Tout le Maroc",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2.2,
+   "qual": 2,
+   "delai": "1 à 5 jours",
+   "moq": "Aucun",
+   "lang": "fr",
+   "d": "Le site d'annonces le plus utilisé du pays. La rubrique « Stocks et vente en gros » est remplie de grossistes et de destockeurs joignables par téléphone.",
+   "f": [
+    "Numéro de téléphone direct, réponse en quelques minutes",
+    "Beaucoup de destockage à prix bas",
+    "Gratuit et sans intermédiaire"
+   ],
+   "a": [
+    "Aucune vérification des vendeurs : ne jamais payer d'avance à distance",
+    "Photos souvent reprises d'AliExpress : demander une photo réelle avec la date",
+    "Privilégier une rencontre ou un paiement à la livraison"
+   ],
+   "s": "https://www.avito.ma/fr/maroc/%C3%A0_vendre?q={q}",
+   "dom": "avito.ma",
+   "av": {
+    "t": "Ancienneté du profil vendeur",
+    "u": "https://www.avito.ma/fr/casablanca/derb_omar/stocks_et_vente_en_gros-%C3%A0_vendre"
+   }
+  },
+  {
+   "id": "jemla",
+   "n": "JemlaMaroc",
+   "t": "b2b",
+   "m": "ma",
+   "ville": "Casablanca + 40 villes",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2,
+   "qual": 2,
+   "delai": "2 à 7 jours",
+   "moq": "Variable",
+   "lang": "fr",
+   "d": "Marketplace de mise en relation avec des grossistes marocains présentés comme vérifiés, sur une quarantaine de villes.",
+   "f": [
+    "Recherche par catégorie et par ville",
+    "Contact direct avec le fournisseur, sans commission"
+   ],
+   "a": [
+    "« Vérifié » veut dire inscrit, pas audité : refaire vos contrôles",
+    "Comparer le prix affiché avec celui obtenu de vive voix à Derb Omar"
+   ],
+   "s": "",
+   "dom": "jemlamaroc.com",
+   "av": {
+    "t": "Fiche fournisseur sur la plateforme",
+    "u": "https://jemlamaroc.com/"
+   }
+  },
+  {
+   "id": "egro",
+   "n": "eGRO",
+   "t": "b2b",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "tech",
+    "maison",
+    "beaute",
+    "auto",
+    "jouet",
+    "fitness",
+    "rangement",
+    "deco"
+   ],
+   "idx": 2,
+   "qual": 2,
+   "delai": "2 à 7 jours",
+   "moq": "Faible",
+   "lang": "fr",
+   "d": "Marketplace de gros orientée e-commerce, alimentée par des vendeurs de Derb Omar, Derb Sultan et Garage Allal.",
+   "f": [
+    "Catalogue pensé pour les produits qui se vendent en ligne",
+    "Prix affichés : utile pour cadrer une négociation"
+   ],
+   "a": [
+    "Marge d'intermédiation possible face au même vendeur en direct",
+    "Vérifier le stock réel avant de lancer une campagne"
+   ],
+   "s": "https://egro.ma/search?q={q}",
+   "dom": "egro.ma",
+   "av": {
+    "t": "Fiche vendeur",
+    "u": "https://egro.ma/"
+   }
+  },
+  {
+   "id": "3awnin",
+   "n": "3awninl9a",
+   "t": "b2b",
+   "m": "ma",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2.05,
+   "qual": 2,
+   "delai": "2 à 7 jours",
+   "moq": "Variable",
+   "lang": "fr",
+   "d": "Place de marché marocaine d'achat en gros, orientée revendeurs et e-commerçants.",
+   "f": [
+    "Interface en français, catalogue local",
+    "Contact rapide des vendeurs"
+   ],
+   "a": [
+    "Catalogue plus restreint que les marchés physiques",
+    "Toujours demander un échantillon avant une commande de volume"
+   ],
+   "s": "",
+   "dom": "3awninl9a.com",
+   "av": {
+    "t": "Fiche vendeur",
+    "u": "https://3awninl9a.com/"
+   }
+  },
+  {
+   "id": "evollume",
+   "n": "Evollume Marketplace",
+   "t": "b2b",
+   "m": "ma",
+   "ville": "Maroc / Afrique",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2.05,
+   "qual": 2,
+   "delai": "3 à 10 jours",
+   "moq": "Variable",
+   "lang": "fr",
+   "d": "Marketplace B2B marocaine ouverte sur l'Afrique, pour l'achat et la vente en gros entre professionnels.",
+   "f": [
+    "Ouverture sur des fournisseurs africains",
+    "Demandes de devis groupées"
+   ],
+   "a": [
+    "Vérifier que le vendeur a un stock au Maroc, sinon les délais tuent le COD"
+   ],
+   "s": "",
+   "dom": "evollume.com",
+   "av": {
+    "t": "Profil entreprise",
+    "u": "https://www.evollume.com/marketplace/"
+   }
+  },
+  {
+   "id": "dropma",
+   "n": "Fournisseurs COD avec stock au Maroc",
+   "t": "dropship",
+   "m": "ma",
+   "ville": "Casablanca principalement",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2.4,
+   "qual": 2,
+   "delai": "24 à 72 h",
+   "moq": "1 pièce",
+   "lang": "fr",
+   "d": "Sociétés qui stockent au Maroc et expédient à votre place, commande par commande, avec encaissement COD. Le marché bouge vite : la recherche ouvre les offres actuelles.",
+   "f": [
+    "Aucune trésorerie immobilisée en stock",
+    "Expédition en 24-72 h, taux de refus mieux maîtrisé",
+    "Idéal pour tester un produit avant d'acheter un carton"
+   ],
+   "a": [
+    "Le prix unitaire est le plus élevé de toute la filière : marge COD très serrée",
+    "Vous ne contrôlez ni la qualité ni le stock réel : commander 1 pièce chez soi d'abord",
+    "Fuir toute société qui demande un abonnement avant la moindre commande"
+   ],
+   "s": "https://www.google.com/search?q=fournisseur+dropshipping+{q}+stock+Maroc+COD+livraison",
+   "av": {
+    "t": "Groupes Facebook e-commerce Maroc",
+    "u": "https://www.facebook.com/search/groups/?q=dropshipping%20maroc"
+   }
+  },
+  {
+   "id": "kerix",
+   "n": "Kerix.net",
+   "t": "annuaire",
+   "m": "ma",
+   "ville": "Tout le Maroc",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": null,
+   "qual": 3,
+   "delai": "—",
+   "moq": "—",
+   "lang": "fr",
+   "d": "Annuaire des entreprises marocaines par activité. Sert à remonter jusqu'au fabricant ou à l'importateur officiel plutôt qu'au revendeur.",
+   "f": [
+    "Trouve les fabricants qui n'ont ni site ni réseaux sociaux",
+    "Recherche par secteur d'activité"
+   ],
+   "a": [
+    "Fiches parfois anciennes : vérifier le numéro avant de vous déplacer"
+   ],
+   "s": "",
+   "dom": "kerix.net",
+   "av": {
+    "t": "Recouper avec l'ICE et le registre du commerce",
+    "u": "https://www.google.com/search?q=v%C3%A9rifier+ICE+entreprise+Maroc"
+   }
+  },
+  {
+   "id": "telecontact",
+   "n": "Telecontact.ma",
+   "t": "annuaire",
+   "m": "ma",
+   "ville": "Tout le Maroc",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": null,
+   "qual": 3,
+   "delai": "—",
+   "moq": "—",
+   "lang": "fr",
+   "d": "Les pages jaunes marocaines : coordonnées, adresses et plans des professionnels, ville par ville.",
+   "f": [
+    "Couverture des petites villes",
+    "Numéros fixes vérifiables"
+   ],
+   "a": [
+    "Beaucoup de détaillants mélangés aux grossistes : filtrer par activité"
+   ],
+   "s": "",
+   "dom": "telecontact.ma",
+   "av": {
+    "t": "Avis Google Maps de l'adresse",
+    "u": "https://www.google.com/maps"
+   }
+  },
+  {
+   "id": "fbgroups",
+   "n": "Groupes Facebook de grossistes",
+   "t": "social",
+   "m": "ma",
+   "ville": "Tout le Maroc",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2.1,
+   "qual": 1,
+   "delai": "1 à 5 jours",
+   "moq": "Faible",
+   "lang": "fr",
+   "d": "Les groupes « jomla / جملة » et les groupes e-commerce marocains sont la place où circulent les arrivages et les destockages, souvent avant tout le monde.",
+   "f": [
+    "Arrivages annoncés en temps réel",
+    "On voit les retours des autres vendeurs sur un fournisseur"
+   ],
+   "a": [
+    "Terrain d'arnaques : jamais d'avance par virement à un inconnu",
+    "Vérifier l'ancienneté du compte et demander des références",
+    "Les prix annoncés en public sont rarement les vrais prix"
+   ],
+   "s": "https://www.facebook.com/search/groups/?q={q}%20gros%20maroc",
+   "av": {
+    "t": "Réputation dans le groupe",
+    "u": "https://www.facebook.com/search/groups/?q=grossiste%20maroc"
+   }
+  },
+  {
+   "id": "insta",
+   "n": "Instagram — comptes grossistes",
+   "t": "social",
+   "m": "ma",
+   "ville": "Tout le Maroc",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 2.1,
+   "qual": 1,
+   "delai": "1 à 5 jours",
+   "moq": "Faible",
+   "lang": "fr",
+   "d": "Beaucoup de grossistes marocains n'ont qu'un compte Instagram et un WhatsApp. Ils publient les arrivages en story.",
+   "f": [
+    "Catalogue visuel à jour",
+    "WhatsApp direct dans la bio"
+   ],
+   "a": [
+    "Photos volées fréquentes : demander une vidéo du stock",
+    "Aucune traçabilité : exiger une facture à la commande"
+   ],
+   "s": "https://www.instagram.com/explore/search/keyword/?q={q}%20gros%20maroc",
+   "av": {
+    "t": "Commentaires et mentions",
+    "u": "https://www.instagram.com/"
+   }
+  },
+  {
+   "id": "jumia",
+   "n": "Jumia.ma",
+   "t": "repere",
+   "m": "ma",
+   "ville": "Tout le Maroc",
+   "pays": "Maroc",
+   "cats": [
+    "tous"
+   ],
+   "idx": 3.2,
+   "qual": 2,
+   "delai": "—",
+   "moq": "—",
+   "lang": "fr",
+   "d": "Ce n'est pas un fournisseur : c'est le plafond de prix. Si votre prix COD dépasse celui de Jumia, le client compare et annule.",
+   "f": [
+    "Donne le prix public à ne pas dépasser",
+    "Les avis clients y sont réels et utiles pour repérer les défauts d'un produit"
+   ],
+   "a": [
+    "Ne jamais s'approvisionner ici pour revendre : marge impossible"
+   ],
+   "s": "https://www.jumia.ma/catalog/?q={q}",
+   "dom": "jumia.ma",
+   "av": {
+    "t": "Avis clients Jumia",
+    "u": "https://www.jumia.ma/"
+   }
+  },
+  {
+   "id": "1688",
+   "n": "1688.com",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Chine",
+   "pays": "Chine",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1,
+   "qual": 2,
+   "delai": "25 à 45 j (mer)",
+   "moq": "Moyen",
+   "lang": "zh",
+   "d": "Le marché de gros intérieur chinois, en chinois : c'est là que les vendeurs Alibaba et AliExpress s'approvisionnent. Les prix les plus bas de la filière.",
+   "f": [
+    "Prix usine réels, souvent 30 à 50 % sous Alibaba",
+    "Choix immense sur tout produit de grande consommation"
+   ],
+   "a": [
+    "Site en chinois et paiement local : il faut un agent ou un service de transit",
+    "Ne livre pas à l'étranger : prévoir un entrepôt de groupage en Chine",
+    "Vérifier l'ancienneté du vendeur et le taux de retour affichés"
+   ],
+   "s": "https://s.1688.com/selloffer/offer_search.htm?keywords={q}",
+   "dom": "1688.com",
+   "av": {
+    "t": "Note et taux de litige du vendeur",
+    "u": "https://www.1688.com/"
+   }
+  },
+  {
+   "id": "alibaba",
+   "n": "Alibaba.com",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Chine et Asie",
+   "pays": "International",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.15,
+   "qual": 3,
+   "delai": "20 à 45 j (mer) / 7 à 12 j (air)",
+   "moq": "Moyen à élevé",
+   "lang": "en",
+   "d": "La référence mondiale du sourcing usine, en anglais, avec paiement sécurisé Trade Assurance et notation des fournisseurs.",
+   "f": [
+    "Trade Assurance : remboursement si la marchandise ne correspond pas",
+    "Devis personnalisés via la demande RFQ",
+    "Échantillons payants faciles à obtenir"
+   ],
+   "a": [
+    "Filtrer sur Verified Supplier + Trade Assurance + plusieurs années d'ancienneté",
+    "Le prix affiché n'est jamais le prix final : toujours négocier par message",
+    "Ne jamais payer hors plateforme, même avec une remise promise"
+   ],
+   "s": "https://www.alibaba.com/trade/search?SearchText={q}",
+   "dom": "alibaba.com",
+   "av": {
+    "t": "Note fournisseur + avis de transactions",
+    "u": "https://www.alibaba.com/"
+   }
+  },
+  {
+   "id": "madeinchina",
+   "n": "Made-in-China.com",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Chine",
+   "pays": "Chine",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.15,
+   "qual": 3,
+   "delai": "20 à 45 jours",
+   "moq": "Moyen à élevé",
+   "lang": "en",
+   "d": "Annuaire d'usines chinoises avec audits par tiers, plus orienté industrie et équipement qu'Alibaba.",
+   "f": [
+    "Fournisseurs audités identifiés",
+    "Bon sur l'outillage, l'électroménager, les pièces"
+   ],
+   "a": [
+    "Moins de petits MOQ qu'Alibaba",
+    "Demander systématiquement les certificats (CE, RoHS) en PDF"
+   ],
+   "s": "https://www.made-in-china.com/productdirectory.html?word={q}",
+   "dom": "made-in-china.com",
+   "av": {
+    "t": "Rapport d'audit fournisseur",
+    "u": "https://www.made-in-china.com/"
+   }
+  },
+  {
+   "id": "globalsources",
+   "n": "Global Sources",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Hong Kong / Chine",
+   "pays": "Chine",
+   "cats": [
+    "tech",
+    "electro",
+    "auto",
+    "appareils",
+    "outil"
+   ],
+   "idx": 1.2,
+   "qual": 3,
+   "delai": "20 à 45 jours",
+   "moq": "Moyen",
+   "lang": "en",
+   "d": "Plateforme historique orientée électronique et high-tech, adossée à des salons professionnels à Hong Kong.",
+   "f": [
+    "Fournisseurs sérieux sur l'électronique",
+    "Fiches techniques détaillées"
+   ],
+   "a": [
+    "Catalogue plus étroit hors électronique",
+    "Prix rarement affichés : passer par la demande de devis"
+   ],
+   "s": "https://www.globalsources.com/searchList/products?keyWord={q}",
+   "dom": "globalsources.com",
+   "av": {
+    "t": "Vérification fournisseur de la plateforme",
+    "u": "https://www.globalsources.com/"
+   }
+  },
+  {
+   "id": "yiwugo",
+   "n": "Yiwugo (marché de Yiwu)",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Yiwu",
+   "pays": "Chine",
+   "cats": [
+    "deco",
+    "jouet",
+    "bijoux",
+    "saison",
+    "bureau",
+    "maison",
+    "pack"
+   ],
+   "idx": 1.05,
+   "qual": 2,
+   "delai": "20 à 40 jours",
+   "moq": "Faible",
+   "lang": "en",
+   "d": "Le catalogue en ligne du marché de Yiwu, plus grand marché de petits articles au monde : cadeaux, décoration, saisonnier, bijouterie fantaisie.",
+   "f": [
+    "MOQ très bas : quelques cartons suffisent",
+    "Idéal pour le saisonnier et l'article d'impulsion",
+    "Groupage facile avec d'autres acheteurs"
+   ],
+   "a": [
+    "Qualité d'entrée de gamme : contrôler avant expédition",
+    "Descriptions approximatives : demander photos et vidéo du lot"
+   ],
+   "s": "",
+   "dom": "yiwugo.com",
+   "av": {
+    "t": "Ancienneté de la boutique du marché",
+    "u": "https://www.yiwugo.com/"
+   }
+  },
+  {
+   "id": "aliexpress",
+   "n": "AliExpress",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Chine",
+   "pays": "Chine",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.6,
+   "qual": 2,
+   "delai": "10 à 30 jours",
+   "moq": "1 pièce",
+   "lang": "en",
+   "d": "Pour l'échantillon, pas pour le stock. Une pièce commandée ici vous dit si le produit tient la route avant d'engager un carton.",
+   "f": [
+    "Commande à l'unité, sans négociation",
+    "Avis clients avec photos : une mine pour repérer les défauts",
+    "Sert de comparateur de prix de détail mondial"
+   ],
+   "a": [
+    "Prix unitaire trop élevé pour du COD en volume",
+    "Délai incompatible avec une livraison en 48 h"
+   ],
+   "s": "https://www.aliexpress.com/wholesale?SearchText={q}",
+   "dom": "aliexpress.com",
+   "av": {
+    "t": "Avis clients avec photos",
+    "u": "https://www.aliexpress.com/"
+   }
+  },
+  {
+   "id": "dhgate",
+   "n": "DHgate",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Chine",
+   "pays": "Chine",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.5,
+   "qual": 2,
+   "delai": "10 à 30 jours",
+   "moq": "Petits lots",
+   "lang": "en",
+   "d": "Intermédiaire entre AliExpress et Alibaba : petits lots de gros, souvent 10 à 50 pièces, paiement sécurisé.",
+   "f": [
+    "Lots de test à prix dégressif",
+    "Paiement protégé"
+   ],
+   "a": [
+    "Contrefaçons nombreuses sur certaines catégories : à éviter pour les marques"
+   ],
+   "s": "https://www.dhgate.com/wholesale/search.do?searchkey={q}",
+   "dom": "dhgate.com",
+   "av": {
+    "t": "Note vendeur et historique",
+    "u": "https://www.dhgate.com/"
+   }
+  },
+  {
+   "id": "indiamart",
+   "n": "IndiaMART",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Inde",
+   "pays": "Inde",
+   "cats": [
+    "mode",
+    "terroir",
+    "agro",
+    "beaute",
+    "bijoux",
+    "maison",
+    "pack",
+    "outil"
+   ],
+   "idx": 1.25,
+   "qual": 2,
+   "delai": "20 à 40 jours",
+   "moq": "Moyen",
+   "lang": "en",
+   "d": "Le plus grand annuaire B2B indien : textile, cuivre et laiton, cosmétique ayurvédique, épices, emballage.",
+   "f": [
+    "Alternative à la Chine sur le textile et la cosmétique naturelle",
+    "Fabricants joignables directement par téléphone"
+   ],
+   "a": [
+    "Beaucoup d'intermédiaires se déclarent fabricants : demander photos de l'usine",
+    "Qualité très inégale : l'échantillon est obligatoire"
+   ],
+   "s": "https://dir.indiamart.com/search.mp?ss={q}",
+   "dom": "indiamart.com",
+   "av": {
+    "t": "Statut TrustSEAL / années d'activité",
+    "u": "https://www.indiamart.com/"
+   }
+  },
+  {
+   "id": "cobo",
+   "n": "Cobo Calleja (Madrid)",
+   "t": "hub",
+   "m": "intl",
+   "ville": "Fuenlabrada, Madrid",
+   "pays": "Espagne",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.5,
+   "qual": 2,
+   "delai": "5 à 12 jours",
+   "moq": "Au carton",
+   "lang": "es",
+   "d": "Le plus grand pôle de grossistes chinois d'Europe. Beaucoup de commerçants marocains s'y approvisionnent et rapatrient par camion via Tanger Med.",
+   "f": [
+    "Marchandise chinoise sans attendre 40 jours de mer",
+    "Achat au carton, sans conteneur",
+    "Marchandise déjà dédouanée en Europe"
+   ],
+   "a": [
+    "Il faut y aller ou passer par un transitaire de confiance",
+    "Prix supérieur à la Chine directe : intéressant surtout pour le réassort rapide",
+    "Contrôler les droits et la TVA à l'entrée au Maroc"
+   ],
+   "s": "https://www.google.com/search?q={q}+mayorista+Cobo+Calleja+Fuenlabrada",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Cobo+Calleja+Fuenlabrada"
+   }
+  },
+  {
+   "id": "dragonmart",
+   "n": "Dragon Mart (Dubaï)",
+   "t": "hub",
+   "m": "intl",
+   "ville": "Dubaï",
+   "pays": "Émirats",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.55,
+   "qual": 2,
+   "delai": "7 à 20 jours",
+   "moq": "Au carton",
+   "lang": "en",
+   "d": "Le plus grand centre de commerce chinois hors de Chine : deux kilomètres de grossistes, utile si vous visez aussi le Golfe.",
+   "f": [
+    "Réassort rapide vers l'Afrique et le Golfe",
+    "Négociation directe, sans barrière de langue (anglais)"
+   ],
+   "a": [
+    "Prix au-dessus de la Chine directe",
+    "Fret aérien cher : à réserver aux articles à forte valeur"
+   ],
+   "s": "https://www.google.com/search?q={q}+wholesale+Dragon+Mart+Dubai",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Dragon+Mart+Dubai"
+   }
+  },
+  {
+   "id": "turquie",
+   "n": "Laleli / Osmanbey (Istanbul)",
+   "t": "hub",
+   "m": "intl",
+   "ville": "Istanbul",
+   "pays": "Turquie",
+   "cats": [
+    "mode",
+    "chaussure",
+    "bijoux",
+    "maison",
+    "beaute"
+   ],
+   "idx": 1.4,
+   "qual": 3,
+   "delai": "7 à 15 jours",
+   "moq": "Faible à moyen",
+   "lang": "en",
+   "d": "Le quartier du gros textile turc, référence pour la mode femme, la modest fashion et la maille de qualité moyenne-haute.",
+   "f": [
+    "Qualité de confection nettement au-dessus de l'entrée de gamme chinoise",
+    "Délais courts vers le Maroc",
+    "MOQ accessibles (souvent 10 à 30 pièces par modèle)"
+   ],
+   "a": [
+    "Prix plus élevés : viser un positionnement à partir de 299-399 MAD",
+    "Vérifier les droits de douane textile à l'import au Maroc"
+   ],
+   "s": "https://www.google.com/search?q={q}+wholesale+Laleli+Istanbul+supplier",
+   "av": {
+    "t": "Avis Google Maps",
+    "u": "https://www.google.com/maps/search/Laleli+Istanbul+wholesale"
+   }
+  },
+  {
+   "id": "ankorstore",
+   "n": "Ankorstore",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "Europe",
+   "pays": "Europe",
+   "cats": [
+    "deco",
+    "beaute",
+    "maison",
+    "bijoux",
+    "agro",
+    "bebe",
+    "terroir"
+   ],
+   "idx": 2.2,
+   "qual": 4,
+   "delai": "5 à 15 jours",
+   "moq": "Bas (dès 100 €)",
+   "lang": "fr",
+   "d": "Marketplace de gros des marques européennes indépendantes : cosmétique, épicerie fine, décoration, papeterie.",
+   "f": [
+    "Produits de marque, très bonne qualité perçue",
+    "MOQ bas et paiement à 60 jours pour les revendeurs"
+   ],
+   "a": [
+    "Prix incompatibles avec le COD d'impulsion : positionnement premium uniquement",
+    "Import Europe : droits et TVA à intégrer"
+   ],
+   "s": "https://www.ankorstore.com/search?q={q}",
+   "dom": "ankorstore.com",
+   "av": {
+    "t": "Note de la marque sur la plateforme",
+    "u": "https://www.ankorstore.com/"
+   }
+  },
+  {
+   "id": "faire",
+   "n": "Faire",
+   "t": "b2b",
+   "m": "intl",
+   "ville": "USA / Europe",
+   "pays": "International",
+   "cats": [
+    "deco",
+    "terroir",
+    "beaute",
+    "bijoux",
+    "bebe",
+    "maison"
+   ],
+   "idx": 2.3,
+   "qual": 4,
+   "delai": "7 à 21 jours",
+   "moq": "Bas",
+   "lang": "en",
+   "d": "Équivalent américain d'Ankorstore. Sert aussi dans l'autre sens : c'est là que vous pouvez vendre en gros vos produits marocains à des boutiques étrangères.",
+   "f": [
+    "Qualité et image de marque",
+    "Débouché export pour l'artisanat marocain"
+   ],
+   "a": [
+    "Prix d'achat élevés pour une revente COD au Maroc"
+   ],
+   "s": "https://www.faire.com/search?q={q}",
+   "dom": "faire.com",
+   "av": {
+    "t": "Avis boutiques acheteuses",
+    "u": "https://www.faire.com/"
+   }
+  },
+  {
+   "id": "canton",
+   "n": "Foire de Canton",
+   "t": "foire",
+   "m": "intl",
+   "ville": "Guangzhou",
+   "pays": "Chine",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1,
+   "qual": 3,
+   "delai": "Selon production",
+   "moq": "Négociable sur place",
+   "lang": "en",
+   "d": "La plus grande foire commerciale du monde, deux sessions par an (avril et octobre). On y rencontre les usines en direct, sans intermédiaire.",
+   "f": [
+    "Prix usine négociés en face à face",
+    "On touche et on compare les échantillons",
+    "Souvent des MOQ assouplis pour un premier contact"
+   ],
+   "a": [
+    "Voyage et visa à prévoir : rentable à partir d'un certain volume",
+    "Y aller avec une liste de produits et un budget arrêté"
+   ],
+   "s": "https://www.google.com/search?q=Canton+Fair+{q}+exhibitors",
+   "av": {
+    "t": "Liste officielle des exposants",
+    "u": "https://www.cantonfair.org.cn/"
+   }
+  },
+  {
+   "id": "yiwumarket",
+   "n": "Marché de Futian (Yiwu)",
+   "t": "foire",
+   "m": "intl",
+   "ville": "Yiwu",
+   "pays": "Chine",
+   "cats": [
+    "deco",
+    "jouet",
+    "bijoux",
+    "saison",
+    "bureau",
+    "maison",
+    "pack"
+   ],
+   "idx": 1,
+   "qual": 2,
+   "delai": "Selon groupage",
+   "moq": "Très faible",
+   "lang": "en",
+   "d": "75 000 stands de petits articles ouverts toute l'année. Le point de départ de la plupart des produits d'impulsion vendus en COD.",
+   "f": [
+    "Le prix plancher mondial sur le petit article",
+    "Groupage et transit organisés sur place",
+    "MOQ minuscules par référence"
+   ],
+   "a": [
+    "Qualité d'entrée de gamme : inspection avant expédition indispensable",
+    "Sans agent, la logistique devient vite ingérable"
+   ],
+   "s": "https://www.google.com/search?q=Yiwu+market+{q}+supplier",
+   "av": {
+    "t": "Agents et forums d'acheteurs",
+    "u": "https://www.google.com/search?q=Yiwu+market+agent+reviews"
+   }
+  },
+  {
+   "id": "agent",
+   "n": "Agent de sourcing en Chine",
+   "t": "foire",
+   "m": "intl",
+   "ville": "Guangzhou / Yiwu / Shenzhen",
+   "pays": "Chine",
+   "cats": [
+    "tous"
+   ],
+   "idx": 1.1,
+   "qual": 3,
+   "delai": "Selon production",
+   "moq": "Négocié",
+   "lang": "en",
+   "d": "Un agent achète sur 1688 à votre place, contrôle la marchandise, groupe et expédie. Commission habituelle de 3 à 8 % de la valeur.",
+   "f": [
+    "Ouvre l'accès aux prix 1688 sans parler chinois",
+    "Contrôle qualité avant expédition : le poste le plus rentable du sourcing",
+    "Groupage de plusieurs fournisseurs en un envoi"
+   ],
+   "a": [
+    "Demander des références vérifiables auprès d'autres e-commerçants",
+    "Cadrer la commission par écrit, commission sur la valeur et non sur le fret",
+    "Commencer par une petite commande de test"
+   ],
+   "s": "https://www.google.com/search?q=sourcing+agent+China+{q}+quality+control+reviews",
+   "av": {
+    "t": "Références clients à demander",
+    "u": "https://www.google.com/search?q=china+sourcing+agent+reviews"
+   }
+  }
+ ]
+}

@@ -1,0 +1,1070 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Radar Produit COD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F1F4F4; --surface:#FFFFFF; --surface-2:#E8EDED; --surface-3:#DDE5E5;
+  --line:#D5DEDE; --line-strong:#B4C1C1;
+  --ink:#111F1E; --ink-2:#485B5A; --ink-3:#7A8C8B;
+  --accent:#0F6E6E; --accent-2:#0B5555; --accent-soft:#DBEDEC; --on-accent:#FFFFFF;
+  --gold:#8E6A17; --gold-soft:#F3E7C6;
+  --good:#1C7548; --good-soft:#DCEFE4;
+  --warn:#8F5C00; --warn-soft:#F6E8CE;
+  --bad:#A8362A; --bad-soft:#F6DFDB;
+  --shadow:0 1px 2px rgba(17,31,30,.06),0 8px 24px -12px rgba(17,31,30,.18);
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1312; --surface:#121D1C; --surface-2:#192625; --surface-3:#22322F;
+    --line:#243231; --line-strong:#354746;
+    --ink:#E5EDEC; --ink-2:#9AAEAC; --ink-3:#6B807F;
+    --accent:#3EBCB3; --accent-2:#5FD3CA; --accent-soft:#0F312E; --on-accent:#04211F;
+    --gold:#D6B159; --gold-soft:#2E2712;
+    --good:#4BC287; --good-soft:#0E2C1F;
+    --warn:#E0A63C; --warn-soft:#2E2412;
+    --bad:#F0705C; --bad-soft:#331715;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1312; --surface:#121D1C; --surface-2:#192625; --surface-3:#22322F;
+  --line:#243231; --line-strong:#354746;
+  --ink:#E5EDEC; --ink-2:#9AAEAC; --ink-3:#6B807F;
+  --accent:#3EBCB3; --accent-2:#5FD3CA; --accent-soft:#0F312E; --on-accent:#04211F;
+  --gold:#D6B159; --gold-soft:#2E2712;
+  --good:#4BC287; --good-soft:#0E2C1F;
+  --warn:#E0A63C; --warn-soft:#2E2412;
+  --bad:#F0705C; --bad-soft:#331715;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;text-wrap:balance;margin:0}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+a{color:var(--accent);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1360px;margin:0 auto;padding:0 20px 70px}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:40}
+.top-in{max-width:1360px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;margin-right:auto}
+.brand h1{font-size:19px;font-weight:800;letter-spacing:-.022em}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.brand small{color:var(--ink-3);font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:600}
+.btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;padding:7px 13px;font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:7px;transition:background .13s ease,border-color .13s ease}
+.btn:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+
+.intro{padding:26px 0 4px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:30px;align-items:end}
+.intro p{margin:0;color:var(--ink-2);max-width:62ch}
+.intro h2{font-size:clamp(25px,3.3vw,37px);font-weight:700;letter-spacing:-.026em;line-height:1.08;margin-bottom:10px}
+.intro h2 em{font-style:normal;color:var(--accent)}
+.disclaimer{border-left:3px solid var(--warn);background:var(--warn-soft);color:var(--ink);padding:11px 14px;border-radius:0 8px 8px 0;font-size:12.5px;line-height:1.5}
+.disclaimer b{font-weight:600}
+
+.mktsel{width:auto;flex:0 0 auto;background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600;padding:6px 9px;border-radius:8px}
+.mktcard{margin-top:20px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;background:var(--surface);padding:13px 16px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.mktcard{grid-template-columns:1fr;gap:12px}}
+.mktcard .zone{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:700}
+.mktcard h3{font-size:17px;font-weight:700;letter-spacing:-.015em;margin:2px 0 5px}
+.mktcard p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.5;max-width:60ch}
+.mktfacts{display:flex;flex-wrap:wrap;gap:6px 20px}
+.mktfacts div{min-width:104px}
+.mktfacts .k{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:700}
+.mktfacts .v{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.mktwarn{margin-top:8px;font-size:11.5px;color:var(--warn);line-height:1.45}
+
+.cmp{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-strong);grid-column:1/-1}
+.cmp table{min-width:640px;width:100%}
+.cmp th{position:static;background:transparent;border-bottom:1px solid var(--line);padding:5px 8px;font-size:9.5px}
+.cmp td{padding:5px 8px;border-bottom:1px dashed var(--line);font-size:12px}
+.cmp tr.here td{background:var(--accent-soft);font-weight:600}
+.cmp .wrapx{overflow-x:auto}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:22px 0}
+.kpi{background:var(--surface);padding:12px 15px}
+.kpi .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:700}
+.kpi .v{font-size:25px;font-weight:600;letter-spacing:-.022em;margin-top:2px;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:11.5px;color:var(--ink-3)}
+
+.cols{display:grid;grid-template-columns:292px minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:960px){.cols{grid-template-columns:1fr}.intro{grid-template-columns:1fr;gap:18px}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.rail{position:sticky;top:76px;max-height:calc(100vh - 96px);overflow-y:auto}
+@media (max-width:960px){.rail{position:static;max-height:none}}
+.panel-h{padding:11px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.panel-h h3{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.panel-h .reset{margin-left:auto;font-size:11.5px;color:var(--ink-3);background:none;border:none;padding:2px 4px;text-decoration:underline}
+.panel-b{padding:14px 15px;display:flex;flex-direction:column;gap:13px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12.5px;color:var(--ink-2);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.field label .val{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--surface-3);border-radius:3px;outline-offset:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);box-shadow:0 0 0 1px var(--accent);cursor:grab}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);cursor:grab}
+input[type=number],input[type=text],select,textarea{width:100%;background:var(--ground);border:1px solid var(--line-strong);border-radius:7px;padding:7px 9px;font-size:13.5px}
+input[type=number]{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.sub{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:700;margin-top:2px}
+
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar input[type=text]{width:auto;flex:1 1 210px;min-width:170px}
+.toolbar select{width:auto;flex:0 0 auto}
+.chipbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.chip{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:1040px}
+thead th{position:sticky;top:0;background:var(--surface-2);z-index:5;font-size:10.5px;text-transform:uppercase;letter-spacing:.075em;color:var(--ink-2);font-weight:700;text-align:right;padding:9px 10px;border-bottom:1px solid var(--line-strong);white-space:nowrap}
+thead th:first-child,thead th:nth-child(2){text-align:left}
+thead th button{background:none;border:none;font:inherit;color:inherit;padding:0}
+thead th button:hover{color:var(--accent)}
+tbody td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle;font-size:13.5px}
+tbody td:first-child,tbody td:nth-child(2){text-align:left}
+tbody tr.row{cursor:pointer}
+tbody tr.row:hover{background:var(--surface-2)}
+tbody tr.row.open{background:var(--accent-soft)}
+.rank{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);width:34px}
+.rank.top{color:var(--gold);font-weight:700}
+.pname{font-weight:600;letter-spacing:-.005em;line-height:1.25}
+.pmeta{font-size:11.5px;color:var(--ink-3);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{border:1px solid var(--line-strong);border-radius:4px;padding:0 5px;font-size:10.5px;letter-spacing:.03em;color:var(--ink-2)}
+.tag.season{border-color:var(--accent);color:var(--accent)}
+.tag.mine{border-color:var(--gold);color:var(--gold)}
+.ring circle{fill:none;stroke-width:4}
+.ring .bg{stroke:var(--surface-3)}
+.scorecell{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.scorenum{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
+.verdict{display:inline-block;border-radius:5px;padding:2px 8px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.v-lancer{background:var(--good-soft);color:var(--good)}
+.v-tester{background:var(--accent-soft);color:var(--accent)}
+.v-surveiller{background:var(--warn-soft);color:var(--warn)}
+.v-ecarter{background:var(--bad-soft);color:var(--bad)}
+.pos{color:var(--good);font-weight:600}
+.neg{color:var(--bad);font-weight:600}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:12.5px}
+
+tr.detail td{padding:0;border-bottom:1px solid var(--line-strong);background:var(--surface-2)}
+.detail-in{padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr);gap:24px}
+@media (max-width:900px){.detail-in{grid-template-columns:1fr}}
+.detail-in h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:700;margin:0 0 10px}
+.crit{display:flex;flex-direction:column;gap:7px}
+.crit-row{display:grid;grid-template-columns:1fr 62px 34px;align-items:center;gap:8px;font-size:12.5px}
+.bar{height:5px;background:var(--surface-3);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.crit-row .n{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+.econ-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.econ-l b{font-family:"IBM Plex Mono",monospace;font-weight:600;font-variant-numeric:tabular-nums}
+.econ-l.tot{border-top:1px solid var(--line-strong);border-bottom:none;margin-top:5px;padding-top:8px;font-weight:600}
+.srcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(124px,1fr));gap:6px}
+.src{display:flex;align-items:center;gap:6px;border:1px solid var(--line-strong);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12px;text-decoration:none;color:var(--ink-2)}
+.src:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.src .d{width:6px;height:6px;border-radius:50%;background:var(--ink-3);flex:0 0 auto}
+.src:hover .d{background:var(--accent)}
+.note{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.detail-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+.modal{position:fixed;inset:0;background:rgba(8,18,17,.62);display:flex;align-items:flex-start;justify-content:center;padding:36px 18px;z-index:80;overflow-y:auto}
+.modal[hidden]{display:none}
+.sheet{background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;max-width:640px;width:100%;box-shadow:0 24px 60px -20px rgba(0,0,0,.5)}
+.sheet-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.sheet-h h3{font-size:16px;font-weight:700;margin-right:auto}
+.sheet-b{padding:18px;display:flex;flex-direction:column;gap:13px}
+.sheet-f{padding:13px 18px;border-top:1px solid var(--line);display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap}
+textarea{min-height:230px;font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.45;resize:vertical;white-space:pre}
+.empty{padding:44px 20px;text-align:center;color:var(--ink-3);font-size:14px}
+footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px;line-height:1.65}
+footer a{color:var(--ink-2)}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:10px 18px;border-radius:8px;font-size:13.5px;z-index:90;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.toast[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>Radar Produit COD</h1>
+      <small id="brandCur">Maroc &middot; MAD</small>
+    </div>
+    <select id="market" aria-label="Marché" class="mktsel"></select>
+    <button class="btn sm" id="btnAdd">+ Ajouter un produit</button>
+    <button class="btn sm" id="btnImport">Importer CSV</button>
+    <button class="btn primary sm" id="btnExport">Exporter</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="intro">
+    <div>
+      <h2>Quels produits méritent <em>ton budget pub</em> ce mois-ci&nbsp;?</h2>
+      <p>Chaque candidat est noté sur huit critères de produit gagnant COD, puis passé au modèle
+      économique du marché choisi&nbsp;: taux de confirmation, refus à la livraison, frais de retour, coût par lead.
+      Neuf marchés couverts, du Maroc au Nigeria en passant par le Golfe et l'Europe de l'Est —
+      un même produit ne vaut pas le même effort partout. Le score bouge quand tu changes tes hypothèses, c'est le but.</p>
+    </div>
+    <div class="disclaimer">
+      <b>Lis ceci avant de commander du stock.</b> Les prix d'achat et de vente sont des
+      <b>estimations de cadrage</b> issues de la recherche de marché, pas des devis fournisseurs.
+      Les notes de critères sont un jugement éditorial. Les liens sources ouvrent la recherche
+      live sur chaque plateforme — vérifie prix, MOQ et concurrence toi-même avant d'engager.
+    </div>
+  </section>
+
+  <section class="mktcard" id="mktcard"></section>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="cols">
+    <aside class="panel rail">
+      <div class="panel-h"><h3>Modèle économique</h3><button class="reset" id="resetEcon">défaut</button></div>
+      <div class="panel-b" id="econBox"></div>
+      <div class="panel-h"><h3>Poids des critères</h3><button class="reset" id="resetW">défaut</button></div>
+      <div class="panel-b" id="wBox"></div>
+    </aside>
+
+    <main>
+      <div class="toolbar">
+        <input type="text" id="q" placeholder="Chercher un produit…" aria-label="Chercher un produit">
+        <select id="fCat" aria-label="Catégorie"></select>
+        <select id="fSeason" aria-label="Saison"></select>
+        <select id="sort" aria-label="Trier">
+          <option value="score">Trier : score</option>
+          <option value="marge">Trier : marge / livraison</option>
+          <option value="margePct">Trier : marge %</option>
+          <option value="prix">Trier : prix de vente</option>
+          <option value="cplMax">Trier : CPL max</option>
+          <option value="nom">Trier : nom</option>
+        </select>
+      </div>
+      <div class="chipbar" id="chips"></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th></th><th>Produit</th><th>Score</th><th>Verdict</th>
+            <th>Prix</th><th>Coût</th><th>Markup</th>
+            <th>Marge / livr.</th><th>Marge&nbsp;%</th><th>CPL max</th><th>Net / 100 leads</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="empty" hidden>Aucun produit ne correspond à ces filtres.</div>
+      <footer>
+        <p><b>Comment lire les colonnes.</b>
+        <b>Marge&nbsp;/&nbsp;livr.</b> = bénéfice net par commande <i>effectivement livrée et encaissée</i>, après produit, livraison, retours et publicité.
+        <b>CPL max</b> = le coût par lead au-delà duquel le produit passe en perte — c'est ton plafond d'enchère.
+        <b>Net&nbsp;/&nbsp;100&nbsp;leads</b> = résultat d'un test de 100 commandes brutes aux hypothèses du panneau de gauche.
+        Ouvre une ligne pour voir le même produit chiffré sur les neuf marchés, comparé en USD.</p>
+        <p><b>Taux de change au 25 août 2026</b>, figés dans la page&nbsp;: 1 USD = 9,16 MAD · 3,6725 AED · 3,75 SAR · 0,858 EUR ·
+        4,5397 RON · 3,6927 PLN · 562,8 XOF · 1 347,2 NGN. Le franc CFA est arrimé à l'euro à 655,957 XOF.
+        Recalcule tes marges si le change bouge, en particulier sur le naira.</p>
+        <p><b>Sources de la recherche&nbsp;:</b>
+        <a href="https://www.overviewdata.io/en/top-selling-products/top-selling-products-in-morocco" target="_blank" rel="noopener">OverviewData Maroc</a> ·
+        <a href="https://www.overviewdata.io/en/ecommerce-how-to/cod-product-research" target="_blank" rel="noopener">Critères COD</a> ·
+        <a href="https://www.sellthetrend.com/blog/trending-products-for-dropshipping" target="_blank" rel="noopener">Sell The Trend</a> ·
+        <a href="https://alidropship.com/top-aliexpress-best-sellers/" target="_blank" rel="noopener">AliDropship</a> ·
+        <a href="https://fr.accio.com/business/best-selling-products-in-morocco-2026" target="_blank" rel="noopener">Accio Maroc</a> ·
+        <a href="https://codrocket.com/fr/blog/how-to-start-cod-ecommerce-business" target="_blank" rel="noopener">CODRocket</a> ·
+        <a href="https://www.egrow.com/en/blog/trending-products-cod-morocco-2026" target="_blank" rel="noopener">eGrow COD Maroc</a></p>
+        <p><b>Marchés internationaux&nbsp;:</b>
+        <a href="https://www.swftbox.com/swftblogger/uae-ecommerce-reality-2026" target="_blank" rel="noopener">Swftbox Émirats</a> ·
+        <a href="https://www.egrow.com/en/blog/saudi-arabia-ecommerce-cod-guide-2026" target="_blank" rel="noopener">eGrow Arabie saoudite</a> ·
+        <a href="https://www.codrocket.com/blog/cod-ecommerce-saudi-arabia-uae" target="_blank" rel="noopener">CODRocket Golfe</a> ·
+        <a href="https://inventoryflow.co/mena-courier-rates-uae-saudi-arabia/" target="_blank" rel="noopener">Tarifs transporteurs MENA</a> ·
+        <a href="https://www.europship.com/guide/cod-couriers-europe" target="_blank" rel="noopener">Europship — transporteurs COD Europe de l'Est</a> ·
+        <a href="https://tech.eu/2026/07/07/why-cash-on-delivery-still-works-in-europe/" target="_blank" rel="noopener">Tech.eu — le COD en Europe</a> ·
+        <a href="https://easysellapp.com/blogs/wiki/ivory-coast-ecommerce-cod-shopify-market-entry-2026" target="_blank" rel="noopener">EasySell Côte d'Ivoire</a> ·
+        <a href="https://allbusiness.africa/insights/african-last-mile-delivery-ecommerce" target="_blank" rel="noopener">Logistique dernier kilomètre en Afrique</a> ·
+        <a href="https://www.imf.org/external/np/fin/data/rms_mth.aspx?reportType=REP" target="_blank" rel="noopener">FMI — taux de change</a></p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   1. CATALOGUE — candidats issus de la recherche de marché.
+   Notes de critères sur 10. "conc" = saturation locale (10 = rouge vif).
+   Prix et coûts en MAD, estimations de cadrage.
+   ============================================================ */
+const P = (id,nom,cat,saison,prix,cout,poids,c,qFr,qEn,note) => ({
+  id,nom,cat,saison,prix,cout,poids,
+  wow:c[0],pb:c[1],ads:c[2],conc:c[3],log:c[4],nouv:c[5],
+  qFr,qEn,note,seed:true
+});
+
+const SEED = [
+  /* ---- Auto : plus forte croissance + faible saturation au Maroc ---- */
+  P("au1","Organisateur vide-poche de siège","Auto","Toute l'année",149,35,320,[6,9,8,5,9,5],
+    "organisateur siege voiture","car seat gap organizer",
+    "Catégorie auto = plus forte croissance e-commerce marocaine avec faible saturation sur les solutions de rangement. Marge constatée jusqu'à 60%."),
+  P("au2","Coussin masseur cervical chauffant","Auto","Hiver",349,95,780,[8,9,8,6,7,6],
+    "masseur cervical chauffant voiture","neck massager heated shiatsu",
+    "Déjà listé sur Jumia MA — donc demande prouvée, mais vérifie le prix plancher local avant de te positionner."),
+  P("au3","Déflecteur de climatiseur","Auto","Été",129,22,180,[5,8,7,3,10,7],
+    "deflecteur climatiseur","air conditioner deflector",
+    "106 annonces actives détectées sur le Maroc avec faible saturation. Produit ultra-léger : logistique COD idéale."),
+  P("au4","Essuie-glace arrière universel","Auto","Hiver",99,18,150,[3,8,6,4,10,3],
+    "essuie glace arriere universel","universal rear wiper blade",
+    "2,1 M de ventes mensuelles côté sourcing. Prix bas : à vendre en pack de 2 pour tenir la marge COD."),
+  P("au5","Kit anti-rayures et polissage","Auto","Toute l'année",189,35,420,[7,9,7,4,9,6],
+    "kit polissage rayures voiture","car scratch repair polishing kit",
+    "Effet avant/après très démontrable en vidéo — le format qui convertit le mieux en COD."),
+  P("au6","Aspirateur de voiture sans fil","Auto","Toute l'année",259,70,650,[7,8,7,6,8,5],
+    "aspirateur voiture sans fil","cordless car vacuum cleaner",
+    "Démo satisfaisante à filmer. Attention au SAV batterie : privilégie un fournisseur avec garantie."),
+  P("au7","Support téléphone magnétique voiture","Auto","Toute l'année",129,22,120,[5,7,7,8,10,3],
+    "support telephone magnetique voiture","magnetic car phone holder",
+    "Marché saturé : n'y va que sur un angle bundle (support + chargeur) ou passe ton tour."),
+  P("au8","Décoration LED cœur pour voiture","Auto","Toute l'année",149,25,200,[9,3,7,4,10,8],
+    "lumiere led coeur voiture","LED car heart light",
+    "250 M+ de vues TikTok sur le format déco LED auto. Achat 100% impulsion, zéro problème résolu."),
+
+  /* ---- Maison & Cuisine ---- */
+  P("mc1","Tapis chauffant pliable pour plats","Maison & Cuisine","Hiver",349,85,900,[8,9,9,3,7,8],
+    "tapis chauffant pliable plats","foldable food warming mat",
+    "Signalé comme tendance de rupture pour l'hiver : garde le repas chaud sur la table, pensé pour les grandes tablées familiales."),
+  P("mc2","Hachoir à légumes 4-en-1","Maison & Cuisine","Toute l'année",199,45,560,[8,9,8,7,8,4],
+    "hachoir legumes multifonction","vegetable chopper 4 in 1",
+    "Best-seller Amazon durable (4,4★, 10 000+ avis). Très filmable, mais beaucoup de vendeurs locaux : joue sur le pack."),
+  P("mc3","Étagère à épices rotative","Maison & Cuisine","Toute l'année",249,60,1100,[8,8,8,4,6,7],
+    "etagere epices rotative","rotating spice rack organizer",
+    "Recherches +34% sur l'année ; le rangement maison est un marché de 13,5 Md$. Volumineux : surveille le coût de transport."),
+  P("mc4","Lunch box électrique chauffante","Maison & Cuisine","Rentrée",289,75,850,[7,9,8,5,7,6],
+    "lunch box electrique chauffante","electric heated lunch box",
+    "Cible nette : salariés et étudiants qui déjeunent au bureau. Pic à la rentrée de septembre."),
+  P("mc5","Mini blender portable rechargeable","Maison & Cuisine","Été",249,65,600,[8,7,8,6,8,5],
+    "blender portable rechargeable","portable blender juicer usb",
+    "S'aligne sur la tendance alimentation saine. Démo smoothie = vidéo publicitaire quasi automatique."),
+  P("mc6","Organisateur modulaire de placard","Maison & Cuisine","Toute l'année",179,40,700,[6,8,7,5,8,5],
+    "organisateur placard modulaire","modular closet organizer",
+    "Le rangement domestique domine TikTok en 2026 — contenu avant/après très performant."),
+  P("mc7","Lampe murale LED effet ondulation","Maison & Cuisine","Toute l'année",229,50,480,[9,4,8,4,8,8],
+    "lampe murale led ondulation","ripple wall light led",
+    "300 M+ de vues sur le format. Purement décoratif : la vidéo fait tout le travail de vente."),
+  P("mc8","Stickers muraux géométriques 3D","Maison & Cuisine","Toute l'année",149,28,250,[7,5,7,4,10,6],
+    "stickers muraux geometriques 3d","geometric wall stickers peel stick",
+    "Marché du peel-and-stick à 9,1 Md$, +19% par an. Ultra-léger et incassable : le rêve logistique du COD."),
+  P("mc9","Bandeau LED intelligent (app)","Maison & Cuisine","Toute l'année",149,32,220,[8,4,8,8,10,3],
+    "ruban led connecte application","smart led strip lights app",
+    "Demande forte mais concurrence lourde, y compris en magasin physique. Marge tenable seulement en pack de 10 m."),
+
+  /* ---- Beauté & Soins ---- */
+  P("bs1","Brosse vaporisateur cheveux 2-en-1","Beauté & Soins","Toute l'année",199,45,280,[9,8,9,5,9,8],
+    "brosse cheveux vaporisateur","water spray hair brush 2 in 1",
+    "Produit viral identifié nommément dans les rapports 2026. Démo de 3 secondes : exactement le format COD."),
+  P("bs2","Masque LED visage","Beauté & Soins","Toute l'année",449,130,650,[9,7,8,5,7,8],
+    "masque led visage","LED face mask therapy",
+    "Le marché des appareils de beauté dépasse 80 Md$. Panier élevé : exige un script de confirmation téléphonique solide."),
+  P("bs3","Gua sha + rouleau de glace visage","Beauté & Soins","Été",149,28,300,[7,6,8,7,10,4],
+    "gua sha rouleau glace visage","gua sha ice roller face",
+    "Viral sur TikTok et Instagram, mais coût d'achat très bas donc beaucoup de vendeurs. Vends-le en coffret."),
+  P("bs4","Coffret 5 parfums femme","Beauté & Soins","Toute l'année",299,85,900,[7,6,10,3,7,6],
+    "coffret parfum femme","womens perfume gift set",
+    "424 annonces actives au Maroc en faible saturation — le signal publicitaire le plus fort du catalogue. La beauté affiche 81-85% de marge brute."),
+  P("bs5","Déodorant naturel — trio","Beauté & Soins","Été",199,50,330,[5,8,8,3,9,6],
+    "deodorant naturel bio","natural deodorant set",
+    "83 annonces actives, faible saturation. Consommable : le vrai gain est au rachat, pas à la première vente."),
+  P("bs6","Brosse corps électrique exfoliante","Beauté & Soins","Toute l'année",249,65,420,[8,7,7,4,8,7],
+    "brosse corps electrique exfoliante","electric body exfoliating brush",
+    "Recherches sur les exfoliants électriques en hausse de 48%."),
+  P("bs7","Collier prénom personnalisé (calligraphie arabe)","Mode & Accessoires","Toute l'année",199,45,90,[8,5,8,6,10,7],
+    "collier prenom personnalise arabe","arabic name necklace personalized",
+    "La calligraphie arabe personnalisée ressort en tête des données Etsy pour le Maroc. Bijoux : marge 50-65%. Délai de production à annoncer clairement."),
+
+  /* ---- Santé & Bien-être ---- */
+  P("sw1","Dentifrice blanchissant","Santé & Bien-être","Toute l'année",179,45,200,[7,8,9,3,10,7],
+    "dentifrice blanchissant dents","teeth whitening toothpaste",
+    "194 annonces actives au Maroc, faible saturation. Avant/après visuel immédiat et consommable rachetable."),
+  P("sw2","Casque LED croissance capillaire","Santé & Bien-être","Toute l'année",599,220,850,[9,9,8,2,7,9],
+    "casque led croissance cheveux","red light therapy hair growth helmet",
+    "84 annonces actives, très faible saturation, panier élevé. Attention aux promesses santé : reste factuel dans la pub."),
+  P("sw3","Patchs LED contour des yeux","Santé & Bien-être","Toute l'année",249,60,180,[9,7,8,3,10,9],
+    "patch led contour yeux","LED eye contour patches",
+    "71 annonces actives, faible saturation. Nouveauté récente sur le marché marocain."),
+  P("sw4","Masseur anti-cellulite (ventouse + rouleau)","Santé & Bien-être","Été",279,70,480,[8,8,8,3,8,7],
+    "masseur anti cellulite ventouse","anti cellulite cupping massager",
+    "65 annonces actives, faible saturation. Pic de demande avant l'été."),
+  P("sw5","Complément articulaire","Santé & Bien-être","Toute l'année",299,80,300,[4,9,9,3,9,7],
+    "complement articulations douleur","joint supplement capsules",
+    "365 annonces actives en faible saturation — deuxième plus fort signal pub du catalogue. Vérifie impérativement le cadre réglementaire des compléments avant de vendre."),
+  P("sw6","Lunettes multi-distance","Santé & Bien-être","Toute l'année",249,55,120,[6,9,10,7,10,5],
+    "lunettes multifocales progressives","multi distance vision glasses",
+    "927 annonces : demande énorme mais saturation moyenne, et la fiabilité de la donnée est signalée comme incertaine. Teste petit."),
+
+  /* ---- Tech & Gadgets ---- */
+  P("tg1","Mini projecteur portable","Tech & Gadgets","Hiver",699,280,1200,[9,7,8,7,6,5],
+    "mini projecteur portable","mini portable projector 4k",
+    "Déjà une catégorie dédiée sur Jumia MA : demande établie, donc concurrence établie aussi. Panier élevé = taux de refus supérieur."),
+  P("tg2","Caméra de fenêtre 2K sans installation","Tech & Gadgets","Toute l'année",599,210,400,[8,9,8,3,8,9],
+    "camera surveillance sans installation","window security camera no install 2k",
+    "Recherches +121% : le sans-installation vise les locataires. Niche encore ouverte au Maroc."),
+  P("tg3","Écouteurs sans fil TWS","Tech & Gadgets","Toute l'année",199,55,110,[5,6,7,10,10,2],
+    "ecouteurs bluetooth sans fil","wireless earbuds tws",
+    "Océan rouge absolu, disponible dans toutes les boutiques physiques. À éviter en produit de tête."),
+  P("tg4","Trépied magnétique smartphone","Tech & Gadgets","Toute l'année",179,38,190,[7,7,7,5,10,6],
+    "trepied magnetique telephone","magnetic phone tripod stand",
+    "Le marché des trépieds smartphone croît de 25-30% par an. Cible créateurs de contenu."),
+  P("tg5","Démarreur de batterie 7-en-1","Tech & Gadgets","Hiver",799,300,1400,[8,10,7,3,5,7],
+    "booster demarrage batterie voiture","car jump starter 7 in 1",
+    "Résout une panne réelle et urgente. Panier élevé et produit lourd : le refus à la livraison coûte cher ici."),
+  P("tg6","Kit créateur (micro-cravate + ring light)","Tech & Gadgets","Rentrée",349,110,700,[7,8,7,5,8,7],
+    "micro cravate ring light kit","lavalier mic ring light creator kit",
+    "L'équipement créateur suit l'explosion du contenu vidéo local."),
+
+  /* ---- Bébé, animaux, fitness ---- */
+  P("be1","Chauffe-biberon portable","Bébé & Enfant","Toute l'année",249,65,420,[7,10,7,4,8,6],
+    "chauffe biberon portable","portable baby bottle warmer",
+    "Écart de prix documenté : ~11$ au sourcing contre 40$+ en marché occidental. Douleur parentale forte et immédiate."),
+  P("be2","Veilleuse projecteur bébé","Bébé & Enfant","Toute l'année",229,55,380,[9,7,7,6,9,5],
+    "veilleuse projecteur bebe","baby night light projector",
+    "Effet wow visuel fort, cadeau de naissance naturel."),
+  P("an1","Griffoir en carton pour chat","Animaux","Toute l'année",149,30,900,[6,8,7,4,7,5],
+    "griffoir carton chat","cat scratching pad cardboard",
+    "Demande sur les griffoirs +31% ; le marché animalier a atteint 320 Md$ en 2025. Le marché félin marocain reste étroit — teste avant de stocker."),
+  P("an2","Collier GPS pour chien","Animaux","Toute l'année",449,150,260,[8,9,7,3,9,8],
+    "collier gps chien","gps smart dog collar",
+    "Marges vérifiées autour de 52% sur ce produit. Vérifie la couverture réseau et l'abonnement éventuel."),
+  P("fi1","Set de bandes de résistance","Fitness","Rentrée",179,40,650,[5,8,7,7,9,3],
+    "bandes de resistance fitness","resistance bands set fitness",
+    "Demande stable mais banalisée. Ne fonctionne qu'en pack complet avec guide d'exercices."),
+  P("fi2","Support téléphone magnétique de salle","Fitness","Toute l'année",149,28,160,[7,8,8,4,10,7],
+    "support telephone salle sport","gym magnetic phone mount",
+    "Recherches +63% : porté par l'explosion du contenu fitness."),
+
+  /* ---- Mode & saison ---- */
+  P("mo1","Gants chauffants pour deux-roues","Mode & Accessoires","Hiver",249,60,450,[7,10,8,3,9,7],
+    "gants chauffants moto","heated motorcycle gloves winter",
+    "Cité explicitement comme produit à lancer immédiatement au Maroc : cible les livreurs à moto, une douleur hivernale quotidienne. Vitesse publicitaire élevée à Casablanca, Rabat et Tanger."),
+  P("mo2","Sweat à capuche LED","Mode & Accessoires","Hiver",349,110,700,[9,3,7,5,8,8],
+    "sweat capuche led lumineux","LED hooded coat glow",
+    "La mode LED croît de 20% par an. Gestion des tailles = source classique de retours en COD."),
+  P("mo3","Table d'appoint pour lit et canapé","Maison & Cuisine","Toute l'année",229,60,1300,[6,9,8,3,6,6],
+    "table pliante lit canape","lap desk bed sofa table",
+    "104 annonces actives au Maroc, faible saturation. Encombrant : négocie bien le tarif de livraison.")
+];
+
+/* ============================================================
+   2. MARCHÉS — le catalogue est commun, tout le reste dépend du marché.
+   Le prix de vente est dérivé d'une base USD (prix Maroc / taux MAD)
+   multipliée par le pouvoir d'achat local, puis arrondie au prix
+   psychologique de la devise. Les taux de change sont ceux du 25 août 2026.
+   ============================================================ */
+const E_ = encodeURIComponent;
+const S = (n, f) => ({n, u:f});
+
+const GLOBAL_PLATS = [
+  S("AliExpress", q => `https://www.aliexpress.com/w/wholesale-${E_(q).replace(/%20/g,"-")}.html`),
+  S("Alibaba",    q => `https://www.alibaba.com/trade/search?SearchText=${E_(q)}`),
+  S("Amazon US",  q => `https://www.amazon.com/s?k=${E_(q)}`),
+  S("eBay",       q => `https://www.ebay.com/sch/i.html?_nkw=${E_(q)}`),
+  S("Etsy",       q => `https://www.etsy.com/search?q=${E_(q)}`),
+  S("Temu",       q => `https://www.temu.com/search_result.html?search_key=${E_(q)}`),
+  S("TikTok",     q => `https://www.tiktok.com/search?q=${E_(q)}`)
+];
+
+const MARKETS = [
+  {id:"MA", nom:"Maroc", zone:"Afrique du Nord", cur:"MAD", sym:"DH", rate:9.16, dec:0,
+   unit:10, charm:1, priceMult:1.00, landed:1.00, lang:"fr", geo:"MA",
+   cod:"80–90 %", refusTxt:"~30 %",
+   note:"Le marché de référence de ce radar : les notes de demande publicitaire ont été relevées ici. COD sur 80 à 90 % des transactions en ligne, livraison Amana ou Aramex, stockage local recommandé face au dropshipping direct.",
+   econ:{conf:60, refus:30, livr:35, retour:18, cpl:40, pmin:149, pmax:499},
+   plats:[S("Jumia MA", q => `https://www.jumia.ma/catalog/?q=${E_(q)}`),
+          S("Avito MA", q => `https://www.avito.ma/fr/maroc?q=${E_(q)}`)]},
+
+  {id:"AE", nom:"Émirats arabes unis", zone:"Golfe", cur:"AED", sym:"AED", rate:3.6725, dec:0,
+   unit:10, charm:1, priceMult:1.35, landed:0.92, lang:"en", geo:"AE",
+   cod:"25–30 %", refusTxt:"15–25 %",
+   note:"Le COD recule vite : 25 à 30 % des transactions en 2026 contre 40 % en 2022. Marché de 12,3 Md$ qui croît de 11 % par an. Un refus coûte 25 à 50 AED en aller-retour et manutention — prévois le prépaiement en option.",
+   econ:{conf:70, refus:20, livr:18, retour:35, cpl:12, pmin:79, pmax:299},
+   plats:[S("Noon AE",   q => `https://www.noon.com/uae-en/search/?q=${E_(q)}`),
+          S("Amazon AE", q => `https://www.amazon.ae/s?k=${E_(q)}`),
+          S("Dubizzle",  q => `https://uae.dubizzle.com/search/?q=${E_(q)}`)]},
+
+  {id:"SA", nom:"Arabie saoudite", zone:"Golfe", cur:"SAR", sym:"SAR", rate:3.75, dec:0,
+   unit:10, charm:1, priceMult:1.25, landed:0.95, lang:"en", geo:"SA",
+   cod:"60–70 %", refusTxt:"20–30 %",
+   note:"Le plus gros marché COD du Golfe, très au-dessus des Émirats en part de paiement à la livraison. Le vrai défi est opérationnel : taux de retour à l'expéditeur et réconciliation du cash, pas l'acquisition.",
+   econ:{conf:65, refus:25, livr:20, retour:32, cpl:14, pmin:79, pmax:349},
+   plats:[S("Noon SA",   q => `https://www.noon.com/saudi-en/search/?q=${E_(q)}`),
+          S("Amazon SA", q => `https://www.amazon.sa/s?k=${E_(q)}`),
+          S("Haraj",     q => `https://haraj.com.sa/search/${E_(q)}`)]},
+
+  {id:"IT", nom:"Italie", zone:"Europe COD", cur:"EUR", sym:"€", rate:0.858, dec:2,
+   unit:1, charm:0.1, priceMult:1.30, landed:1.15, lang:"en", geo:"IT",
+   cod:"~52 % des boutiques", refusTxt:"~18 %",
+   note:"Environ 52 % des boutiques en ligne italiennes acceptent encore le paiement à la livraison. Marché COD historique d'Europe de l'Ouest, avec un panier moyen nettement supérieur au Maghreb.",
+   econ:{conf:65, refus:18, livr:5, retour:4, cpl:4, pmin:19, pmax:79},
+   plats:[S("Amazon IT", q => `https://www.amazon.it/s?k=${E_(q)}`),
+          S("Subito",    q => `https://www.subito.it/annunci-italia/vendita/usato/?q=${E_(q)}`),
+          S("eBay IT",   q => `https://www.ebay.it/sch/i.html?_nkw=${E_(q)}`)]},
+
+  {id:"ES", nom:"Espagne", zone:"Europe COD", cur:"EUR", sym:"€", rate:0.858, dec:2,
+   unit:1, charm:0.1, priceMult:1.25, landed:1.15, lang:"en", geo:"ES",
+   cod:"donnée non relevée", refusTxt:"~20 % (estimé)",
+   warn:"Aucune donnée COD spécifique à l'Espagne n'est ressortie de la recherche : les hypothèses sont calquées sur l'Italie. Valide-les sur un premier test avant d'y engager du budget.",
+   note:"Marché latin proche de l'Italie en comportement d'achat, mais le paiement à la livraison y est moins institutionnalisé. À traiter comme une extension de l'Italie, pas comme un marché COD établi.",
+   econ:{conf:65, refus:20, livr:5, retour:4, cpl:4, pmin:19, pmax:79},
+   plats:[S("Amazon ES", q => `https://www.amazon.es/s?k=${E_(q)}`),
+          S("Wallapop",  q => `https://es.wallapop.com/app/search?keywords=${E_(q)}`)]},
+
+  {id:"RO", nom:"Roumanie", zone:"Europe COD", cur:"RON", sym:"lei", rate:4.5397, dec:0,
+   unit:10, charm:1, priceMult:1.05, landed:1.10, lang:"en", geo:"RO",
+   cod:"~51 % des commandes", refusTxt:"8–14 %",
+   note:"Le meilleur taux de livraison réussie du panel : 90 à 95 % sur les compléments, 86 à 92 % en mode, 80 à 88 % sur l'électronique au-dessus de 200 €. Le COD y est le standard des media buyers, pas une option de repli.",
+   econ:{conf:75, refus:10, livr:22, retour:16, cpl:16, pmin:89, pmax:399},
+   plats:[S("eMAG",   q => `https://www.emag.ro/search/${E_(q)}`),
+          S("OLX RO", q => `https://www.olx.ro/d/oferte/q-${E_(q)}/`)]},
+
+  {id:"PL", nom:"Pologne", zone:"Europe COD", cur:"PLN", sym:"zł", rate:3.6927, dec:0,
+   unit:10, charm:1, priceMult:1.10, landed:1.10, lang:"en", geo:"PL",
+   cod:"standard régional", refusTxt:"8–15 %",
+   note:"Fait partie du bloc Serbie–Slovaquie–Tchéquie–Hongrie–Pologne où le taux de livraison réussie tient entre 85 et 92 %. L'appel de confirmation avant expédition gagne 4 à 7 points de livraison.",
+   econ:{conf:72, refus:12, livr:18, retour:13, cpl:14, pmin:79, pmax:349},
+   plats:[S("Allegro", q => `https://allegro.pl/listing?string=${E_(q)}`),
+          S("OLX PL",  q => `https://www.olx.pl/oferty/q-${E_(q)}/`)]},
+
+  {id:"XOF", nom:"Sénégal / Côte d'Ivoire", zone:"Afrique de l'Ouest", cur:"XOF", sym:"FCFA", rate:562.8, dec:0,
+   unit:500, charm:100, priceMult:0.85, landed:1.25, lang:"fr", geo:"CI",
+   cod:"~75 % (vente sociale)", refusTxt:"30–40 %",
+   note:"En Côte d'Ivoire, environ 75 % des transactions en ligne passent encore par des vendeurs sociaux informels qui encaissent en cash. Jumia Logistics facture 1 500 à 3 000 FCFA la livraison ; Glovo couvre Abidjan en express.",
+   econ:{conf:55, refus:35, livr:2000, retour:1200, cpl:1800, pmin:9000, pmax:35000},
+   plats:[S("Jumia CI",    q => `https://www.jumia.ci/catalog/?q=${E_(q)}`),
+          S("Jumia SN",    q => `https://www.jumia.sn/catalog/?q=${E_(q)}`),
+          S("CoinAfrique", q => `https://sn.coinafrique.com/recherche?keyword=${E_(q)}`)]},
+
+  {id:"NG", nom:"Nigeria", zone:"Afrique de l'Ouest", cur:"NGN", sym:"₦", rate:1347.2, dec:0,
+   unit:500, charm:100, priceMult:0.75, landed:1.30, lang:"en", geo:"NG",
+   cod:"70 %+", refusTxt:"30–40 %",
+   warn:"Naira très volatil : recalcule la marge à chaque réassort, un mouvement de change peut effacer le bénéfice d'un lot entier.",
+   note:"Préférence COD au-dessus de 70 %. La logistique repose sur l'économie des livreurs à moto, et le problème d'adressage reste la première cause d'échec de livraison.",
+   econ:{conf:55, refus:35, livr:2500, retour:1500, cpl:3500, pmin:15000, pmax:60000},
+   plats:[S("Jumia NG", q => `https://www.jumia.com.ng/catalog/?q=${E_(q)}`),
+          S("Jiji NG",  q => `https://jiji.ng/search?query=${E_(q)}`),
+          S("Konga",    q => `https://www.konga.com/search?search=${E_(q)}`)]}
+];
+const MK = id => MARKETS.find(m => m.id === id) || MARKETS[0];
+const RATE_MA = 9.16;   // taux ayant servi à convertir le catalogue en base USD
+
+function linksFor(p, m){
+  const qLoc = m.lang === "fr" ? p.qFr : p.qEn;
+  return GLOBAL_PLATS.map(s => ({n:s.n, url:s.u(p.qEn)}))
+    .concat(m.plats.map(s => ({n:s.n, url:s.u(qLoc)})))
+    .concat([
+      {n:"Meta Ad Library", url:`https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=${m.geo}&media_type=all&q=${E_(qLoc)}`},
+      {n:"Google Trends",   url:`https://trends.google.com/trends/explore?geo=${m.geo}&q=${E_(qLoc)}`}
+    ]);
+}
+
+/* ============================================================
+   3. Hypothèses et poids
+   ============================================================ */
+const ECON_FIELDS = [
+  {k:"conf",  l:"Taux de confirmation",        u:"%", min:20, max:100, step:1},
+  {k:"refus", l:"Refus à la livraison",        u:"%", min:0,  max:60,  step:1},
+  {k:"livr",  l:"Frais de livraison encaissée", cur:true},
+  {k:"retour",l:"Frais sur commande refusée",   cur:true},
+  {k:"cpl",   l:"Coût par lead (pub)",          cur:true},
+  {k:"pmin",  l:"Bas de la zone d'impulsion",   cur:true},
+  {k:"pmax",  l:"Haut de la zone d'impulsion",  cur:true}
+];
+/* Les curseurs en devise sont bornés relativement à la valeur par défaut du marché. */
+function bounds(f, m){
+  if(!f.cur) return {min:f.min, max:f.max, step:f.step};
+  const d = m.econ[f.k];
+  const max = Math.max(d * 3, d + 10);
+  const step = m.dec ? 0.5 : max > 20000 ? 500 : max > 2000 ? 100 : max > 200 ? 5 : 1;
+  return {min:0, max:Math.ceil(max / step) * step, step};
+}
+const W_DEF = {marge:25, ads:15, wow:15, pb:12, conc:12, log:10, prix:6, nouv:5};
+const W_FIELDS = [
+  {k:"marge",l:"Marge nette après refus"},
+  {k:"ads",  l:"Preuve de demande publicitaire"},
+  {k:"wow",  l:"Effet wow / démo vidéo"},
+  {k:"pb",   l:"Résout un vrai problème"},
+  {k:"conc", l:"Concurrence locale faible"},
+  {k:"log",  l:"Léger, compact, incassable"},
+  {k:"prix", l:"Dans la zone d'impulsion"},
+  {k:"nouv", l:"Introuvable en magasin"}
+];
+
+/* ============================================================
+   4. État
+   ============================================================ */
+const LS = "radar-cod-v2";
+let state = {market:"MA", econBy:{}, w:{...W_DEF}, custom:[], open:null,
+             q:"", cat:"", season:"", verdict:"", sort:"score"};
+try{
+  const s = JSON.parse(localStorage.getItem(LS) || "null");
+  if(s){
+    state.market = MARKETS.some(m => m.id === s.market) ? s.market : "MA";
+    state.econBy = s.econBy || {}; state.w = {...W_DEF, ...s.w}; state.custom = s.custom || [];
+  }
+}catch(e){}
+const save = () => { try{ localStorage.setItem(LS, JSON.stringify(
+  {market:state.market, econBy:state.econBy, w:state.w, custom:state.custom})); }catch(e){} };
+const all = () => SEED.concat(state.custom);
+const mkt = () => MK(state.market);
+const econFor = m => ({...m.econ, ...(state.econBy[m.id] || {})});
+
+/* ============================================================
+   5. Calculs — prix et coûts dérivés d'une base USD commune
+   ============================================================ */
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+function fmt(v, m){
+  m = m || mkt();
+  const n = m.dec
+    ? (Math.round(v * 100) / 100).toLocaleString("fr-FR", {minimumFractionDigits:2, maximumFractionDigits:2})
+    : Math.round(v).toLocaleString("fr-FR");
+  return n + " " + m.sym;
+}
+const usd = v => "$" + (Math.round(v * 10) / 10).toLocaleString("fr-FR", {maximumFractionDigits:1});
+
+/* prix psychologique : on arrondit à l'unité du marché puis on retranche le charme */
+function charmPrice(v, m){
+  const r = Math.max(m.unit, Math.round(v / m.unit) * m.unit) - m.charm;
+  return m.dec ? Math.round(r * 100) / 100 : Math.round(r);
+}
+/* saisie locale → base catalogue (équivalent MAD), pour que le produit se chiffre sur tous les marchés */
+const toBase = (v, m, mult) => Math.round(v / m.rate / m[mult] * RATE_MA);
+const priceIn = (p, m) => charmPrice(p.prix / RATE_MA * m.priceMult * m.rate, m);
+const costIn  = (p, m) => {
+  const v = p.cout / RATE_MA * m.landed * m.rate;
+  return m.dec ? Math.round(v * 100) / 100 : Math.round(v);
+};
+
+function econOf(p, m){
+  m = m || mkt();
+  const E = econFor(m), leads = 100;
+  const prix = priceIn(p, m), cout = costIn(p, m);
+  const confirmed = leads * E.conf / 100;
+  const delivered = confirmed * (1 - E.refus / 100);
+  const returned  = confirmed - delivered;
+  const revenue   = delivered * prix;
+  const cogs      = delivered * cout;
+  const ship      = delivered * E.livr + returned * E.retour;
+  const adspend   = leads * E.cpl;
+  const net       = revenue - cogs - ship - adspend;
+  return {
+    m, prix, cout, leads, confirmed, delivered, returned, revenue, cogs, ship, adspend, net,
+    margeLivr: delivered ? net / delivered : 0,
+    margePct : revenue   ? net / revenue * 100 : 0,
+    cplMax   : (revenue - cogs - ship) / leads,
+    markup   : cout ? prix / cout : 0,
+    netUSD   : net / m.rate,
+    margeUSD : (delivered ? net / delivered : 0) / m.rate
+  };
+}
+
+function priceScore(prix, m){
+  const E = econFor(m);
+  if(prix >= E.pmin && prix <= E.pmax) return 100;
+  if(prix < E.pmin) return clamp(prix / E.pmin * 100, 0, 100);
+  return clamp(100 - (prix - E.pmax) / E.pmax * 140, 0, 100);
+}
+
+/* le seuil de bonne marge est ~16 USD par livraison, converti dans la devise du marché */
+function scoreOf(p, m){
+  m = m || mkt();
+  const e = econOf(p, m);
+  const parts = {
+    marge: clamp(e.margeUSD / 16.4 * 100, 0, 100),
+    ads  : p.ads  * 10,
+    wow  : p.wow  * 10,
+    pb   : p.pb   * 10,
+    conc : (10 - p.conc) * 10,
+    log  : p.log  * 10,
+    prix : priceScore(e.prix, m),
+    nouv : p.nouv * 10
+  };
+  const wsum = Object.values(state.w).reduce((a,b) => a + b, 0) || 1;
+  const total = Object.keys(parts).reduce((a,k) => a + parts[k] * state.w[k], 0) / wsum;
+  return {...e, parts, score: Math.round(total)};
+}
+
+const verdictOf = s => s >= 75 ? {k:"lancer",    t:"À lancer"}
+                     : s >= 60 ? {k:"tester",    t:"À tester"}
+                     : s >= 45 ? {k:"surveiller",t:"Surveiller"}
+                     :           {k:"ecarter",   t:"Écarter"};
+
+/* ============================================================
+   6. Rendu
+   ============================================================ */
+const $ = id => document.getElementById(id);
+
+function ring(score){
+  const r = 15, c = 2 * Math.PI * r;
+  const col = score >= 75 ? "var(--good)" : score >= 60 ? "var(--accent)"
+            : score >= 45 ? "var(--warn)" : "var(--bad)";
+  return `<svg class="ring" width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
+    <circle class="bg" cx="18" cy="18" r="${r}"></circle>
+    <circle cx="18" cy="18" r="${r}" stroke="${col}" stroke-linecap="round"
+      stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c * (1 - score/100)).toFixed(1)}"
+      transform="rotate(-90 18 18)"></circle></svg>`;
+}
+
+function rows(){
+  let list = all().map(p => ({p, m: scoreOf(p)}));
+  const q = state.q.trim().toLowerCase();
+  if(q)             list = list.filter(x => (x.p.nom + " " + x.p.cat + " " + x.p.note).toLowerCase().includes(q));
+  if(state.cat)     list = list.filter(x => x.p.cat === state.cat);
+  if(state.season)  list = list.filter(x => x.p.saison === state.season);
+  if(state.verdict) list = list.filter(x => verdictOf(x.m.score).k === state.verdict);
+  const key = state.sort;
+  list.sort((a,b) => key === "nom"  ? a.p.nom.localeCompare(b.p.nom,"fr")
+                   : key === "prix" ? b.m.prix - a.m.prix
+                   : key === "score"? b.m.score - a.m.score
+                   : b.m[key] - a.m[key]);
+  return list;
+}
+
+function renderKpis(list){
+  const n = list.length;
+  const lancer = list.filter(x => verdictOf(x.m.score).k === "lancer").length;
+  const tester = list.filter(x => verdictOf(x.m.score).k === "tester").length;
+  const best   = list[0];
+  const avgM   = n ? list.reduce((a,x) => a + x.m.margeLivr, 0) / n : 0;
+  const rent   = list.filter(x => x.m.net > 0).length;
+  $("kpis").innerHTML = [
+    ["Candidats affichés", n, "sur " + all().length + " au catalogue"],
+    ["À lancer", lancer, "score 75 et plus"],
+    ["À tester", tester, "score 60 à 74"],
+    ["Rentables aux hypothèses", rent, rent ? Math.round(rent/n*100) + "% du lot" : "revois tes coûts"],
+    ["Marge moyenne / livraison", fmt(avgM), "après pub et retours"],
+    ["Meilleur score", best ? best.m.score : "—", best ? best.p.nom : ""]
+  ].map(([k,v,s]) => `<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${esc(String(s))}</div></div>`).join("");
+}
+
+function renderMarket(){
+  const m = mkt();
+  $("brandCur").textContent = m.nom + " · " + m.cur;
+  $("mktcard").innerHTML = `
+    <div>
+      <div class="zone">${esc(m.zone)}</div>
+      <h3>${esc(m.nom)}</h3>
+      <p>${esc(m.note)}</p>
+      ${m.warn ? `<p class="mktwarn"><b>À savoir :</b> ${esc(m.warn)}</p>` : ""}
+      ${m.id !== "MA" ? `<p class="mktwarn"><b>Signal publicitaire :</b> les notes de demande du catalogue ont été relevées sur le marché marocain.
+        Sur ${esc(m.nom)}, revérifie chaque produit dans la Meta Ad Library du pays — le lien est dans le détail de chaque ligne.</p>` : ""}
+    </div>
+    <div class="mktfacts">
+      <div><div class="k">Part du COD</div><div class="v">${esc(m.cod)}</div></div>
+      <div><div class="k">Refus typique</div><div class="v">${esc(m.refusTxt)}</div></div>
+      <div><div class="k">Devise</div><div class="v">${m.cur}</div></div>
+      <div><div class="k">Taux / USD</div><div class="v">${m.rate.toLocaleString("fr-FR")}</div></div>
+      <div><div class="k">Zone d'impulsion</div><div class="v">${fmt(econFor(m).pmin, m)} – ${fmt(econFor(m).pmax, m)}</div></div>
+    </div>`;
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+
+function detailHtml(p, m){
+  const crit = [
+    ["Marge nette après refus", m.parts.marge, state.w.marge],
+    ["Demande publicitaire",    m.parts.ads,   state.w.ads],
+    ["Effet wow / démo",        m.parts.wow,   state.w.wow],
+    ["Résout un problème",      m.parts.pb,    state.w.pb],
+    ["Concurrence locale",      m.parts.conc,  state.w.conc],
+    ["Logistique COD",          m.parts.log,   state.w.log],
+    ["Zone d'impulsion",        m.parts.prix,  state.w.prix],
+    ["Nouveauté locale",        m.parts.nouv,  state.w.nouv]
+  ].map(([l,v,w]) => `<div class="crit-row"><span>${l}</span>
+      <span class="bar"><i style="width:${v.toFixed(0)}%"></i></span>
+      <span class="n">${v.toFixed(0)}</span></div>
+      <div class="crit-row" style="margin-top:-5px"><span class="hint">poids ${w}</span><span></span><span></span></div>`).join("");
+
+  const line = (l,v,cls) => `<div class="econ-l ${cls||""}"><span>${l}</span><b class="${cls==="tot"?(m.net>0?"pos":"neg"):""}">${v}</b></div>`;
+  const econ = [
+    line("100 leads bruts", "100"),
+    line("Confirmées", m.confirmed.toFixed(0)),
+    line("Livrées et encaissées", m.delivered.toFixed(0)),
+    line("Chiffre d'affaires", fmt(m.revenue)),
+    line("Coût produit", "− " + fmt(m.cogs)),
+    line("Livraison + retours", "− " + fmt(m.ship)),
+    line("Budget publicitaire", "− " + fmt(m.adspend)),
+    line("Résultat net", fmt(m.net), "tot")
+  ].join("");
+
+  const src = linksFor(p, mkt()).map(s =>
+    `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow"><span class="d"></span>${s.n}</a>`).join("");
+
+  /* le même produit passé au modèle de chaque marché, classé par résultat en USD */
+  const cmp = MARKETS.map(mm => ({mm, e:econOf(p, mm), s:scoreOf(p, mm).score}))
+    .sort((a,b) => b.e.netUSD - a.e.netUSD)
+    .map(({mm,e,s}) => {
+      const v = verdictOf(s);
+      return `<tr class="${mm.id === state.market ? "here" : ""}">
+        <td style="text-align:left">${esc(mm.nom)}</td>
+        <td style="text-align:left"><span class="hint">${esc(mm.zone)}</span></td>
+        <td class="n">${fmt(e.prix, mm)}</td>
+        <td class="n">${fmt(e.cout, mm)}</td>
+        <td class="n ${e.margeLivr > 0 ? "pos" : "neg"}">${fmt(e.margeLivr, mm)}</td>
+        <td class="n ${e.netUSD > 0 ? "pos" : "neg"}">${usd(e.netUSD)}</td>
+        <td class="n">${s}</td>
+        <td><span class="verdict v-${v.k}">${v.t}</span></td></tr>`;
+    }).join("");
+
+  return `<div class="detail-in">
+    <div><h4>Grille de notation</h4><div class="crit">${crit}</div></div>
+    <div><h4>Test de 100 commandes — ${esc(mkt().nom)}</h4>${econ}
+      <div class="note"><b>Plafond d'enchère :</b> au-delà de <b>${fmt(m.cplMax)}</b> de coût par lead, ce produit passe en perte.
+      Markup actuel <b>${m.markup.toFixed(1)}×</b>${m.markup < 3 ? " — sous le seuil de 3× recommandé en COD." : "."}</div></div>
+    <div><h4>Vérifier sur les sources — ${esc(mkt().nom)}</h4><div class="srcgrid">${src}</div>
+      <div class="note">${esc(p.note)}</div>
+      ${p.seed ? "" : `<div class="detail-actions"><button class="btn sm" data-del="${p.id}">Supprimer ce produit</button></div>`}
+    </div>
+    <div class="cmp"><h4>Ce produit sur les ${MARKETS.length} marchés — net d'un test de 100 leads, converti en USD</h4>
+      <div class="wrapx"><table><thead><tr>
+        <th style="text-align:left">Marché</th><th style="text-align:left">Zone</th>
+        <th>Prix</th><th>Coût rendu</th><th>Marge / livr.</th><th>Net / 100 leads</th><th>Score</th><th>Verdict</th>
+      </tr></thead><tbody>${cmp}</tbody></table></div>
+      <div class="note">Chaque ligne applique les hypothèses propres à son marché (confirmation, refus, livraison, retour, CPL).
+      Le prix local est dérivé du prix marocain converti en USD, ajusté au pouvoir d'achat du marché, puis arrondi au prix psychologique de la devise.</div>
+    </div></div>`;
+}
+
+function render(){
+  const list = rows();
+  renderKpis(list);
+  const tb = $("tbody");
+  tb.innerHTML = list.map(({p,m},i) => {
+    const v = verdictOf(m.score);
+    const open = state.open === p.id;
+    return `<tr class="row ${open?"open":""}" data-id="${p.id}" tabindex="0">
+      <td class="rank ${i<3?"top":""}">${String(i+1).padStart(2,"0")}</td>
+      <td><div class="pname">${esc(p.nom)}</div>
+          <div class="pmeta"><span class="tag">${esc(p.cat)}</span>
+          ${p.saison !== "Toute l'année" ? `<span class="tag season">${esc(p.saison)}</span>` : ""}
+          ${p.seed ? "" : `<span class="tag mine">ajouté</span>`}
+          <span>${p.poids} g</span></div></td>
+      <td><div class="scorecell">${ring(m.score)}<span class="scorenum">${m.score}</span></div></td>
+      <td><span class="verdict v-${v.k}">${v.t}</span></td>
+      <td class="n">${fmt(m.prix)}</td>
+      <td class="n">${fmt(m.cout)}</td>
+      <td class="n" style="color:${m.markup<3?"var(--bad)":"var(--ink-2)"}">${m.markup.toFixed(1)}×</td>
+      <td class="n ${m.margeLivr>0?"pos":"neg"}">${fmt(m.margeLivr)}</td>
+      <td class="n">${m.margePct.toFixed(0)}%</td>
+      <td class="n">${fmt(m.cplMax)}</td>
+      <td class="n ${m.net>0?"pos":"neg"}">${fmt(m.net)}</td>
+    </tr>` + (open ? `<tr class="detail"><td colspan="11">${detailHtml(p,m)}</td></tr>` : "");
+  }).join("");
+  $("empty").hidden = list.length > 0;
+  renderMarket();
+}
+
+/* ============================================================
+   7. Contrôles
+   ============================================================ */
+function buildRail(){
+  const m = mkt(), E = econFor(m);
+  const show = f => f.cur ? fmt(E[f.k], m) : E[f.k] + " " + f.u;
+  $("econBox").innerHTML = ECON_FIELDS.map(f => {
+    const b = bounds(f, m);
+    return `<div class="field">
+    <label for="e_${f.k}">${f.l}<span class="val" id="v_${f.k}">${show(f)}</span></label>
+    <input type="range" id="e_${f.k}" min="${b.min}" max="${b.max}" step="${b.step}" value="${E[f.k]}">
+  </div>`; }).join("") + `<p class="hint">Hypothèses propres à <b>${esc(m.nom)}</b> — chaque marché garde les siennes.
+  Le refus s'applique aux commandes confirmées&nbsp;; la marchandise refusée revient en stock, seuls les frais de retour sont perdus.</p>`;
+
+  $("wBox").innerHTML = W_FIELDS.map(f => `<div class="field">
+    <label for="w_${f.k}">${f.l}<span class="val" id="wv_${f.k}">${state.w[f.k]}</span></label>
+    <input type="range" id="w_${f.k}" min="0" max="30" step="1" value="${state.w[f.k]}">
+  </div>`).join("") + `<p class="hint">Les poids sont normalisés automatiquement : seul leur rapport compte.</p>`;
+
+  ECON_FIELDS.forEach(f => $("e_" + f.k).addEventListener("input", e => {
+    const mm = mkt();
+    (state.econBy[mm.id] = state.econBy[mm.id] || {})[f.k] = +e.target.value;
+    $("v_" + f.k).textContent = f.cur ? fmt(+e.target.value, mm) : e.target.value + " " + f.u;
+    save(); render();
+  }));
+  W_FIELDS.forEach(f => $("w_" + f.k).addEventListener("input", e => {
+    state.w[f.k] = +e.target.value;
+    $("wv_" + f.k).textContent = state.w[f.k];
+    save(); render();
+  }));
+}
+
+function buildMarketSelect(){
+  const zones = [...new Set(MARKETS.map(m => m.zone))];
+  $("market").innerHTML = zones.map(z =>
+    `<optgroup label="${esc(z)}">` + MARKETS.filter(m => m.zone === z)
+      .map(m => `<option value="${m.id}"${m.id === state.market ? " selected" : ""}>${esc(m.nom)} · ${m.cur}</option>`).join("")
+    + `</optgroup>`).join("");
+}
+
+function buildFilters(){
+  const cats = [...new Set(all().map(p => p.cat))].sort((a,b)=>a.localeCompare(b,"fr"));
+  const seas = [...new Set(all().map(p => p.saison))];
+  $("fCat").innerHTML    = `<option value="">Toutes catégories</option>` + cats.map(c => `<option${c===state.cat?" selected":""}>${esc(c)}</option>`).join("");
+  $("fSeason").innerHTML = `<option value="">Toutes saisons</option>` + seas.map(c => `<option${c===state.season?" selected":""}>${esc(c)}</option>`).join("");
+  $("chips").innerHTML = [["","Tous"],["lancer","À lancer"],["tester","À tester"],["surveiller","Surveiller"],["ecarter","Écarter"]]
+    .map(([k,t]) => `<button class="chip" data-v="${k}" aria-pressed="${state.verdict===k}">${t}</button>`).join("");
+}
+
+document.addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if(chip){ state.verdict = chip.dataset.v; buildFilters(); render(); return; }
+  const del = e.target.closest("[data-del]");
+  if(del){ state.custom = state.custom.filter(p => p.id !== del.dataset.del); state.open = null; save(); buildFilters(); render(); toast("Produit supprimé"); return; }
+  const row = e.target.closest("tr.row");
+  if(row){ state.open = state.open === row.dataset.id ? null : row.dataset.id; render(); }
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && !$("modal").hidden) closeModal();
+  if((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("row")){
+    e.preventDefault(); state.open = state.open === e.target.dataset.id ? null : e.target.dataset.id; render();
+  }
+});
+$("q").addEventListener("input", e => { state.q = e.target.value; render(); });
+$("fCat").addEventListener("change", e => { state.cat = e.target.value; render(); });
+$("fSeason").addEventListener("change", e => { state.season = e.target.value; render(); });
+$("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+$("market").addEventListener("change", e => {
+  state.market = e.target.value; state.open = null; save(); buildRail(); render();
+});
+$("resetEcon").addEventListener("click", () => { delete state.econBy[state.market]; save(); buildRail(); render(); });
+$("resetW").addEventListener("click",    () => { state.w = {...W_DEF};              save(); buildRail(); render(); });
+
+let toastT;
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); }
+
+/* ============================================================
+   8. Modales : ajout, import, export
+   ============================================================ */
+function openModal(html){ $("sheet").innerHTML = html; $("modal").hidden = false; }
+function closeModal(){ $("modal").hidden = true; }
+$("modal").addEventListener("click", e => { if(e.target.id === "modal") closeModal(); });
+
+function csv(){
+  const m = mkt(), c = m.cur;
+  const cols = ["Rang","Produit","Catégorie","Saison","Marché","Score","Verdict",
+    "Prix vente " + c, "Coût rendu " + c, "Markup",
+    "Marge par livraison " + c, "Marge %", "CPL max " + c, "Net pour 100 leads " + c, "Net pour 100 leads USD",
+    "Poids g","Effet wow /10","Problème /10","Demande pub /10","Concurrence /10","Logistique /10","Nouveauté /10","Note"]
+    .concat(linksFor(all()[0], m).map(s => "Lien " + s.n));
+  const q = v => `"${String(v).replace(/"/g,'""')}"`;
+  const r2 = v => m.dec ? (Math.round(v * 100) / 100) : Math.round(v);
+  const lines = [cols.map(q).join(";")];
+  rows().forEach(({p, m:e}, i) => {
+    lines.push([i+1, p.nom, p.cat, p.saison, m.nom, e.score, verdictOf(e.score).t,
+      r2(e.prix), r2(e.cout), e.markup.toFixed(2), r2(e.margeLivr), e.margePct.toFixed(1),
+      r2(e.cplMax), r2(e.net), Math.round(e.netUSD), p.poids,
+      p.wow, p.pb, p.ads, p.conc, p.log, p.nouv, p.note]
+      .concat(linksFor(p, m).map(s => s.url)).map(q).join(";"));
+  });
+  return lines.join("\n");
+}
+
+$("btnExport").addEventListener("click", () => {
+  const data = csv();
+  openModal(`<div class="sheet-h"><h3>Exporter vers Excel</h3><button class="btn sm" id="mClose">Fermer</button></div>
+  <div class="sheet-b">
+    <p class="hint">Le téléchargement direct est bloqué dans cette page publiée. Copie le bloc ci-dessous, colle-le dans une feuille Excel vierge,
+    puis <b>Données → Convertir → Séparateur point-virgule</b>. Les colonnes de liens sources deviennent cliquables dans Excel.<br>
+    ${rows().length} lignes pour <b>${esc(mkt().nom)}</b>, en ${mkt().cur}, filtres et tri actuels appliqués.
+    Change de marché en haut de page pour exporter une autre zone.</p>
+    <textarea id="csvOut" readonly>${esc(data)}</textarea>
+  </div>
+  <div class="sheet-f"><button class="btn" id="mClose2">Fermer</button><button class="btn primary" id="mCopy">Copier le tableau</button></div>`);
+  $("mClose").onclick = $("mClose2").onclick = closeModal;
+  $("mCopy").onclick = async () => {
+    const ta = $("csvOut"); ta.select();
+    try{ await navigator.clipboard.writeText(data); }catch(e){ document.execCommand("copy"); }
+    toast("Tableau copié — colle-le dans Excel");
+  };
+});
+
+$("btnImport").addEventListener("click", () => {
+  openModal(`<div class="sheet-h"><h3>Importer des produits</h3><button class="btn sm" id="mClose">Fermer</button></div>
+  <div class="sheet-b">
+    <p class="hint">Une ligne par produit, séparateur point-virgule, sans en-tête&nbsp;:<br>
+    <b>nom;catégorie;saison;prix;coût;poids g;wow;problème;demande pub;concurrence;logistique;nouveauté;requête FR;requête EN;note</b><br>
+    Prix et coût en <b>${mkt().cur}</b> (devise du marché affiché), convertis automatiquement pour les autres marchés.
+    Les six notes vont de 0 à 10. La concurrence se note à l'envers&nbsp;: 10 = marché saturé.</p>
+    <textarea id="csvIn" placeholder="Masseur oculaire chauffant;Santé & Bien-être;Toute l'année;399;120;500;8;8;7;4;8;7;masseur yeux chauffant;heated eye massager;Repéré sur trois pages concurrentes"></textarea>
+  </div>
+  <div class="sheet-f"><button class="btn" id="mClose2">Fermer</button><button class="btn primary" id="mDo">Importer</button></div>`);
+  $("mClose").onclick = $("mClose2").onclick = closeModal;
+  $("mDo").onclick = () => {
+    let n = 0;
+    $("csvIn").value.split(/\r?\n/).forEach(line => {
+      const c = line.split(";").map(s => s.trim());
+      if(c.length < 12 || !c[0]) return;
+      const mm = mkt();
+      state.custom.push({id:"u" + Date.now() + "_" + (n++), nom:c[0], cat:c[1] || "Divers", saison:c[2] || "Toute l'année",
+        prix:toBase(+c[3] || 0, mm, "priceMult"), cout:toBase(+c[4] || 0, mm, "landed"), poids:+c[5] || 0,
+        wow:+c[6]||0, pb:+c[7]||0, ads:+c[8]||0, conc:+c[9]||0, log:+c[10]||0, nouv:+c[11]||0,
+        qFr:c[12] || c[0], qEn:c[13] || c[0], note:c[14] || "Produit importé.", seed:false});
+    });
+    save(); buildFilters(); render(); closeModal();
+    toast(n ? n + " produit(s) importé(s)" : "Aucune ligne valide trouvée");
+  };
+});
+
+$("btnAdd").addEventListener("click", () => {
+  const sl = (k,l) => `<div class="field"><label for="a_${k}">${l}<span class="val" id="av_${k}">5</span></label>
+    <input type="range" id="a_${k}" min="0" max="10" step="1" value="5"></div>`;
+  openModal(`<div class="sheet-h"><h3>Ajouter un produit</h3><button class="btn sm" id="mClose">Fermer</button></div>
+  <div class="sheet-b">
+    <div class="field"><label for="a_nom">Nom du produit</label><input type="text" id="a_nom" placeholder="Masseur oculaire chauffant"></div>
+    <div class="grid2">
+      <div class="field"><label for="a_cat">Catégorie</label><input type="text" id="a_cat" value="Divers"></div>
+      <div class="field"><label for="a_sai">Saison</label>
+        <select id="a_sai"><option>Toute l'année</option><option>Hiver</option><option>Été</option><option>Rentrée</option></select></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="a_prix">Prix de vente (${mkt().cur})</label><input type="number" id="a_prix" value="${Math.round(299 / RATE_MA * mkt().priceMult * mkt().rate)}"></div>
+      <div class="field"><label for="a_cout">Coût rendu (${mkt().cur})</label><input type="number" id="a_cout" value="${Math.round(80 / RATE_MA * mkt().landed * mkt().rate)}"></div>
+    </div>
+    <p class="hint">Saisis les montants dans la devise du marché affiché (${esc(mkt().nom)}). Ils sont convertis en base commune,
+    donc le produit apparaît correctement chiffré sur les ${MARKETS.length} marchés.</p>
+    <div class="grid2">
+      <div class="field"><label for="a_poids">Poids (g)</label><input type="number" id="a_poids" value="400"></div>
+      <div class="field"><label for="a_qfr">Requête FR (liens locaux)</label><input type="text" id="a_qfr" placeholder="masseur yeux chauffant"></div>
+    </div>
+    <div class="field"><label for="a_qen">Requête EN (liens internationaux)</label><input type="text" id="a_qen" placeholder="heated eye massager"></div>
+    <div class="sub">Notation sur 10</div>
+    ${sl("wow","Effet wow / démo vidéo")}${sl("pb","Résout un vrai problème")}${sl("ads","Preuve de demande publicitaire")}
+    ${sl("conc","Concurrence locale (10 = saturé)")}${sl("log","Léger, compact, incassable")}${sl("nouv","Introuvable en magasin")}
+    <div class="field"><label for="a_note">Note personnelle</label><input type="text" id="a_note" placeholder="Où tu l'as repéré, quel angle tester…"></div>
+  </div>
+  <div class="sheet-f"><button class="btn" id="mClose2">Annuler</button><button class="btn primary" id="mSave">Ajouter au radar</button></div>`);
+  ["wow","pb","ads","conc","log","nouv"].forEach(k =>
+    $("a_" + k).addEventListener("input", e => $("av_" + k).textContent = e.target.value));
+  $("mClose").onclick = $("mClose2").onclick = closeModal;
+  $("mSave").onclick = () => {
+    const nom = $("a_nom").value.trim();
+    if(!nom){ toast("Donne un nom au produit"); return; }
+    const g = k => +$("a_" + k).value, mm = mkt();
+    state.custom.push({id:"u" + Date.now(), nom, cat:$("a_cat").value.trim() || "Divers", saison:$("a_sai").value,
+      prix:toBase(g("prix"), mm, "priceMult"), cout:toBase(g("cout"), mm, "landed"), poids:g("poids"),
+      wow:g("wow"), pb:g("pb"), ads:g("ads"), conc:g("conc"), log:g("log"), nouv:g("nouv"),
+      qFr:$("a_qfr").value.trim() || nom, qEn:$("a_qen").value.trim() || nom,
+      note:$("a_note").value.trim() || "Produit ajouté manuellement.", seed:false});
+    save(); buildFilters(); render(); closeModal(); toast("Produit ajouté");
+  };
+});
+
+buildMarketSelect(); buildRail(); buildFilters(); render();
+</script>
+
+</body></html>

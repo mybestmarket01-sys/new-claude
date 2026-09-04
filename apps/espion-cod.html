@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Espion COD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+ --fond:#f6f3ec; --surface:#fffdf8; --surface2:#efeae0;
+ --encre:#16211f; --encre2:#4a5754; --encre3:#7b8785;
+ --trait:#ded7c9; --trait2:#eae4d8;
+ --ocre:#8d530d; --sauge:#6b8e80; --panneau:#304f4f;
+ --bien:#4a7c59; --alerte:#a8761b; --mal:#9d3b2f; --neutre:#7b8785;
+ --ombre:0 1px 2px rgba(22,33,31,.05),0 8px 28px rgba(22,33,31,.06);
+ --f-titre:'Fraunces',Georgia,serif; --f-corps:'Archivo','Segoe UI',system-ui,sans-serif;
+ --f-num:'JetBrains Mono',ui-monospace,monospace;
+ --r:12px;
+ color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --fond:#121a19; --surface:#1a2423; --surface2:#222d2c;
+ --encre:#eae5db; --encre2:#a8b2af; --encre3:#7d8785;
+ --trait:#2c3937; --trait2:#243130;
+ --ocre:#d0973f; --sauge:#8fae9f; --panneau:#24393a;
+ --bien:#6fa87c; --alerte:#d8a94a; --mal:#d97a68; --neutre:#8a9492;
+ --ombre:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.34);
+ color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+ --fond:#121a19; --surface:#1a2423; --surface2:#222d2c;
+ --encre:#eae5db; --encre2:#a8b2af; --encre3:#7d8785;
+ --trait:#2c3937; --trait2:#243130;
+ --ocre:#d0973f; --sauge:#8fae9f; --panneau:#24393a;
+ --bien:#6fa87c; --alerte:#d8a94a; --mal:#d97a68; --neutre:#8a9492;
+ --ombre:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.34);
+ color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre);font-family:var(--f-corps);
+ font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-titre);font-weight:600;margin:0;letter-spacing:-.018em;text-wrap:balance}
+a{color:var(--ocre)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ocre);outline-offset:2px;border-radius:4px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px 90px}
+.mast{padding:44px 0 26px;border-bottom:2px solid var(--encre);margin-bottom:26px}
+.kick{font-family:var(--f-num);font-size:11px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--ocre);margin:0 0 13px;font-weight:600}
+h1{font-size:clamp(32px,5.2vw,52px);line-height:1.04;margin-bottom:14px}
+.lede{font-size:17px;color:var(--encre2);max-width:62ch;margin:0}
+
+.barre{display:flex;gap:1px;background:var(--trait);border:1px solid var(--trait);
+ border-radius:9px;overflow:hidden;margin-top:26px;flex-wrap:wrap}
+.barre>div{flex:1 1 140px;background:var(--surface);padding:14px 16px}
+.barre span{display:block;font-family:var(--f-num);font-size:10px;letter-spacing:.12em;
+ text-transform:uppercase;color:var(--encre3);margin-bottom:5px}
+.barre b{font-family:var(--f-titre);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;
+ letter-spacing:-.02em;display:block;line-height:1.1}
+.barre i{font-style:normal;font-size:11.5px;color:var(--encre3);font-family:var(--f-num)}
+
+nav.onglets{display:flex;gap:3px;border-bottom:1px solid var(--trait);margin:30px 0 22px;flex-wrap:wrap}
+nav.onglets button{background:none;border:0;border-bottom:2px solid transparent;color:var(--encre3);
+ padding:10px 15px;cursor:pointer;font-weight:600;font-size:14px;margin-bottom:-1px;border-radius:5px 5px 0 0}
+nav.onglets button:hover{color:var(--encre)}
+nav.onglets button[aria-selected="true"]{color:var(--ocre);border-bottom-color:var(--ocre)}
+nav.onglets .cpt{font-family:var(--f-num);font-size:11px;color:var(--encre3);margin-left:6px}
+
+.carte{background:var(--surface);border:1px solid var(--trait);border-radius:var(--r);
+ box-shadow:var(--ombre);margin-bottom:18px}
+.carte .pad{padding:20px 22px}
+.carte h2{font-size:20px;margin-bottom:4px}
+.sous{color:var(--encre2);font-size:14px;margin:0 0 18px;max-width:64ch}
+
+.outils{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.outils input[type=search]{flex:1;min-width:190px}
+input,select,textarea{background:var(--fond);border:1px solid var(--trait);border-radius:9px;
+ padding:9px 11px;font-size:14.5px;width:100%}
+textarea{font-family:var(--f-num);font-size:12.5px;min-height:130px;resize:vertical;white-space:pre}
+.btn{background:var(--surface);border:1px solid var(--trait);border-radius:9px;padding:9px 15px;
+ cursor:pointer;font-weight:500;font-size:14px;white-space:nowrap;width:auto}
+.btn:hover{border-color:var(--encre3)}
+.btn.pri{background:var(--panneau);border-color:var(--panneau);color:#fff;font-weight:600}
+:root[data-theme="dark"] .btn.pri,:root:not([data-theme="light"]) .btn.pri{color:#0e1615}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn.pri{color:#fff}}
+.btn.pri:hover{filter:brightness(1.1)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.btn.dgr{color:var(--mal);border-color:color-mix(in srgb,var(--mal) 40%,transparent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.champs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))}
+.champ{display:flex;flex-direction:column;gap:5px;min-width:0}
+.champ.large{grid-column:1/-1}
+.champ label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--encre3);font-weight:600}
+.champ .aide{font-size:11.5px;color:var(--encre3)}
+
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+th{font-family:var(--f-num);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+ color:var(--encre3);text-align:left;padding:9px 12px;border-bottom:1px solid var(--trait);white-space:nowrap}
+th.r,td.r{text-align:right}
+td{padding:11px 12px;border-bottom:1px solid var(--trait2);vertical-align:top}
+tbody tr:hover{background:var(--surface2)}
+tr:last-child td{border-bottom:0}
+.nom{font-weight:600}
+.meta{display:block;font-family:var(--f-num);font-size:10.5px;color:var(--encre3);margin-top:3px}
+
+.pilule{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;
+ white-space:nowrap;border:1px solid transparent}
+.pilule.forte{background:var(--bien);color:#fff}
+.pilule.correcte{background:var(--sauge);color:#fff}
+.pilule.moyenne{background:var(--alerte);color:#fff}
+.pilule.faible{background:var(--neutre);color:#fff}
+.pilule.creuse{background:transparent;border-color:var(--trait);color:var(--encre3);font-weight:500}
+
+.vide{padding:34px 20px;text-align:center;color:var(--encre3);font-size:14px}
+.vide strong{display:block;color:var(--encre);font-weight:600;margin-bottom:5px;font-size:15px}
+
+.note{background:var(--surface2);border-left:3px solid var(--ocre);border-radius:0 9px 9px 0;
+ padding:13px 16px;font-size:13.5px;color:var(--encre2);margin:16px 0}
+.note b{color:var(--encre)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--encre);
+ color:var(--fond);padding:11px 20px;border-radius:99px;font-size:14px;z-index:90;box-shadow:var(--ombre);
+ max-width:88vw;text-align:center}
+.toast[hidden]{display:none}
+
+.suivi{display:flex;gap:2px;align-items:flex-end;height:34px;margin-top:5px}
+.suivi i{flex:1;background:var(--sauge);border-radius:2px 2px 0 0;min-height:2px;display:block;opacity:.75}
+.suivi i.zero{background:var(--trait);opacity:1}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:640px){.wrap{padding:0 14px 90px}.carte .pad{padding:16px 15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <p class="kick">Poste COD · veille concurrentielle</p>
+  <h1>Ce qui se vend vraiment chez les autres</h1>
+  <p class="lede">Les boutiques COD marocaines sous surveillance, les produits qu'elles poussent,
+    et la seule mesure qui vaut quelque chose : combien d'unités bougent par jour, mesuré sur
+    plusieurs relevés. Un score élevé sur une boutique sans trafic ne vaut pas une série de ventes
+    observée sur onze jours.</p>
+  <div class="barre" id="barre"></div>
+</header>
+
+<nav class="onglets" id="onglets" role="tablist"></nav>
+
+<section id="vue"></section>
+
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   1. ÉTAT
+   Deux sources : le localStorage (partagé avec les autres applications
+   servies depuis la même origine) et, quand le serveur de l'atelier
+   répond, l'API partagée — c'est elle qui relie Espion à l'orchestrateur.
+   ================================================================== */
+
+var CLE = "espion-cod-v1";
+var API = "/api";
+var enLigne = false;
+
+var E = { boutiques: [], produits: [], releves: [] };
+
+function charger(){
+  try{
+    var brut = localStorage.getItem(CLE);
+    if(brut){
+      var o = JSON.parse(brut);
+      if(o && typeof o === "object"){
+        E.boutiques = o.boutiques || [];
+        E.produits  = o.produits  || [];
+        E.releves   = o.releves   || [];
+      }
+    }
+  }catch(err){ /* stockage indisponible : on démarre à vide */ }
+}
+function sauver(){
+  try{ localStorage.setItem(CLE, JSON.stringify(E)); }catch(err){}
+  if(enLigne) pousserServeur();
+}
+
+var minuteurPush = null;
+function pousserServeur(){
+  clearTimeout(minuteurPush);
+  minuteurPush = setTimeout(function(){
+    fetch(API + "/boutiques", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(E.boutiques)
+    }).catch(function(){});
+    fetch(API + "/captures", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(E.produits)
+    }).catch(function(){});
+  }, 900);
+}
+
+function uid(p){ return (p||"x") + "-" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+/* =====================================================================
+   2. MESURE DES VENTES
+
+   La méthode : on relève un compteur public (nombre d'avis, compteur de
+   commandes, stock affiché) à deux dates au moins. La pente donne les
+   ventes par jour. Un seul relevé ne dit rien — l'application le dit
+   plutôt que d'afficher un chiffre inventé.
+   ================================================================== */
+
+var JOUR = 86400000;
+
+function relevesDe(produitId){
+  return E.releves.filter(function(r){ return r.produit === produitId; })
+                  .sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+}
+
+function mesure(produitId){
+  var rs = relevesDe(produitId);
+  if(rs.length < 2) return { assez:false, releves:rs.length, parJour:null, jours:0, total:0 };
+
+  var premier = rs[0], dernier = rs[rs.length - 1];
+  var jours = (new Date(dernier.date) - new Date(premier.date)) / JOUR;
+  if(jours <= 0) return { assez:false, releves:rs.length, parJour:null, jours:0, total:0 };
+
+  var delta = Number(dernier.compteur) - Number(premier.compteur);
+  /* Un compteur qui recule veut dire remise à zéro ou suppression d'avis :
+     la série n'est pas exploitable, on ne l'interprète pas. */
+  if(delta < 0) return { assez:false, releves:rs.length, parJour:null, jours:Math.round(jours), total:0, incoherent:true };
+
+  return {
+    assez: true,
+    releves: rs.length,
+    jours: Math.round(jours * 10) / 10,
+    total: delta,
+    parJour: Math.round((delta / jours) * 100) / 100,
+    serie: rs
+  };
+}
+
+/* La force de la preuve dépend du volume ET de la durée d'observation.
+   Onze jours à 20 ventes/jour, c'est une preuve. Deux jours à 40, non. */
+function forcePreuve(m){
+  if(!m.assez) return { cle:"faible", texte:"Pas de mesure", detail: m.incoherent
+    ? "Compteur en baisse entre deux relevés — série inexploitable"
+    : (m.releves ? "Un seul relevé : il en faut deux, espacés" : "Aucun relevé") };
+  if(m.jours >= 7 && m.parJour >= 5)  return { cle:"forte",    texte:"Preuve forte",    detail: m.parJour + " ventes/jour sur " + m.jours + " jours" };
+  if(m.jours >= 5 && m.parJour >= 2)  return { cle:"correcte", texte:"Preuve correcte", detail: m.parJour + " ventes/jour sur " + m.jours + " jours" };
+  if(m.jours >= 3)                    return { cle:"moyenne",  texte:"Preuve moyenne",  detail: m.parJour + " ventes/jour sur " + m.jours + " jours" };
+  return { cle:"faible", texte:"Preuve faible", detail: "Seulement " + m.jours + " jours d'observation" };
+}
+
+function caEstime(p){
+  var m = mesure(p.id);
+  if(!m.assez || !p.prix) return null;
+  return Math.round(m.parJour * Number(p.prix) * 30);
+}
+
+/* =====================================================================
+   3. RENDU
+   ================================================================== */
+
+var VUES = [
+  { id:"produits",  nom:"Produits repérés" },
+  { id:"boutiques", nom:"Boutiques suivies" },
+  { id:"releves",   nom:"Relevés" },
+  { id:"import",    nom:"Import / export" }
+];
+var vue = "produits";
+var recherche = "";
+
+function $(id){ return document.getElementById(id); }
+function ech(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function nb(v){ return Number(v||0).toLocaleString("fr-FR"); }
+function dh(v){ return nb(Math.round(v||0)) + " DH"; }
+function auj(){ return new Date().toISOString().slice(0,10); }
+function frDate(iso){ if(!iso) return "—"; var p=String(iso).slice(0,10).split("-"); return p[2]+"/"+p[1]+"/"+p[0].slice(2); }
+
+function toast(msg){
+  var t = $("toast");
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function(){ t.hidden = true; }, 3200);
+}
+
+function rendre(){
+  rendreBarre();
+  rendreOnglets();
+  $("vue").innerHTML = vueHtml();
+  brancher();
+}
+
+function rendreBarre(){
+  var avecMesure = E.produits.filter(function(p){ return mesure(p.id).assez; });
+  var fortes = avecMesure.filter(function(p){ return forcePreuve(mesure(p.id)).cle === "forte"; });
+  var ventesJour = avecMesure.reduce(function(a,p){ return a + (mesure(p.id).parJour || 0); }, 0);
+  var caMois = E.produits.reduce(function(a,p){ return a + (caEstime(p) || 0); }, 0);
+
+  $("barre").innerHTML =
+    tuile("Boutiques suivies", nb(E.boutiques.length), E.boutiques.length ? "" : "aucune pour l'instant") +
+    tuile("Produits repérés", nb(E.produits.length), avecMesure.length + " mesurés") +
+    tuile("Preuves fortes", nb(fortes.length), fortes.length ? "à lancer en priorité" : "aucune") +
+    tuile("Ventes / jour", nb(Math.round(ventesJour)), "cumul mesuré") +
+    tuile("CA concurrent / mois", caMois ? dh(caMois) : "—", "estimé sur les mesures");
+}
+function tuile(l, v, s){
+  return '<div><span>' + ech(l) + '</span><b>' + ech(v) + '</b>' + (s ? '<i>' + ech(s) + '</i>' : '') + '</div>';
+}
+
+function rendreOnglets(){
+  var cpt = { produits: E.produits.length, boutiques: E.boutiques.length, releves: E.releves.length, import: null };
+  $("onglets").innerHTML = VUES.map(function(v){
+    return '<button role="tab" data-vue="' + v.id + '" aria-selected="' + (vue === v.id) + '">' +
+      ech(v.nom) + (cpt[v.id] != null ? '<span class="cpt">' + cpt[v.id] + '</span>' : '') + '</button>';
+  }).join("");
+}
+
+function vueHtml(){
+  if(vue === "boutiques") return vueBoutiques();
+  if(vue === "releves")   return vueReleves();
+  if(vue === "import")    return vueImport();
+  return vueProduits();
+}
+
+/* ---------- produits ---------- */
+function vueProduits(){
+  var h = '<div class="carte"><div class="pad">' +
+    '<h2>Ajouter un produit repéré</h2>' +
+    '<p class="sous">Ce que vous avez vu chez un concurrent. Le compteur est le chiffre public ' +
+    'qui monte quand une vente se fait : nombre d\'avis, compteur de commandes, « X vendus ». ' +
+    'Relevez-le une deuxième fois quelques jours plus tard — c\'est l\'écart qui mesure les ventes.</p>' +
+    '<form id="f-produit"><div class="champs">' +
+    ch("nom", "Produit", "text", "", "large") +
+    chSelect("boutique", "Boutique", E.boutiques.map(function(b){ return { v:b.id, t:b.nom }; })) +
+    ch("prix", "Prix affiché (DH)", "number") +
+    ch("url", "Lien de la fiche", "url", "", "large") +
+    ch("compteur", "Compteur aujourd'hui", "number", "", "", "Avis, commandes, « X vendus »") +
+    '</div><div class="outils" style="margin:16px 0 0">' +
+    '<button class="btn pri" type="submit">Ajouter</button>' +
+    '</div></form></div></div>';
+
+  h += '<div class="carte"><div class="pad">' +
+    '<div class="outils">' +
+    '<input type="search" id="q" placeholder="Chercher un produit, une boutique…" value="' + ech(recherche) + '">' +
+    '</div>';
+
+  var liste = E.produits.filter(function(p){
+    if(!recherche) return true;
+    var b = boutiqueDe(p);
+    return (p.nom + " " + (b ? b.nom : "")).toLowerCase().indexOf(recherche.toLowerCase()) > -1;
+  }).sort(function(a,b){
+    var ma = mesure(a.id), mb = mesure(b.id);
+    return (mb.parJour || -1) - (ma.parJour || -1);
+  });
+
+  if(!liste.length){
+    h += '<div class="vide"><strong>Aucun produit repéré</strong>' +
+      'Ajoutez ce que vous voyez tourner chez les concurrents, puis relevez leur compteur ' +
+      'quelques jours plus tard.</div>';
+  }else{
+    h += '<div class="tw"><table><thead><tr>' +
+      '<th>Produit</th><th>Boutique</th><th class="r">Prix</th>' +
+      '<th class="r">Ventes / jour</th><th class="r">CA / mois</th><th>Preuve</th><th></th>' +
+      '</tr></thead><tbody>' +
+      liste.map(ligneProduit).join("") +
+      '</tbody></table></div>' +
+      '<div class="note"><b>Comment lire.</b> « Ventes / jour » est la pente entre le premier et le ' +
+      'dernier relevé du compteur public. « CA / mois » multiplie cette pente par le prix affiché : ' +
+      'c\'est le chiffre d\'affaires du concurrent, pas votre marge. Une preuve faible ne veut pas dire ' +
+      'mauvais produit — elle veut dire qu\'on ne sait pas encore.</div>';
+  }
+  return h + '</div></div>';
+}
+
+function ligneProduit(p){
+  var b = boutiqueDe(p);
+  var m = mesure(p.id);
+  var f = forcePreuve(m);
+  var ca = caEstime(p);
+  return '<tr>' +
+    '<td><span class="nom">' + ech(p.nom) + '</span>' +
+      (p.url ? '<span class="meta"><a href="' + ech(p.url) + '" target="_blank" rel="noopener">ouvrir la fiche ↗</a></span>' : '') +
+      (m.assez ? sparkline(m) : '') +
+    '</td>' +
+    '<td>' + (b ? ech(b.nom) : '<span class="pilule creuse">non rattaché</span>') +
+      (b && b.domaine ? '<span class="meta">' + ech(b.domaine) + '</span>' : '') + '</td>' +
+    '<td class="r num">' + (p.prix ? nb(p.prix) : "—") + '</td>' +
+    '<td class="r num">' + (m.assez ? m.parJour : "—") + '</td>' +
+    '<td class="r num">' + (ca ? nb(ca) : "—") + '</td>' +
+    '<td><span class="pilule ' + f.cle + '">' + ech(f.texte) + '</span>' +
+      '<span class="meta">' + ech(f.detail) + '</span></td>' +
+    '<td class="r" style="white-space:nowrap">' +
+      '<button class="btn sm" data-relever="' + p.id + '">Relever</button> ' +
+      '<button class="btn sm pri" data-lancer="' + p.id + '">Lancer</button> ' +
+      '<button class="btn sm dgr" data-suppr-p="' + p.id + '">×</button>' +
+    '</td></tr>';
+}
+
+function sparkline(m){
+  var vals = m.serie.map(function(r){ return Number(r.compteur); });
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  var etendue = max - min || 1;
+  return '<span class="suivi" title="Progression du compteur">' + vals.map(function(v){
+    var pct = Math.max(6, Math.round(((v - min) / etendue) * 100));
+    return '<i style="height:' + pct + '%"></i>';
+  }).join("") + '</span>';
+}
+
+function boutiqueDe(p){
+  for(var i=0;i<E.boutiques.length;i++) if(E.boutiques[i].id === p.boutique) return E.boutiques[i];
+  return null;
+}
+
+/* ---------- boutiques ---------- */
+function vueBoutiques(){
+  var h = '<div class="carte"><div class="pad">' +
+    '<h2>Suivre une boutique</h2>' +
+    '<p class="sous">Le domaine suffit. Tout ce qui vient de cette boutique se retrouvera rattaché ici.</p>' +
+    '<form id="f-boutique"><div class="champs">' +
+    ch("nom", "Nom", "text") +
+    ch("domaine", "Domaine", "text", "", "", "ex. justyol.com") +
+    chSelect("plateforme", "Plateforme", [
+      {v:"YouCan",t:"YouCan"},{v:"Shopify",t:"Shopify"},{v:"WooCommerce",t:"WooCommerce"},
+      {v:"Instagram",t:"Instagram"},{v:"Facebook",t:"Facebook"},{v:"Autre",t:"Autre"}]) +
+    ch("ville", "Ville", "text") +
+    ch("note", "Ce qu'on en sait", "text", "", "large") +
+    '</div><div class="outils" style="margin:16px 0 0">' +
+    '<button class="btn pri" type="submit">Suivre</button></div></form></div></div>';
+
+  if(!E.boutiques.length){
+    return h + '<div class="carte"><div class="vide"><strong>Aucune boutique suivie</strong>' +
+      'Commencez par les trois ou quatre qui vendent déjà ce que vous voulez vendre.</div></div>';
+  }
+
+  h += '<div class="carte"><div class="pad"><div class="tw"><table><thead><tr>' +
+    '<th>Boutique</th><th>Plateforme</th><th>Ville</th><th class="r">Produits</th>' +
+    '<th class="r">Ventes / jour</th><th>Ce qu\'on en sait</th><th></th>' +
+    '</tr></thead><tbody>' +
+    E.boutiques.map(function(b){
+      var prods = E.produits.filter(function(p){ return p.boutique === b.id; });
+      var vj = prods.reduce(function(a,p){ var m = mesure(p.id); return a + (m.parJour || 0); }, 0);
+      return '<tr>' +
+        '<td><span class="nom">' + ech(b.nom) + '</span>' +
+          (b.domaine ? '<span class="meta"><a href="https://' + ech(b.domaine) + '" target="_blank" rel="noopener">' + ech(b.domaine) + ' ↗</a></span>' : '') + '</td>' +
+        '<td>' + ech(b.plateforme || "—") + '</td>' +
+        '<td>' + ech(b.ville || "—") + '</td>' +
+        '<td class="r num">' + prods.length + '</td>' +
+        '<td class="r num">' + (vj ? Math.round(vj * 10) / 10 : "—") + '</td>' +
+        '<td style="color:var(--encre2);font-size:13.5px">' + ech(b.note || "") + '</td>' +
+        '<td class="r"><button class="btn sm dgr" data-suppr-b="' + b.id + '">×</button></td>' +
+        '</tr>';
+    }).join("") +
+    '</tbody></table></div></div></div>';
+  return h;
+}
+
+/* ---------- relevés ---------- */
+function vueReleves(){
+  var rs = E.releves.slice().sort(function(a,b){ return a.date < b.date ? 1 : -1; });
+  var h = '<div class="carte"><div class="pad">' +
+    '<h2>Journal des relevés</h2>' +
+    '<p class="sous">Chaque ligne est une observation datée d\'un compteur public. Deux relevés ' +
+    'espacés de plusieurs jours suffisent à mesurer une pente ; plus il y en a, plus elle est fiable.</p>';
+
+  if(!rs.length){
+    h += '<div class="vide"><strong>Aucun relevé</strong>Utilisez le bouton « Relever » sur un produit.</div>';
+  }else{
+    h += '<div class="tw"><table><thead><tr><th>Date</th><th>Produit</th><th class="r">Compteur</th>' +
+      '<th>Note</th><th></th></tr></thead><tbody>' +
+      rs.map(function(r){
+        var p = E.produits.filter(function(x){ return x.id === r.produit; })[0];
+        return '<tr><td class="num">' + frDate(r.date) + '</td>' +
+          '<td>' + ech(p ? p.nom : "produit supprimé") + '</td>' +
+          '<td class="r num">' + nb(r.compteur) + '</td>' +
+          '<td style="color:var(--encre2);font-size:13.5px">' + ech(r.note || "") + '</td>' +
+          '<td class="r"><button class="btn sm dgr" data-suppr-r="' + r.id + '">×</button></td></tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+  return h + '</div></div>';
+}
+
+/* ---------- import / export ---------- */
+function vueImport(){
+  return '<div class="carte"><div class="pad">' +
+    '<h2>Importer votre base</h2>' +
+    '<p class="sous">Si vous avez déjà une base Espion COD ou des captures de l\'extension Radar, ' +
+    'collez-les ici. Le CSV est reconnu avec ces colonnes, dans n\'importe quel ordre : ' +
+    '<span class="num">produit, boutique, domaine, prix, url, compteur, date</span>. ' +
+    'Le JSON exporté par cette page est réimportable tel quel.</p>' +
+    '<form id="f-import">' +
+    '<textarea name="donnees" placeholder="produit;boutique;domaine;prix;url;compteur;date&#10;' +
+    'Set 12 bocaux carrés;Justyol;justyol.com;249;https://justyol.com/p/bocaux;312;2026-08-24"></textarea>' +
+    '<div class="outils" style="margin-top:14px">' +
+    '<button class="btn pri" type="submit">Importer</button>' +
+    '<button class="btn" type="button" id="b-export">Exporter en JSON</button>' +
+    '<button class="btn dgr" type="button" id="b-vider">Tout effacer</button>' +
+    '</div></form>' +
+    '<div class="note"><b>Une même ligne importée deux fois ne crée pas de doublon.</b> ' +
+    'Le produit est reconnu par son nom et sa boutique ; si un compteur et une date sont fournis, ' +
+    'ils s\'ajoutent comme un relevé de plus — c\'est comme cela qu\'on construit la mesure ' +
+    'sans ressaisir le produit.</div>' +
+    '</div></div>';
+}
+
+/* ---------- fabriques de champs ---------- */
+function ch(nom, label, type, val, cls, aide){
+  return '<div class="champ ' + (cls||"") + '"><label for="c-' + nom + '">' + ech(label) + '</label>' +
+    '<input id="c-' + nom + '" name="' + nom + '" type="' + type + '"' +
+    (type === "number" ? ' step="any" inputmode="decimal"' : '') +
+    ' value="' + ech(val||"") + '">' +
+    (aide ? '<span class="aide">' + ech(aide) + '</span>' : '') + '</div>';
+}
+function chSelect(nom, label, options){
+  return '<div class="champ"><label for="c-' + nom + '">' + ech(label) + '</label>' +
+    '<select id="c-' + nom + '" name="' + nom + '"><option value="">— aucune —</option>' +
+    options.map(function(o){ return '<option value="' + ech(o.v) + '">' + ech(o.t) + '</option>'; }).join("") +
+    '</select></div>';
+}
+
+/* =====================================================================
+   4. ÉVÉNEMENTS
+   ================================================================== */
+
+function brancher(){
+  document.querySelectorAll("[data-vue]").forEach(function(b){
+    b.onclick = function(){ vue = b.dataset.vue; rendre(); };
+  });
+
+  var q = $("q");
+  if(q) q.oninput = function(){
+    recherche = q.value;
+    /* on ne redessine que la liste pour ne pas perdre le focus du champ */
+    var carte = q.closest(".carte");
+    var suivant = document.createElement("div");
+    suivant.innerHTML = vueProduits();
+    var neuf = suivant.querySelectorAll(".carte")[1];
+    if(neuf && carte) { carte.replaceWith(neuf); brancher(); $("q").focus();
+      $("q").setSelectionRange(recherche.length, recherche.length); }
+  };
+
+  var fp = $("f-produit");
+  if(fp) fp.onsubmit = function(ev){
+    ev.preventDefault();
+    var d = Object.fromEntries(new FormData(fp).entries());
+    if(!d.nom || !d.nom.trim()) return toast("Le nom du produit est obligatoire.");
+    var p = { id: uid("prd"), nom: d.nom.trim(), boutique: d.boutique || null,
+      prix: d.prix ? Number(d.prix) : null, url: d.url || null, vuLe: auj() };
+    E.produits.push(p);
+    if(d.compteur !== "" && d.compteur != null){
+      E.releves.push({ id: uid("rel"), produit: p.id, date: auj(), compteur: Number(d.compteur), note: "premier relevé" });
+    }
+    sauver(); rendre();
+    toast("Produit ajouté. Revenez dans quelques jours relever le compteur.");
+  };
+
+  var fb = $("f-boutique");
+  if(fb) fb.onsubmit = function(ev){
+    ev.preventDefault();
+    var d = Object.fromEntries(new FormData(fb).entries());
+    if(!d.nom || !d.nom.trim()) return toast("Le nom de la boutique est obligatoire.");
+    E.boutiques.push({ id: uid("btq"), nom: d.nom.trim(),
+      domaine: (d.domaine||"").replace(/^https?:\/\//,"").replace(/\/$/,"") || null,
+      plateforme: d.plateforme || null, ville: d.ville || null, note: d.note || null, depuis: auj() });
+    sauver(); rendre(); toast("Boutique suivie.");
+  };
+
+  document.querySelectorAll("[data-relever]").forEach(function(b){
+    b.onclick = function(){
+      var p = E.produits.filter(function(x){ return x.id === b.dataset.relever; })[0];
+      if(!p) return;
+      var v = prompt("Compteur relevé aujourd'hui pour « " + p.nom + " »\n\n" +
+        "(nombre d'avis, compteur de commandes, « X vendus »)");
+      if(v === null) return;
+      var n = Number(String(v).replace(/[^\d.]/g, ""));
+      if(!isFinite(n)) return toast("Il faut un nombre.");
+      /* Un deuxième relevé le même jour remplace le premier : deux valeurs
+         à la même date ne mesurent rien. */
+      var deja = E.releves.filter(function(r){ return r.produit === p.id && r.date === auj(); })[0];
+      if(deja) deja.compteur = n;
+      else E.releves.push({ id: uid("rel"), produit: p.id, date: auj(), compteur: n, note: "" });
+      sauver(); rendre();
+      var m = mesure(p.id);
+      toast(m.assez ? "Mesure : " + m.parJour + " ventes/jour sur " + m.jours + " jours."
+                    : "Relevé enregistré. Il en faut un second, quelques jours plus tard.");
+    };
+  });
+
+  document.querySelectorAll("[data-lancer]").forEach(function(b){
+    b.onclick = function(){
+      var p = E.produits.filter(function(x){ return x.id === b.dataset.lancer; })[0];
+      if(!p) return;
+      /* La passerelle de l'atelier écoute ce message et ouvre l'orchestrateur
+         avec le produit pré-rempli. Hors atelier, on recopie dans le presse-papier. */
+      var charge = { source:"espion", nom: p.nom, prix: p.prix, url: p.url };
+      if(window.parent !== window){
+        window.parent.postMessage({ type:"poste-cod:lancer", produit: charge }, "*");
+        toast("Envoyé à l'orchestrateur.");
+      }else{
+        try{ navigator.clipboard.writeText(p.nom); toast("Nom copié — collez-le dans l'orchestrateur."); }
+        catch(e){ toast("Ouvrez cette page depuis l'atelier pour lancer directement."); }
+      }
+    };
+  });
+
+  document.querySelectorAll("[data-suppr-p]").forEach(function(b){
+    b.onclick = function(){
+      var id = b.dataset.supprP;
+      E.produits = E.produits.filter(function(x){ return x.id !== id; });
+      E.releves = E.releves.filter(function(r){ return r.produit !== id; });
+      sauver(); rendre();
+    };
+  });
+  document.querySelectorAll("[data-suppr-b]").forEach(function(b){
+    b.onclick = function(){
+      var id = b.dataset.supprB;
+      E.boutiques = E.boutiques.filter(function(x){ return x.id !== id; });
+      E.produits.forEach(function(p){ if(p.boutique === id) p.boutique = null; });
+      sauver(); rendre();
+    };
+  });
+  document.querySelectorAll("[data-suppr-r]").forEach(function(b){
+    b.onclick = function(){
+      E.releves = E.releves.filter(function(x){ return x.id !== b.dataset.supprR; });
+      sauver(); rendre();
+    };
+  });
+
+  var fi = $("f-import");
+  if(fi) fi.onsubmit = function(ev){
+    ev.preventDefault();
+    var txt = fi.elements.donnees.value.trim();
+    if(!txt) return toast("Collez des données d'abord.");
+    try{
+      var res = importer(txt);
+      sauver(); rendre();
+      toast(res.produits + " produits, " + res.boutiques + " boutiques, " + res.releves + " relevés.");
+    }catch(err){
+      toast("Import impossible : " + err.message);
+    }
+  };
+
+  var be = $("b-export");
+  if(be) be.onclick = function(){
+    var blob = new Blob([JSON.stringify(E, null, 1)], { type:"application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "espion-cod-" + auj() + ".json";
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  };
+  var bv = $("b-vider");
+  if(bv) bv.onclick = function(){
+    if(!confirm("Effacer toutes les boutiques, produits et relevés ? C'est irréversible.")) return;
+    E = { boutiques:[], produits:[], releves:[] };
+    sauver(); rendre(); toast("Base vidée.");
+  };
+}
+
+/* =====================================================================
+   5. IMPORT
+   ================================================================== */
+
+function importer(texte){
+  var t = texte.trim();
+  if(t.charAt(0) === "{" || t.charAt(0) === "["){
+    var o = JSON.parse(t);
+    if(Array.isArray(o)) return importerLignes(o);
+    var n = { produits:0, boutiques:0, releves:0 };
+    (o.boutiques || []).forEach(function(b){ if(fusionnerBoutique(b)) n.boutiques++; });
+    (o.produits  || []).forEach(function(p){ if(fusionnerProduit(p))  n.produits++; });
+    (o.releves   || []).forEach(function(r){ if(fusionnerReleve(r))   n.releves++; });
+    return n;
+  }
+  return importerLignes(csv(t));
+}
+
+function csv(texte){
+  var lignes = texte.split(/\r?\n/).filter(function(l){ return l.trim(); });
+  if(lignes.length < 2) throw new Error("il faut une ligne d'en-tête et au moins une ligne de données");
+  var sep = (lignes[0].split(";").length > lignes[0].split(",").length) ? ";" : ",";
+  var entetes = lignes[0].split(sep).map(function(h){
+    return h.trim().toLowerCase().replace(/^["']|["']$/g,"");
+  });
+  return lignes.slice(1).map(function(l){
+    var cells = l.split(sep);
+    var o = {};
+    entetes.forEach(function(h,i){ o[h] = (cells[i]||"").trim().replace(/^["']|["']$/g,""); });
+    return o;
+  });
+}
+
+function importerLignes(lignes){
+  var n = { produits:0, boutiques:0, releves:0 };
+  lignes.forEach(function(l){
+    var nomBtq = l.boutique || l.magasin || l.shop || "";
+    var domaine = l.domaine || l.domain || l.site || "";
+    var btq = null;
+    if(nomBtq || domaine){
+      btq = trouverBoutique(nomBtq, domaine);
+      if(!btq){
+        btq = { id: uid("btq"), nom: nomBtq || domaine,
+          domaine: (domaine||"").replace(/^https?:\/\//,"").replace(/\/$/,"") || null,
+          plateforme: l.plateforme || null, ville: l.ville || null, depuis: auj() };
+        E.boutiques.push(btq); n.boutiques++;
+      }
+    }
+
+    var nomProd = l.produit || l.product || l.nom || l.titre || "";
+    if(!nomProd) return;
+    var prod = E.produits.filter(function(p){
+      return p.nom.toLowerCase() === nomProd.toLowerCase() && p.boutique === (btq ? btq.id : null);
+    })[0];
+    if(!prod){
+      prod = { id: uid("prd"), nom: nomProd, boutique: btq ? btq.id : null,
+        prix: l.prix ? Number(String(l.prix).replace(/[^\d.]/g,"")) : null,
+        url: l.url || l.lien || null, vuLe: auj() };
+      E.produits.push(prod); n.produits++;
+    }else if(l.prix && !prod.prix){
+      prod.prix = Number(String(l.prix).replace(/[^\d.]/g,""));
+    }
+
+    var compteur = l.compteur || l.avis || l.ventes || l.commandes || "";
+    if(compteur !== ""){
+      var date = (l.date || auj()).slice(0,10);
+      var c = Number(String(compteur).replace(/[^\d.]/g,""));
+      if(isFinite(c)){
+        var deja = E.releves.filter(function(r){ return r.produit === prod.id && r.date === date; })[0];
+        if(deja) deja.compteur = c;
+        else { E.releves.push({ id: uid("rel"), produit: prod.id, date: date, compteur: c, note: "importé" }); n.releves++; }
+      }
+    }
+  });
+  return n;
+}
+
+function trouverBoutique(nom, domaine){
+  var d = (domaine||"").replace(/^https?:\/\//,"").replace(/\/$/,"").toLowerCase();
+  for(var i=0;i<E.boutiques.length;i++){
+    var b = E.boutiques[i];
+    if(d && b.domaine && b.domaine.toLowerCase() === d) return b;
+    if(nom && b.nom.toLowerCase() === nom.toLowerCase()) return b;
+  }
+  return null;
+}
+function fusionnerBoutique(b){
+  if(!b || !b.nom) return false;
+  if(trouverBoutique(b.nom, b.domaine)) return false;
+  E.boutiques.push(Object.assign({ id: uid("btq"), depuis: auj() }, b));
+  return true;
+}
+function fusionnerProduit(p){
+  if(!p || !p.nom) return false;
+  if(E.produits.some(function(x){ return x.id === p.id || (x.nom === p.nom && x.boutique === p.boutique); })) return false;
+  E.produits.push(Object.assign({ id: uid("prd"), vuLe: auj() }, p));
+  return true;
+}
+function fusionnerReleve(r){
+  if(!r || !r.produit) return false;
+  if(E.releves.some(function(x){ return x.produit === r.produit && x.date === r.date; })) return false;
+  E.releves.push(Object.assign({ id: uid("rel") }, r));
+  return true;
+}
+
+/* =====================================================================
+   6. DÉMARRAGE
+   ================================================================== */
+
+charger();
+rendre();
+
+/* L'API de l'atelier n'est là que si la page est servie par le serveur local.
+   Sinon la page fonctionne quand même, en pur localStorage. */
+fetch(API + "/etat").then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+  if(d) enLigne = true;
+}).catch(function(){});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pilote COD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style id="app-css">
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --ground:#e9edeb; --surface:#ffffff; --surface-2:#f2f6f4; --line:#d2dbd7; --line-2:#e2e9e6;
+  --ink:#111c1a; --ink-2:#3f524e; --ink-3:#6c7f7a;
+  --brand:#304f4f; --brand-2:#6b8e80; --brand-3:#a9c5bb;
+  --good:#1c7350; --warn:#8d530d; --bad:#96291f;
+  --good-bg:#e2f0ea; --warn-bg:#f5eadb; --bad-bg:#f6e3e1;
+  --shadow:0 1px 2px rgba(17,28,26,.06),0 8px 24px -16px rgba(17,28,26,.28);
+  --font-ui:'IBM Plex Sans Arabic',system-ui,-apple-system,Segoe UI,sans-serif;
+  --font-dis:'Bricolage Grotesque',Georgia,serif;
+  --font-num:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --r:10px;
+}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0e1615; --surface:#161f1d; --surface-2:#1c2724; --line:#2b3a36; --line-2:#232f2c;
+    --ink:#e7ede9; --ink-2:#a7b9b3; --ink-3:#7b8f89;
+    --brand:#7fb3a4; --brand-2:#5b8a7c; --brand-3:#33514a;
+    --good:#59bd91; --warn:#d99a45; --bad:#e5827a;
+    --good-bg:#15302a; --warn-bg:#332614; --bad-bg:#341f1d;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0e1615; --surface:#161f1d; --surface-2:#1c2724; --line:#2b3a36; --line-2:#232f2c;
+  --ink:#e7ede9; --ink-2:#a7b9b3; --ink-3:#7b8f89;
+  --brand:#7fb3a4; --brand-2:#5b8a7c; --brand-3:#33514a;
+  --good:#59bd91; --warn:#d99a45; --bad:#e5827a;
+  --good-bg:#15302a; --warn-bg:#332614; --bad-bg:#341f1d;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.8);
+}
+html,body{margin:0;padding:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-family:var(--font-dis);font-weight:600;letter-spacing:-.01em;text-wrap:balance}
+p{margin:0}
+a{color:var(--brand)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--warn);outline-offset:2px;border-radius:4px}
+.num{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+.ar{font-family:var(--font-ui);direction:rtl}
+
+/* shell */
+.shell{display:grid;grid-template-columns:1fr;min-height:100vh}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:10px 16px;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.wordmark{font-family:var(--font-dis);font-weight:700;font-size:18px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
+.wordmark .dot{width:9px;height:9px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
+.wordmark small{font-family:var(--font-ui);font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.top .grow{flex:1}
+.savebar{display:flex;align-items:center;gap:10px}
+.savestate{font-size:12px;color:var(--ink-3)}
+.savestate.dirty{color:var(--warn);font-weight:500}
+.main{display:grid;grid-template-columns:1fr;gap:0}
+.rail{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);scrollbar-width:thin}
+.rail button{white-space:nowrap;background:transparent;border:1px solid transparent;border-radius:99px;padding:7px 13px;cursor:pointer;color:var(--ink-2);font-size:13.5px}
+.rail button:hover{background:var(--surface);color:var(--ink)}
+.rail button[aria-current="true"]{background:var(--brand);color:var(--surface);border-color:var(--brand)}
+:root[data-theme="dark"] .rail button[aria-current="true"],
+:root:not([data-theme="light"]) .rail button[aria-current="true"]{color:#0e1615}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .rail button[aria-current="true"]{color:#fff}}
+.view{padding:22px 16px 72px;max-width:1180px;width:100%;margin:0 auto}
+@media(min-width:960px){
+  .main{grid-template-columns:216px 1fr}
+  .rail{flex-direction:column;overflow:visible;border-bottom:none;border-right:1px solid var(--line);padding:18px 12px;position:sticky;top:57px;align-self:start;height:calc(100vh - 57px)}
+  .rail button{text-align:left;border-radius:8px}
+  .view{padding:28px 32px 80px}
+}
+.railgroup{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:14px 12px 5px;display:none}
+@media(min-width:960px){.railgroup{display:block}}
+
+/* type */
+.viewhead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.viewhead h1{font-size:clamp(22px,3.4vw,29px)}
+.viewhead p{color:var(--ink-2);font-size:13.5px;max-width:62ch;margin-top:5px}
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+h2.sec{font-size:15px;margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+h2.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:16px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr))}
+
+/* stat tiles */
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;display:flex;flex-direction:column;gap:3px;box-shadow:var(--shadow)}
+.tile .lab{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.tile .val{font-family:var(--font-num);font-size:26px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15}
+.tile .sub{font-size:12px;color:var(--ink-2)}
+.tile.hero .val{font-size:34px}
+.tile .val.pos{color:var(--good)}.tile .val.neg{color:var(--bad)}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:99px;border:1px solid transparent;white-space:nowrap}
+.pill.good{background:var(--good-bg);color:var(--good);border-color:color-mix(in srgb,var(--good) 30%,transparent)}
+.pill.warn{background:var(--warn-bg);color:var(--warn);border-color:color-mix(in srgb,var(--warn) 30%,transparent)}
+.pill.bad{background:var(--bad-bg);color:var(--bad);border-color:color-mix(in srgb,var(--bad) 30%,transparent)}
+.pill.mute{background:var(--surface-2);color:var(--ink-3);border-color:var(--line)}
+.pill .ic{font-size:10px}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:7px}
+.frow{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:12px}
+.frow .fl{font-size:12.5px;color:var(--ink-2)}
+.ftrack{background:var(--surface-2);border-radius:5px;height:26px;position:relative;overflow:hidden}
+.fbar{height:100%;border-radius:5px;display:flex;align-items:center;padding:0 9px;color:#fff;font-family:var(--font-num);font-size:12.5px;min-width:2px;transition:width .4s ease}
+:root[data-theme="dark"] .fbar,:root:not([data-theme="light"]) .fbar{color:#0e1615}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .fbar{color:#fff}}
+.fbar.s1{background:var(--brand-3)}
+.fbar.s2{background:var(--brand-2)}
+.fbar.s3{background:var(--brand)}
+.fbar.s1{color:var(--ink)}
+.fnote{font-size:12px;color:var(--ink-3);margin-top:9px}
+
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:2px;height:78px;padding-top:6px}
+.bars .b{flex:1;background:var(--brand-2);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.bars .b.zero{background:var(--line);min-height:2px}
+.barsx{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-top:5px}
+
+/* tables */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
+th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;
+  padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);position:sticky;top:0;z-index:1;white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+td.r,th.r{text-align:right}
+.tname{font-weight:500}
+.tsub{font-size:11.5px;color:var(--ink-3)}
+
+/* forms */
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+input,select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 16%,transparent)}
+textarea{font-family:var(--font-num);font-size:12.5px;min-height:120px;resize:vertical}
+.formgrid{display:grid;gap:11px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{background:var(--brand);color:var(--surface);border:1px solid var(--brand);border-radius:8px;padding:8px 15px;cursor:pointer;font-size:13.5px;font-weight:500}
+:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#0e1615}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn{color:#fff}}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+.btn.ghost:hover{background:var(--surface-2);color:var(--ink)}
+.btn.danger{background:transparent;color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
+.btn.sm{padding:4px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+select.inline{padding:4px 7px;font-size:12.5px;border-radius:6px;width:auto;min-width:118px}
+
+/* misc */
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--ink-2);background:var(--surface-2)}
+.empty strong{display:block;color:var(--ink);font-weight:600;margin-bottom:5px}
+.alerts{display:flex;flex-direction:column;gap:8px}
+.alert{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border-radius:9px;border:1px solid var(--line);background:var(--surface);font-size:13.5px}
+.alert .ic{width:20px;text-align:center;flex:none;font-size:13px;line-height:1.4}
+.alert.bad{border-color:color-mix(in srgb,var(--bad) 35%,transparent);background:var(--bad-bg)}
+.alert.warn{border-color:color-mix(in srgb,var(--warn) 35%,transparent);background:var(--warn-bg)}
+.alert.good{border-color:color-mix(in srgb,var(--good) 30%,transparent);background:var(--good-bg)}
+.alert b{font-weight:600}
+details.panel{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin-bottom:14px}
+details.panel>summary{padding:11px 15px;cursor:pointer;font-size:13.5px;font-weight:500;list-style:none;display:flex;align-items:center;gap:8px}
+details.panel>summary::after{content:"+";margin-left:auto;color:var(--ink-3);font-family:var(--font-num)}
+details.panel[open]>summary::after{content:"–"}
+details.panel .pad{border-top:1px solid var(--line-2)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--ground);
+  padding:10px 18px;border-radius:99px;font-size:13.5px;z-index:60;box-shadow:var(--shadow);max-width:88vw;text-align:center}
+.agent{display:flex;flex-direction:column;gap:9px;padding:15px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow)}
+.agent code{font-family:var(--font-num);font-size:13px;color:var(--brand);font-weight:500}
+.agent .role{font-size:13px;color:var(--ink-2)}
+.agent .prompt{font-family:var(--font-num);font-size:11.5px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);border-radius:7px;padding:9px;white-space:pre-wrap}
+.chain{font-family:var(--font-num);font-size:12px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);border-radius:9px;padding:14px;overflow-x:auto;white-space:pre;line-height:1.65}
+.season{display:grid;grid-template-columns:64px 1fr auto;gap:13px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line-2)}
+.season:last-child{border-bottom:none}
+.season .cd{font-family:var(--font-num);font-size:19px;text-align:center;color:var(--brand);font-weight:500}
+.season .cd small{display:block;font-size:9.5px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
+.season .nm{font-weight:500;font-size:14px}
+.season .dt{font-size:12px;color:var(--ink-3)}
+.tasklist{display:flex;flex-direction:column}
+.task{display:flex;gap:11px;align-items:center;padding:9px 2px;border-bottom:1px solid var(--line-2)}
+.task:last-child{border-bottom:none}
+.task input[type=checkbox]{width:16px;height:16px;flex:none;accent-color:var(--brand)}
+.task.done .tt{text-decoration:line-through;color:var(--ink-3)}
+.task .td{font-family:var(--font-num);font-size:11.5px;color:var(--ink-3);flex:none}
+.note{font-size:12.5px;color:var(--ink-3);line-height:1.6}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.kv:last-child{border-bottom:none}
+.kv span:last-child{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script id="app-state" type="application/json">{"v":1,"publishedAt":1787860301802,"localAt":1787860301802,"reglages":{"boutique":"ASSALA HOME & MODE","livraison":33,"retour":18,"tauxDefaut":0.7},"produits":[],"commandes":[],"campagnes":[],"taches":[]}</script>
+<script id="app-code">
+(function(){
+"use strict";
+var KEY='pilote-cod-v1';
+var S='script';
+
+var VILLES=['Casablanca','Rabat','Salé','Marrakech','Fès','Tanger','Agadir','Meknès','Oujda','Kénitra','Tétouan','Safi','El Jadida','Nador','Béni Mellal','Mohammédia','Khouribga','Autre'];
+
+var MOTIFS=['Ne répond pas','A changé d\'avis','Prix trop élevé','Adresse introuvable','Produit non conforme à l\'annonce','Absent à la livraison','Commande en double','Autre'];
+
+var SAISONS=[
+ {nom:'Rentrée scolaire',date:'2026-09-01',lunaire:false,prep:21,quoi:'Rangement, maison, budget. Les paniers baissent après le 10.'},
+ {nom:'Black Friday',date:'2026-11-27',lunaire:false,prep:21,quoi:'Offres réelles et packs. Préparer le stock, pas juste la remise.'},
+ {nom:'Ramadan',date:'2027-02-08',lunaire:true,prep:28,quoi:'Tenues de soirée, déco de table, préparation. Fenêtre ouverte 4 semaines avant.'},
+ {nom:'Aïd al-Fitr',date:'2027-03-10',lunaire:true,prep:20,quoi:'Pic de vente tenues de fête. Annoncer les délais de livraison garantis.'},
+ {nom:'Aïd al-Adha',date:'2027-05-17',lunaire:true,prep:14,quoi:'Maison, textile, réception.'},
+ {nom:'Saison des mariages',date:'2027-06-15',lunaire:false,prep:30,quoi:'Caftans, tenues d\'invitée, coloris clairs. Court jusqu\'en septembre.'}
+];
+
+var AGENTS=[
+ {n:'recherche-produits-maroc',f:'Recherche',r:'Trouve des produits gagnants pour le COD marocain, chiffrés en MAD, avec un rapport Excel et deux liens sources vérifiés par produit.',p:'Trouve-moi 10 produits gagnants pour ma boutique COD au Maroc ce mois-ci. Vérifie chaque produit sur au moins 2 pages réelles et donne-moi le rapport Excel.'},
+ {n:'recherche-produits-international',f:'Recherche',r:'Même travail hors Maroc — Golfe, Europe COD, US/UK prépayé, Afrique de l\'Ouest — chiffré en USD et en devise locale.',p:'Cherche des produits gagnants pour les Émirats et l\'Arabie saoudite, et compare le modèle COD et prépayé pour chacun.'},
+ {n:'recherche-terroir-export',f:'Recherche',r:'Produits marocains bio et artisanaux sourcés en coopérative, notés sur la piste export et sur la piste COD locale.',p:'Étudie l\'huile d\'argan cosmétique pour l\'export vers les États-Unis : coût coopérative, barrière réglementaire, marge sur les deux pistes.'},
+ {n:'marketing-publicite',f:'Marketing',r:'Calcule le CPA maximum après refus, structure les campagnes Meta et TikTok, arbitre le scaling et diagnostique ce qui perd de l\'argent.',p:'Voici mes chiffres de campagne de la semaine : dépense, commandes, confirmées, livrées. Dis-moi si je scale, j\'optimise ou je coupe.'},
+ {n:'marketing-contenu',f:'Marketing',r:'Calendrier éditorial organique calé sur les saisons marocaines, briefs de tournage UGC, collaborations nano-influenceurs.',p:'Fais-moi le calendrier de contenu des 4 prochaines semaines pour TikTok et Instagram, avec les briefs de tournage.'},
+ {n:'marketing-fidelisation',f:'Marketing',r:'Fait baisser le taux de refus : confirmation sous 2 h, scripts darija, relances, analyse des refus, réachat.',p:'Écris-moi le script d\'appel de confirmation et le message WhatsApp immédiat, en darija, pour une commande à 299 MAD.'},
+ {n:'copywriting-produit',f:'Copywriting',r:'Texte des fiches produit et des landing pages : titre, bénéfices, objections COD, FAQ, meta title et slug.',p:'Écris la fiche produit complète en arabe pour ce produit (lien), prix 299 MAD, avec les objections COD et les métadonnées SEO.'},
+ {n:'copywriting-publicite',f:'Copywriting',r:'Angles, hooks darija, textes d\'annonces Meta et TikTok, scripts vidéo de 15 à 30 secondes, légendes.',p:'Donne-moi 3 angles différents pour ce produit, avec hook darija, texte d\'annonce Meta et script vidéo de 20 secondes.'},
+ {n:'design-visuels',f:'Production',r:'Créas Meta/TikTok, photos de fiche, bannières et packs saisonniers, rendus en PNG au format exact.',p:'Fais-moi un pack de créas pour ce produit : 3 angles en 1080×1350, une story, et 3 visuels de galerie produit.'},
+ {n:'optimisation-boutique',f:'Production',r:'Audit et correctifs de la boutique YouCan — vitesse, SEO, conversion COD — et mise en ligne des produits validés.',p:'Refais l\'audit de assalamode.store et donne-moi les 3 corrections qui rapportent le plus, avec le détail écran par écran.'}
+];
+
+var CHAINE='recherche-produits-maroc      le produit et ses coûts vérifiés\n        ↓\nmarketing-publicite           le produit passe-t-il le point mort ?\n        ↓\ncopywriting-produit           la fiche\ncopywriting-publicite         angles, hooks, scripts\ndesign-visuels                les créas\n        ↓\noptimisation-boutique         mise en ligne\n        ↓\nmarketing-publicite           lancement, test d\'angles, décision\n        ↓\nmarketing-fidelisation        confirmation, livraison, réachat\n        ↓\nmarketing-contenu             on entretient l\'audience entre deux lancements';
+
+/* ---------- état ---------- */
+function defaults(){
+ return {v:1,publishedAt:0,localAt:0,
+  reglages:{boutique:'ASSALA HOME & MODE',livraison:33,retour:18,tauxDefaut:0.70},
+  produits:[],commandes:[],campagnes:[],taches:[]};
+}
+function readEmbedded(){
+ try{var t=document.getElementById('app-state').textContent;var o=JSON.parse(t||'{}');return o&&o.v?o:null;}catch(e){return null;}
+}
+function readLocal(){
+ try{var o=JSON.parse(localStorage.getItem(KEY)||'null');return o&&o.v?o:null;}catch(e){return null;}
+}
+var pendingLocal=false;
+function load(){
+ var emb=readEmbedded(),loc=readLocal(),base=emb||defaults();
+ if(loc&&(loc.localAt||0)>(base.publishedAt||0)){base=loc;pendingLocal=(loc.localAt||0)>(loc.publishedAt||0);}
+ var d=defaults();
+ for(var k in d){if(!(k in base))base[k]=d[k];}
+ for(var r in d.reglages){if(base.reglages[r]===undefined)base.reglages[r]=d.reglages[r];}
+ return base;
+}
+var state=load();
+var dirty=pendingLocal;
+var ui={view:'bord',periode:30,editP:null,editCa:null,fStatut:'toutes',fProduit:'',csv:false};
+
+function touch(){
+ state.localAt=Date.now();dirty=true;
+ try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+ render();
+}
+
+/* ---------- utilitaires ---------- */
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function n0(x){return new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(Math.round(x||0));}
+function n1(x){return new Intl.NumberFormat('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1}).format(x||0);}
+function mad(x){return n0(x)+' MAD';}
+function pc(x){return (x==null||isNaN(x))?'—':n1(x*100)+' %';}
+function today(){var d=new Date();return d.toISOString().slice(0,10);}
+function daysTo(iso){var a=new Date(iso+'T00:00:00'),b=new Date(today()+'T00:00:00');return Math.round((a-b)/86400000);}
+function frDate(iso){if(!iso)return '—';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0].slice(2);}
+function num(v,d){var x=parseFloat(String(v).replace(',','.'));return isNaN(x)?(d||0):x;}
+function prod(id){for(var i=0;i<state.produits.length;i++)if(state.produits[i].id===id)return state.produits[i];return null;}
+
+/* ---------- économie COD ---------- */
+/* CPA max par commande brute = L*(prix-coût-livraison) - (1-L)*(livraison+retour) */
+function eco(p,L){
+ var g=state.reglages;
+ var M=num(p.prix)-num(p.cout)-num(g.livraison);
+ var Pr=num(g.livraison)+num(g.retour);
+ var cpaMax=L*M-(1-L)*Pr;
+ return {M:M,Pr:Pr,L:L,cpaMax:cpaMax,cpaCible:cpaMax*0.7,
+   roas:cpaMax>0?num(p.prix)/cpaMax:null,
+   viable:cpaMax>=40,bande:num(p.prix)>=149&&num(p.prix)<=499};
+}
+function cmdsDe(pid,depuis){
+ return state.commandes.filter(function(c){
+  if(pid&&c.produitId!==pid)return false;
+  if(depuis&&c.date<depuis)return false;
+  return true;});
+}
+function taux(cmds){
+ var recues=cmds.length,conf=0,livr=0,ref=0,ann=0,att=0;
+ cmds.forEach(function(c){
+  /* un colis refusé a bien été confirmé avant d'être expédié : il compte comme confirmé */
+  if(c.statut==='confirmee'||c.statut==='expediee'||c.statut==='livree'||c.statut==='refusee')conf++;
+  if(c.statut==='livree')livr++;
+  if(c.statut==='refusee')ref++;
+  if(c.statut==='annulee')ann++;
+  if(c.statut==='nouvelle')att++;
+ });
+ var termine=livr+ref,traite=conf+ann;
+ return {recues:recues,confirmees:conf,livrees:livr,refusees:ref,annulees:ann,attente:att,
+  termine:termine,traite:traite,
+  tConf:traite?conf/traite:null,
+  tLivr:termine?livr/termine:null};
+}
+function LGlobal(pid){
+ var t=taux(cmdsDe(pid,null));
+ if(t.termine>=10&&t.tLivr!=null)return t.tLivr;
+ var g=taux(cmdsDe(null,null));
+ if(g.termine>=10&&g.tLivr!=null)return g.tLivr;
+ return num(state.reglages.tauxDefaut,0.7);
+}
+function periodeDepuis(){
+ if(ui.periode==='tout')return null;
+ var d=new Date();d.setDate(d.getDate()-ui.periode);return d.toISOString().slice(0,10);
+}
+function bilan(depuis){
+ var cmds=cmdsDe(null,depuis),t=taux(cmds);
+ var ca=0,marge=0,perte=0;
+ cmds.forEach(function(c){
+  var p=prod(c.produitId);var g=state.reglages;
+  var montant=num(c.montant,p?num(p.prix):0);
+  if(c.statut==='livree'){ca+=montant;marge+=montant-(p?num(p.cout):0)-num(g.livraison);}
+  else if(c.statut==='refusee'){perte+=num(g.livraison)+num(g.retour);}
+ });
+ var dep=0,cmdPub=0;
+ state.campagnes.forEach(function(k){
+  if(depuis&&(k.fin||k.debut)<depuis)return;
+  dep+=num(k.depense);cmdPub+=num(k.commandes);
+ });
+ return {t:t,ca:ca,marge:marge,perte:perte,depense:dep,cmdPub:cmdPub,
+   profit:marge-perte-dep,
+   cpa:cmdPub?dep/cmdPub:null};
+}
+function verdictCampagne(k){
+ var p=prod(k.produitId);if(!p)return {cls:'mute',txt:'Produit inconnu',cpa:null};
+ var e=eco(p,LGlobal(k.produitId));
+ var c=num(k.commandes);
+ if(!c)return {cls:'mute',txt:'Sans commande',cpa:null,e:e};
+ var cpa=num(k.depense)/c;
+ if(cpa<=e.cpaCible)return {cls:'good',txt:'Rentable — scaler',cpa:cpa,e:e};
+ if(cpa<=e.cpaMax)return {cls:'warn',txt:'À l\'équilibre — optimiser',cpa:cpa,e:e};
+ return {cls:'bad',txt:'En perte — couper',cpa:cpa,e:e};
+}
+
+/* ---------- rendu ---------- */
+var VIEWS=[
+ {id:'bord',lab:'Tableau de bord',g:'Piloter'},
+ {id:'commandes',lab:'Commandes',g:'Piloter'},
+ {id:'produits',lab:'Produits & marges',g:'Vendre'},
+ {id:'campagnes',lab:'Campagnes pub',g:'Vendre'},
+ {id:'calendrier',lab:'Calendrier',g:'Vendre'},
+ {id:'agents',lab:'Mes agents',g:'Outils'},
+ {id:'donnees',lab:'Données & réglages',g:'Outils'}
+];
+
+function render(){
+ var r=document.getElementById('root');
+ r.innerHTML=shell(viewHTML());
+ var sc=document.querySelector('.view');if(sc)sc.scrollTop=0;
+}
+function shell(inner){
+ var rail='',lastG='';
+ VIEWS.forEach(function(v){
+  if(v.g!==lastG){rail+='<div class="railgroup">'+v.g+'</div>';lastG=v.g;}
+  rail+='<button data-go="'+v.id+'" aria-current="'+(ui.view===v.id)+'">'+v.lab+'</button>';
+ });
+ var save=dirty?'<span class="savestate dirty">Modifications non enregistrées</span>':'<span class="savestate">À jour</span>';
+ return '<div class="shell">'+
+  '<header class="top"><div class="wordmark"><span class="dot"></span>Pilote COD <small>'+esc(state.reglages.boutique)+'</small></div>'+
+  '<div class="grow"></div><div class="savebar">'+save+
+  '<button class="btn" data-act="save">Enregistrer</button></div></header>'+
+  '<div class="main"><nav class="rail">'+rail+'</nav><main class="view">'+inner+'</main></div></div>';
+}
+function viewHTML(){
+ switch(ui.view){
+  case 'commandes':return vCommandes();
+  case 'produits':return vProduits();
+  case 'campagnes':return vCampagnes();
+  case 'calendrier':return vCalendrier();
+  case 'agents':return vAgents();
+  case 'donnees':return vDonnees();
+  default:return vBord();
+ }
+}
+function head(t,d,extra){
+ return '<div class="viewhead"><div><h1>'+t+'</h1><p>'+d+'</p></div>'+(extra||'')+'</div>';
+}
+
+/* ---------- tableau de bord ---------- */
+function vBord(){
+ var vide=!state.produits.length&&!state.commandes.length;
+ if(vide)return head('Tableau de bord','Rien à afficher tant que la boutique n\'a pas de données. Trois étapes, dans cet ordre.')+onboarding();
+ var d=periodeDepuis(),b=bilan(d),t=b.t;
+ var sel='<select class="inline" data-act="periode">'+
+  [[30,'30 derniers jours'],[90,'90 derniers jours'],['tout','Tout l\'historique']].map(function(o){
+   return '<option value="'+o[0]+'"'+(String(ui.periode)===String(o[0])?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>';
+ var h=head('Tableau de bord','Ce que la boutique a réellement encaissé, refus et dépense publicitaire déduits.',sel);
+
+ h+='<div class="grid g4">'+
+  tile('Commandes reçues',n0(t.recues),t.attente?n0(t.attente)+' encore à confirmer':'&nbsp;')+
+  tile('Taux de confirmation',pc(t.tConf),t.traite?n0(t.confirmees)+' confirmées / '+n0(t.traite)+' traitées':'—')+
+  tile('Taux de livraison',pc(t.tLivr),t.termine?n0(t.livrees)+' livrées / '+n0(t.termine)+' terminées':'aucune commande terminée')+
+  tile('Dépense publicitaire',mad(b.depense),b.cpa!=null?'CPA réel '+mad(b.cpa):'—')+
+  '</div>';
+ h+='<div class="grid g2" style="margin-top:12px">'+
+  '<div class="tile hero"><div class="lab">Profit net estimé</div><div class="val '+(b.profit>=0?'pos':'neg')+'">'+mad(b.profit)+'</div>'+
+   '<div class="sub">Marge livrée '+mad(b.marge)+' − pertes sur refus '+mad(b.perte)+' − pub '+mad(b.depense)+'</div></div>'+
+  '<div class="tile hero"><div class="lab">Chiffre d\'affaires encaissé</div><div class="val">'+mad(b.ca)+'</div>'+
+   '<div class="sub">Seules les commandes livrées comptent. Le reste n\'a jamais été payé.</div></div>'+
+  '</div>';
+
+ h+='<h2 class="sec">Où partent les commandes</h2>'+funnel(t);
+ h+='<h2 class="sec">Commandes des 14 derniers jours</h2>'+sparkbars();
+ var al=alertes(b);
+ h+='<h2 class="sec">À traiter</h2>'+(al.length?'<div class="alerts">'+al.join('')+'</div>':'<div class="empty">Rien d\'anormal détecté sur la période.</div>');
+ return h;
+}
+function tile(lab,val,sub,cls){
+ return '<div class="tile"><div class="lab">'+lab+'</div><div class="val '+(cls||'')+'">'+val+'</div><div class="sub">'+(sub||'&nbsp;')+'</div></div>';
+}
+function funnel(t){
+ var max=Math.max(t.recues,1);
+ function row(lab,v,cls){
+  var w=Math.max((v/max)*100,v?3:0);
+  return '<div class="frow"><div class="fl">'+lab+'</div><div class="ftrack">'+
+   '<div class="fbar '+cls+'" style="width:'+w+'%">'+n0(v)+'</div></div></div>';
+ }
+ return '<div class="card pad"><div class="funnel">'+
+  row('Reçues',t.recues,'s1')+row('Confirmées',t.confirmees,'s2')+row('Livrées',t.livrees,'s3')+
+  '</div><p class="fnote">'+n0(t.refusees)+' refusées à la livraison, '+n0(t.annulees)+' annulées avant expédition, '+n0(t.attente)+' encore à confirmer. Chaque colis refusé coûte '+
+  mad(num(state.reglages.livraison)+num(state.reglages.retour))+' de logistique, plus la publicité déjà dépensée.</p></div>';
+}
+function sparkbars(){
+ var days=[],map={};
+ for(var i=13;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var k=d.toISOString().slice(0,10);days.push(k);map[k]=0;}
+ state.commandes.forEach(function(c){if(map[c.date]!==undefined)map[c.date]++;});
+ var max=1;days.forEach(function(k){if(map[k]>max)max=map[k];});
+ var bars=days.map(function(k){
+  var v=map[k],hp=Math.round((v/max)*100);
+  return '<div class="b'+(v?'':' zero')+'" style="height:'+(v?Math.max(hp,4):2)+'%" title="'+frDate(k)+' — '+v+' commande'+(v>1?'s':'')+'"></div>';
+ }).join('');
+ return '<div class="card pad"><div class="bars">'+bars+'</div>'+
+  '<div class="barsx"><span>'+frDate(days[0])+'</span><span class="num">pic '+max+'/jour</span><span>'+frDate(days[13])+'</span></div></div>';
+}
+function alertes(b){
+ var out=[],g=state.reglages;
+ function a(cls,ic,txt){out.push('<div class="alert '+cls+'"><span class="ic">'+ic+'</span><div>'+txt+'</div></div>');}
+ state.produits.forEach(function(p){
+  if(p.statut==='archive')return;
+  var e=eco(p,LGlobal(p.id));
+  if(e.cpaMax<40)a('bad','!','<b>'+esc(p.nom)+'</b> ne supporte pas la publicité payante : CPA max '+mad(e.cpaMax)+
+   '. Monter le prix, faire un pack, ou baisser le coût d\'achat.');
+  else if(!e.bande)a('warn','~','<b>'+esc(p.nom)+'</b> est hors de la zone qui convertit en COD (149–499 MAD) : prix '+mad(num(p.prix))+'.');
+  if(p.statut==='actif'&&num(p.stock)<=0)a('warn','~','<b>'+esc(p.nom)+'</b> est actif avec un stock à zéro.');
+ });
+ state.campagnes.forEach(function(k){
+  if(k.statut==='arretee')return;
+  var v=verdictCampagne(k);
+  if(v.cls==='bad')a('bad','!','Campagne <b>'+esc(k.nom)+'</b> : CPA réel '+mad(v.cpa)+' contre '+mad(v.e.cpaMax)+' au point mort. Couper ou changer d\'angle.');
+ });
+ if(b.t.traite>=10&&b.t.tConf!=null&&b.t.tConf<0.7)
+  a('warn','~','Taux de confirmation à '+pc(b.t.tConf)+'. En dessous de 70 %, le problème est le délai de rappel : viser un contact sous 2 h.');
+ var parVille={};
+ state.commandes.forEach(function(c){
+  if(c.statut!=='livree'&&c.statut!=='refusee')return;
+  var v=c.ville||'Autre';parVille[v]=parVille[v]||{t:0,r:0};parVille[v].t++;if(c.statut==='refusee')parVille[v].r++;
+ });
+ Object.keys(parVille).forEach(function(v){
+  var o=parVille[v];
+  if(o.t>=8&&o.r/o.t>0.4)a('warn','~','<b>'+esc(v)+'</b> : '+pc(o.r/o.t)+' de refus sur '+o.t+' commandes terminées. Vérifier le transporteur et le délai sur cette ville.');
+ });
+ SAISONS.forEach(function(s){
+  var j=daysTo(s.date);
+  if(j>=0&&j<=s.prep+10){
+   var aFaire=state.taches.filter(function(t){return !t.fait&&t.saison===s.nom;}).length;
+   if(!aFaire)a(j<=s.prep?'warn':'good',j<=s.prep?'~':'i','<b>'+esc(s.nom)+'</b> dans '+j+' jours et aucune tâche ouverte. '+esc(s.quoi));
+  }
+ });
+ if(!out.length&&b.profit>0)a('good','✓','Sur la période, la boutique dégage '+mad(b.profit)+' de profit net estimé.');
+ return out;
+}
+function onboarding(){
+ return '<div class="grid g2">'+
+  '<div class="card pad"><div class="eyebrow">Étape 1</div><h3 style="margin:6px 0 8px">Tes produits</h3>'+
+   '<p class="note">Prix de vente et coût d\'achat réel. L\'app en déduit la marge par colis livré, le CPA maximum et le ROAS au point mort.</p>'+
+   '<div class="actions"><button class="btn" data-go="produits">Ajouter un produit</button></div></div>'+
+  '<div class="card pad"><div class="eyebrow">Étape 2</div><h3 style="margin:6px 0 8px">Tes commandes</h3>'+
+   '<p class="note">Saisie à la main ou collage du CSV YouCan. C\'est ce qui donne le vrai taux de confirmation et de livraison — pas une estimation.</p>'+
+   '<div class="actions"><button class="btn ghost" data-go="commandes">Ouvrir les commandes</button></div></div>'+
+  '<div class="card pad"><div class="eyebrow">Étape 3</div><h3 style="margin:6px 0 8px">Tes campagnes</h3>'+
+   '<p class="note">Dépense et commandes attribuées par campagne. L\'app compare le CPA réel au point mort et rend un verdict.</p>'+
+   '<div class="actions"><button class="btn ghost" data-go="campagnes">Ouvrir les campagnes</button></div></div>'+
+  '<div class="card pad"><div class="eyebrow">Toujours disponible</div><h3 style="margin:6px 0 8px">Tes agents</h3>'+
+   '<p class="note">Les dix agents Claude Code de la boutique, ce que fait chacun et un prompt prêt à copier.</p>'+
+   '<div class="actions"><button class="btn ghost" data-go="agents">Voir les agents</button></div></div>'+
+  '</div>';
+}
+
+/* ---------- produits ---------- */
+function vProduits(){
+ var h=head('Produits & marges','Chaque produit est jugé sur ce qui reste dans la poche après un colis livré — et sur ce qu\'on peut payer pour l\'acquérir.',
+  '<button class="btn" data-act="np">Nouveau produit</button>');
+ h+=formProduit();
+ if(!state.produits.length)return h+'<div class="empty"><strong>Aucun produit</strong>Ajoute ton premier produit : nom, prix de vente et coût d\'achat suffisent.</div>';
+ var rows=state.produits.map(function(p){
+  var L=LGlobal(p.id),e=eco(p,L),t=taux(cmdsDe(p.id,null));
+  var v=e.cpaMax<40?['bad','Pub impossible']:(e.bande?['good','Viable']:['warn','Hors zone de prix']);
+  return '<tr><td><div class="tname">'+esc(p.nom)+'</div><div class="tsub">'+statutProduit(p.statut)+' · stock '+n0(p.stock)+'</div></td>'+
+   '<td class="r num">'+n0(p.prix)+'</td><td class="r num">'+n0(p.cout)+'</td>'+
+   '<td class="r num">'+n0(e.M)+'</td>'+
+   '<td class="r num">'+n0(e.cpaMax)+'</td><td class="r num">'+n0(e.cpaCible)+'</td>'+
+   '<td class="r num">'+(e.roas?n1(e.roas):'—')+'</td>'+
+   '<td class="r num">'+n0(t.recues)+'</td>'+
+   '<td><span class="pill '+v[0]+'">'+v[1]+'</span></td>'+
+   '<td class="r"><button class="btn ghost sm" data-edit-p="'+p.id+'">Éditer</button> '+
+   '<button class="btn danger sm" data-del-p="'+p.id+'">Suppr.</button></td></tr>';
+ }).join('');
+ h+='<div class="tablewrap"><table><thead><tr><th>Produit</th><th class="r">Prix</th><th class="r">Coût</th>'+
+  '<th class="r">Marge livrée</th><th class="r">CPA max</th><th class="r">CPA cible</th><th class="r">ROAS mini</th>'+
+  '<th class="r">Cmd</th><th>Verdict</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+ h+='<p class="note" style="margin-top:12px">CPA max = taux de livraison × (prix − coût − livraison) − taux de refus × (livraison + retour). '+
+  'Le ROAS mini est celui qu\'affichera la plateforme au point mort : au-dessous, la campagne perd de l\'argent même si le gestionnaire de publicités affiche un ROAS supérieur à 1. '+
+  'Taux de livraison utilisé : '+pc(LGlobal(null))+(taux(cmdsDe(null,null)).termine>=10?' (mesuré sur tes commandes)':' (valeur par défaut, pas encore assez de commandes terminées)')+'.</p>';
+ return h;
+}
+function statutProduit(s){
+ return {test:'En test',actif:'Actif',pause:'En pause',archive:'Archivé'}[s]||'Actif';
+}
+function formProduit(){
+ var p=ui.editP?prod(ui.editP):null;
+ if(!ui.editP&&ui.editP!=='new')return '';
+ var d=p||{nom:'',prix:'',cout:'',stock:0,statut:'test',note:''};
+ return '<div class="card pad" style="margin-bottom:16px"><div class="eyebrow">'+(p?'Modifier le produit':'Nouveau produit')+'</div>'+
+  '<form data-form="produit" style="margin-top:10px"><input type="hidden" name="id" value="'+esc(p?p.id:'')+'">'+
+  '<div class="formgrid">'+
+  f('nom','Nom',esc(d.nom),'text')+
+  f('prix','Prix de vente (MAD)',d.prix,'number')+
+  f('cout','Coût d\'achat (MAD)',d.cout,'number')+
+  f('stock','Stock',d.stock,'number')+
+  '<div class="field"><label>Statut</label><select name="statut">'+
+   ['test','actif','pause','archive'].map(function(s){return '<option value="'+s+'"'+(d.statut===s?' selected':'')+'>'+statutProduit(s)+'</option>';}).join('')+
+  '</select></div></div>'+
+  '<div class="actions"><button class="btn" type="submit">Enregistrer le produit</button>'+
+  '<button class="btn ghost" type="button" data-act="cancel-p">Annuler</button></div></form></div>';
+}
+function f(name,lab,val,type,step){
+ return '<div class="field"><label>'+lab+'</label><input name="'+name+'" type="'+type+'" '+(type==='number'?'step="'+(step||'any')+'" inputmode="decimal"':'')+' value="'+esc(val)+'"></div>';
+}
+
+/* ---------- commandes ---------- */
+var STATUTS=[['nouvelle','Nouvelle'],['confirmee','Confirmée'],['expediee','Expédiée'],['livree','Livrée'],['refusee','Refusée'],['annulee','Annulée']];
+function labelStatut(s){for(var i=0;i<STATUTS.length;i++)if(STATUTS[i][0]===s)return STATUTS[i][1];return s;}
+function vCommandes(){
+ var h=head('Commandes','La saisie quotidienne. Le statut de chaque commande alimente tous les calculs de l\'application.');
+ if(!state.produits.length)return h+'<div class="empty"><strong>Ajoute d\'abord un produit</strong>Une commande est toujours rattachée à un produit.<div class="actions" style="justify-content:center"><button class="btn" data-go="produits">Aller aux produits</button></div></div>';
+ h+='<details class="panel" open><summary>Ajouter une commande</summary><div class="pad">'+
+  '<form data-form="commande"><div class="formgrid">'+
+  '<div class="field"><label>Date</label><input name="date" type="date" value="'+today()+'"></div>'+
+  '<div class="field"><label>Produit</label><select name="produitId">'+state.produits.map(function(p){
+    return '<option value="'+p.id+'">'+esc(p.nom)+'</option>';}).join('')+'</select></div>'+
+  '<div class="field"><label>Ville</label><select name="ville">'+VILLES.map(function(v){return '<option>'+v+'</option>';}).join('')+'</select></div>'+
+  f('montant','Montant (MAD)','','number')+
+  '<div class="field"><label>Statut</label><select name="statut">'+STATUTS.map(function(s){
+    return '<option value="'+s[0]+'">'+s[1]+'</option>';}).join('')+'</select></div>'+
+  f('ref','Référence','','text')+
+  '</div><div class="actions"><button class="btn" type="submit">Ajouter</button>'+
+  '<span class="note">Montant vide = prix du produit.</span></div></form></div></details>';
+
+ h+='<details class="panel"><summary>Importer un export de commandes (CSV)</summary><div class="pad">'+
+  '<p class="note">Colle le contenu de ton export YouCan. La première ligne doit être l\'en-tête ; séparateur virgule ou point-virgule. '+
+  'Colonnes reconnues : <span class="num">date, produit, ville, montant, statut, reference</span>. Les colonnes inconnues sont ignorées, '+
+  'et un produit non trouvé est rattaché par son nom exact.</p>'+
+  '<form data-form="csv" style="margin-top:11px"><textarea name="csv" placeholder="date;produit;ville;montant;statut&#10;2026-08-26;Abaya Dubaï;Casablanca;299;livree"></textarea>'+
+  '<div class="actions"><button class="btn" type="submit">Importer</button></div></form></div></details>';
+
+ var cmds=state.commandes.slice().sort(function(a,b){return a.date<b.date?1:-1;});
+ if(ui.fStatut!=='toutes')cmds=cmds.filter(function(c){return c.statut===ui.fStatut;});
+ if(ui.fProduit)cmds=cmds.filter(function(c){return c.produitId===ui.fProduit;});
+ var t=taux(state.commandes);
+ h+='<h2 class="sec">'+n0(state.commandes.length)+' commandes · '+pc(t.tLivr)+' livrées</h2>';
+ h+='<div class="actions" style="margin:0 0 12px">'+
+  '<select class="inline" data-act="fstatut"><option value="toutes">Tous les statuts</option>'+
+   STATUTS.map(function(s){return '<option value="'+s[0]+'"'+(ui.fStatut===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select>'+
+  '<select class="inline" data-act="fproduit"><option value="">Tous les produits</option>'+
+   state.produits.map(function(p){return '<option value="'+p.id+'"'+(ui.fProduit===p.id?' selected':'')+'>'+esc(p.nom)+'</option>';}).join('')+'</select>'+
+  '</div>';
+ if(!cmds.length)return h+'<div class="empty"><strong>Aucune commande</strong>Ajoute-les à la main, ou colle ton export CSV.</div>';
+ var rows=cmds.slice(0,300).map(function(c){
+  var p=prod(c.produitId);
+  return '<tr><td class="num">'+frDate(c.date)+'</td>'+
+   '<td><div class="tname">'+esc(p?p.nom:'—')+'</div>'+(c.ref?'<div class="tsub">'+esc(c.ref)+'</div>':'')+'</td>'+
+   '<td>'+esc(c.ville||'—')+'</td><td class="r num">'+n0(c.montant)+'</td>'+
+   '<td><select class="inline" data-statut="'+c.id+'">'+STATUTS.map(function(s){
+     return '<option value="'+s[0]+'"'+(c.statut===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></td>'+
+   '<td>'+(c.statut==='refusee'?'<select class="inline" data-motif="'+c.id+'"><option value="">Motif…</option>'+
+     MOTIFS.map(function(m){return '<option'+(c.motif===m?' selected':'')+'>'+m+'</option>';}).join('')+'</select>':'<span class="tsub">—</span>')+'</td>'+
+   '<td class="r"><button class="btn danger sm" data-del-c="'+c.id+'">Suppr.</button></td></tr>';
+ }).join('');
+ h+='<div class="tablewrap"><table><thead><tr><th>Date</th><th>Produit</th><th>Ville</th><th class="r">Montant</th><th>Statut</th><th>Motif de refus</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+ if(cmds.length>300)h+='<p class="note" style="margin-top:10px">300 commandes affichées sur '+n0(cmds.length)+'. Filtre pour voir les autres.</p>';
+ h+=refusParVille();
+ return h;
+}
+function refusParVille(){
+ var m={};
+ state.commandes.forEach(function(c){
+  if(c.statut!=='livree'&&c.statut!=='refusee')return;
+  var v=c.ville||'Autre';m[v]=m[v]||{t:0,r:0};m[v].t++;if(c.statut==='refusee')m[v].r++;
+ });
+ var ks=Object.keys(m).filter(function(k){return m[k].t>=3;}).sort(function(a,b){return (m[b].r/m[b].t)-(m[a].r/m[a].t);});
+ if(!ks.length)return '';
+ var rows=ks.map(function(k){
+  var o=m[k],r=o.r/o.t;
+  var cls=o.t<10?'mute':(r>0.4?'bad':(r>0.25?'warn':'good'));
+  var lab=o.t<10?'Trop peu de données':(r>0.4?'Problème':(r>0.25?'À surveiller':'Correct'));
+  return '<tr><td class="tname">'+esc(k)+'</td><td class="r num">'+o.t+'</td><td class="r num">'+o.r+'</td>'+
+   '<td class="r num">'+pc(r)+'</td><td><span class="pill '+cls+'">'+lab+'</span></td></tr>';
+ }).join('');
+ return '<h2 class="sec">Refus par ville</h2><div class="tablewrap"><table><thead><tr><th>Ville</th><th class="r">Terminées</th>'+
+  '<th class="r">Refusées</th><th class="r">Taux de refus</th><th>Lecture</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+  '<p class="note" style="margin-top:10px">Sous 10 commandes terminées, un taux de refus ne veut rien dire : il est affiché mais pas interprété.</p>';
+}
+
+/* ---------- campagnes ---------- */
+function vCampagnes(){
+ var h=head('Campagnes publicitaires','Le CPA réel de chaque campagne contre son point mort. Le ROAS affiché par la plateforme ne décide de rien ici.',
+  state.produits.length?'<button class="btn" data-act="nc">Nouvelle campagne</button>':'');
+ if(!state.produits.length)return h+'<div class="empty"><strong>Ajoute d\'abord un produit</strong>Le point mort d\'une campagne dépend du prix et du coût du produit.<div class="actions" style="justify-content:center"><button class="btn" data-go="produits">Aller aux produits</button></div></div>';
+ h+=formCampagne();
+ if(!state.campagnes.length)return h+'<div class="empty"><strong>Aucune campagne</strong>Saisis la dépense et les commandes attribuées : l\'app calcule le verdict.</div>';
+ var rows=state.campagnes.slice().sort(function(a,b){return a.debut<b.debut?1:-1;}).map(function(k){
+  var v=verdictCampagne(k),p=prod(k.produitId);
+  var profit=null;
+  if(v.e&&num(k.commandes)){
+   var L=v.e.L,c=num(k.commandes);
+   profit=c*L*v.e.M-c*(1-L)*v.e.Pr-num(k.depense);
+  }
+  return '<tr><td><div class="tname">'+esc(k.nom)+'</div><div class="tsub">'+esc(k.plateforme)+' · '+esc(p?p.nom:'—')+'</div></td>'+
+   '<td class="num">'+frDate(k.debut)+'</td>'+
+   '<td class="r num">'+n0(k.depense)+'</td><td class="r num">'+n0(k.commandes)+'</td>'+
+   '<td class="r num">'+(v.cpa!=null?n0(v.cpa):'—')+'</td>'+
+   '<td class="r num">'+(v.e?n0(v.e.cpaMax):'—')+'</td>'+
+   '<td class="r num '+(profit!=null?(profit>=0?'':'') :'')+'">'+(profit!=null?n0(profit):'—')+'</td>'+
+   '<td><span class="pill '+v.cls+'">'+v.txt+'</span></td>'+
+   '<td class="r"><button class="btn ghost sm" data-edit-ca="'+k.id+'">Éditer</button> '+
+   '<button class="btn danger sm" data-del-ca="'+k.id+'">Suppr.</button></td></tr>';
+ }).join('');
+ h+='<div class="tablewrap"><table><thead><tr><th>Campagne</th><th>Début</th><th class="r">Dépense</th><th class="r">Commandes</th>'+
+  '<th class="r">CPA réel</th><th class="r">CPA max</th><th class="r">Profit estimé</th><th>Verdict</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+ h+='<p class="note" style="margin-top:12px">Le profit estimé applique le taux de livraison réel aux commandes de la campagne : '+
+  'commandes × taux × marge livrée − commandes × refus × (livraison + retour) − dépense. '+
+  'Il vaut ce que valent tes statuts de commandes : tiens-les à jour.</p>';
+ return h;
+}
+function formCampagne(){
+ if(!ui.editCa)return '';
+ var k=null;
+ for(var i=0;i<state.campagnes.length;i++)if(state.campagnes[i].id===ui.editCa)k=state.campagnes[i];
+ var d=k||{nom:'',plateforme:'Meta',produitId:state.produits[0].id,debut:today(),depense:'',commandes:'',statut:'active'};
+ return '<div class="card pad" style="margin-bottom:16px"><div class="eyebrow">'+(k?'Modifier la campagne':'Nouvelle campagne')+'</div>'+
+  '<form data-form="campagne" style="margin-top:10px"><input type="hidden" name="id" value="'+esc(k?k.id:'')+'">'+
+  '<div class="formgrid">'+
+  f('nom','Nom',esc(d.nom),'text')+
+  '<div class="field"><label>Plateforme</label><select name="plateforme">'+['Meta','TikTok','Autre'].map(function(x){
+    return '<option'+(d.plateforme===x?' selected':'')+'>'+x+'</option>';}).join('')+'</select></div>'+
+  '<div class="field"><label>Produit</label><select name="produitId">'+state.produits.map(function(p){
+    return '<option value="'+p.id+'"'+(d.produitId===p.id?' selected':'')+'>'+esc(p.nom)+'</option>';}).join('')+'</select></div>'+
+  '<div class="field"><label>Début</label><input name="debut" type="date" value="'+esc(d.debut)+'"></div>'+
+  f('depense','Dépense (MAD)',d.depense,'number')+
+  f('commandes','Commandes attribuées',d.commandes,'number')+
+  '<div class="field"><label>État</label><select name="statut">'+[['active','Active'],['arretee','Arrêtée']].map(function(x){
+    return '<option value="'+x[0]+'"'+(d.statut===x[0]?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select></div>'+
+  '</div><div class="actions"><button class="btn" type="submit">Enregistrer la campagne</button>'+
+  '<button class="btn ghost" type="button" data-act="cancel-ca">Annuler</button></div></form></div>';
+}
+
+/* ---------- calendrier ---------- */
+function vCalendrier(){
+ var h=head('Calendrier','Au Maroc, le contenu et le stock se préparent avant la fenêtre, jamais pendant. Les dates lunaires sont approximatives et à confirmer.');
+ var seasons=SAISONS.map(function(s){
+  var j=daysTo(s.date);
+  var etat=j<0?['mute','Passée']:(j<=s.prep?['warn','Fenêtre de préparation ouverte']:['good','À venir']);
+  return '<div class="season"><div class="cd">'+(j<0?'—':j)+'<small>'+(j<0?'passé':'jours')+'</small></div>'+
+   '<div><div class="nm">'+esc(s.nom)+(s.lunaire?' <span class="tsub">≈ date lunaire</span>':'')+'</div>'+
+   '<div class="dt">'+frDate(s.date)+' · préparer à partir de J−'+s.prep+' · '+esc(s.quoi)+'</div></div>'+
+   '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end"><span class="pill '+etat[0]+'">'+etat[1]+'</span>'+
+   (j>=0?'<button class="btn ghost sm" data-tache-saison="'+esc(s.nom)+'">Ajouter une tâche</button>':'')+'</div></div>';
+ }).join('');
+ h+='<div class="card">'+seasons+'</div>';
+ h+='<h2 class="sec">Tâches</h2>';
+ h+='<div class="card pad"><form data-form="tache"><div class="formgrid">'+
+  f('titre','Tâche','','text')+
+  '<div class="field"><label>Échéance</label><input name="date" type="date" value="'+today()+'"></div>'+
+  '<div class="field"><label>Saison</label><select name="saison"><option value="">Aucune</option>'+
+   SAISONS.map(function(s){return '<option'+(ui.tacheSaison===s.nom?' selected':'')+'>'+esc(s.nom)+'</option>';}).join('')+'</select></div>'+
+  '</div><div class="actions"><button class="btn" type="submit">Ajouter la tâche</button></div></form></div>';
+ var ts=state.taches.slice().sort(function(a,b){return (a.fait-b.fait)||(a.date<b.date?-1:1);});
+ if(!ts.length)h+='<div class="empty" style="margin-top:14px"><strong>Aucune tâche</strong>Les alertes du tableau de bord signalent les saisons sans tâche ouverte.</div>';
+ else h+='<div class="card pad" style="margin-top:14px"><div class="tasklist">'+ts.map(function(t){
+   var retard=!t.fait&&t.date<today();
+   return '<div class="task'+(t.fait?' done':'')+'"><input type="checkbox" data-tache="'+t.id+'"'+(t.fait?' checked':'')+'>'+
+    '<span class="td">'+frDate(t.date)+'</span><span class="tt">'+esc(t.titre)+
+    (t.saison?' <span class="tsub">· '+esc(t.saison)+'</span>':'')+'</span>'+
+    (retard?'<span class="pill warn">En retard</span>':'')+
+    '<span style="flex:1"></span><button class="btn danger sm" data-del-t="'+t.id+'">Suppr.</button></div>';
+  }).join('')+'</div></div>';
+ return h;
+}
+
+/* ---------- agents ---------- */
+function vAgents(){
+ var h=head('Mes agents','Les dix agents Claude Code de la boutique, nommés par type d\'action. Copie le prompt, colle-le dans Claude Code — l\'agent est choisi automatiquement d\'après ta demande.');
+ var fam=['Recherche','Marketing','Copywriting','Production'];
+ fam.forEach(function(fm){
+  h+='<h2 class="sec">'+fm+'</h2><div class="grid g2">';
+  AGENTS.filter(function(a){return a.f===fm;}).forEach(function(a){
+   h+='<div class="agent"><code>'+esc(a.n)+'</code><div class="role">'+esc(a.r)+'</div>'+
+    '<div class="prompt">'+esc(a.p)+'</div>'+
+    '<div class="actions" style="margin-top:0"><button class="btn ghost sm" data-copy="'+esc(a.p)+'">Copier le prompt</button></div></div>';
+  });
+  h+='</div>';
+ });
+ h+='<h2 class="sec">L\'ordre d\'un lancement</h2><div class="chain">'+esc(CHAINE)+'</div>';
+ h+='<p class="note" style="margin-top:12px">Les agents de marketing et de copywriting rédigent et préparent : ils n\'envoient aucun message, ne publient rien et ne lancent aucune campagne. L\'exécution reste à toi.</p>';
+ return h;
+}
+
+/* ---------- données ---------- */
+function vDonnees(){
+ var h=head('Données & réglages','Les constantes qui alimentent tous les calculs, et la sauvegarde de tes données.');
+ var g=state.reglages;
+ h+='<div class="grid g2"><div class="card pad"><div class="eyebrow">Réglages</div>'+
+  '<form data-form="reglages" style="margin-top:10px"><div class="formgrid">'+
+  f('boutique','Boutique',esc(g.boutique),'text')+
+  f('livraison','Frais de livraison (MAD)',g.livraison,'number')+
+  f('retour','Frais de retour (MAD)',g.retour,'number')+
+  f('tauxDefaut','Taux de livraison par défaut',g.tauxDefaut,'number','0.01')+
+  '</div><div class="actions"><button class="btn" type="submit">Enregistrer les réglages</button></div></form>'+
+  '<p class="note" style="margin-top:12px">Le taux par défaut ne sert que tant qu\'il y a moins de 10 commandes terminées. Au-delà, l\'app utilise ton taux réel : '+pc(LGlobal(null))+'.</p></div>';
+ h+='<div class="card pad"><div class="eyebrow">Contenu</div><div style="margin-top:10px">'+
+  '<div class="kv"><span>Produits</span><span>'+n0(state.produits.length)+'</span></div>'+
+  '<div class="kv"><span>Commandes</span><span>'+n0(state.commandes.length)+'</span></div>'+
+  '<div class="kv"><span>Campagnes</span><span>'+n0(state.campagnes.length)+'</span></div>'+
+  '<div class="kv"><span>Tâches</span><span>'+n0(state.taches.length)+'</span></div>'+
+  '<div class="kv"><span>Dernier enregistrement</span><span>'+(state.publishedAt?new Date(state.publishedAt).toLocaleString('fr-FR'):'jamais')+'</span></div>'+
+  '</div><div class="actions"><button class="btn ghost" data-act="export">Exporter en JSON</button>'+
+  '<button class="btn danger" data-act="reset">Tout effacer</button></div></div></div>';
+ h+='<h2 class="sec">Restaurer une sauvegarde</h2>'+
+  '<div class="card pad"><form data-form="import"><textarea name="json" placeholder=\'{"v":1,"produits":[...]}\'></textarea>'+
+  '<div class="actions"><button class="btn" type="submit">Remplacer les données par ce JSON</button></div></form></div>';
+ h+='<h2 class="sec">Où vivent tes données</h2><div class="card pad"><p class="note">'+
+  'Le bouton <b>Enregistrer</b> réécrit cette page avec tes données à l\'intérieur : elles reviennent à chaque ouverture, sur n\'importe quel appareil, tant que tu gardes le lien. '+
+  'Entre deux enregistrements, tout est conservé dans le navigateur que tu utilises — donc <b>enregistre avant de fermer</b>, sinon les modifications ne suivent pas sur un autre appareil.<br><br>'+
+  'Cette page est privée par défaut. Comme les commandes peuvent contenir des informations sur tes clients, ne partage le lien avec personne à qui tu ne confierais pas ton carnet de commandes — et évite d\'y mettre des numéros de téléphone : l\'app n\'en a pas besoin pour calculer.</p></div>';
+ return h;
+}
+
+/* ---------- actions ---------- */
+function toast(msg){
+ var t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);
+ setTimeout(function(){t.remove();},3200);
+}
+document.addEventListener('click',function(ev){
+ var el=ev.target.closest('[data-go],[data-act],[data-edit-p],[data-del-p],[data-del-c],[data-edit-ca],[data-del-ca],[data-del-t],[data-copy],[data-tache-saison]');
+ if(!el)return;
+ var d=el.dataset;
+ if(d.go){ui.view=d.go;render();return;}
+ if(d.copy){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(d.copy).then(function(){toast('Prompt copié');},function(){toast('Copie refusée par le navigateur');});
+  }else toast('Copie indisponible dans ce navigateur');
+  return;
+ }
+ if(d.editP){ui.editP=d.editP;render();return;}
+ if(d.delP){
+  if(!confirm('Supprimer ce produit ? Ses commandes resteront, sans produit rattaché.'))return;
+  state.produits=state.produits.filter(function(p){return p.id!==d.delP;});touch();return;}
+ if(d.delC){state.commandes=state.commandes.filter(function(c){return c.id!==d.delC;});touch();return;}
+ if(d.editCa){ui.editCa=d.editCa;render();return;}
+ if(d.delCa){state.campagnes=state.campagnes.filter(function(k){return k.id!==d.delCa;});touch();return;}
+ if(d.delT){state.taches=state.taches.filter(function(t){return t.id!==d.delT;});touch();return;}
+ if(d.tacheSaison){ui.tacheSaison=d.tacheSaison;render();
+  var inp=document.querySelector('[data-form="tache"] input[name="titre"]');if(inp)inp.focus();return;}
+ var a=d.act;
+ if(a==='np'){ui.editP='new';render();}
+ else if(a==='cancel-p'){ui.editP=null;render();}
+ else if(a==='nc'){ui.editCa='new';render();}
+ else if(a==='cancel-ca'){ui.editCa=null;render();}
+ else if(a==='save'){save();}
+ else if(a==='export'){exportJSON();}
+ else if(a==='reset'){
+  if(!confirm('Effacer tous les produits, commandes, campagnes et tâches ? Exporte une sauvegarde avant.'))return;
+  var g=state.reglages;state=defaults();state.reglages=g;touch();toast('Données effacées');}
+});
+document.addEventListener('change',function(ev){
+ var el=ev.target,d=el.dataset;
+ if(d.statut){
+  state.commandes.forEach(function(c){if(c.id===d.statut){c.statut=el.value;if(el.value!=='refusee')c.motif='';}});touch();return;}
+ if(d.motif){state.commandes.forEach(function(c){if(c.id===d.motif)c.motif=el.value;});touch();return;}
+ if(d.tache){state.taches.forEach(function(t){if(t.id===d.tache)t.fait=el.checked;});touch();return;}
+ if(d.act==='periode'){ui.periode=el.value==='tout'?'tout':parseInt(el.value,10);render();return;}
+ if(d.act==='fstatut'){ui.fStatut=el.value;render();return;}
+ if(d.act==='fproduit'){ui.fProduit=el.value;render();return;}
+});
+document.addEventListener('submit',function(ev){
+ var form=ev.target;if(!form.dataset.form)return;
+ ev.preventDefault();
+ var fd=new FormData(form),g=function(k){return (fd.get(k)||'').toString().trim();};
+ var kind=form.dataset.form;
+ if(kind==='produit'){
+  if(!g('nom')){toast('Le nom est obligatoire');return;}
+  var id=g('id');
+  var rec={id:id||uid(),nom:g('nom'),prix:num(g('prix')),cout:num(g('cout')),stock:num(g('stock')),statut:g('statut')};
+  if(id){state.produits=state.produits.map(function(p){return p.id===id?rec:p;});}
+  else state.produits.push(rec);
+  ui.editP=null;touch();toast('Produit enregistré');
+ }
+ else if(kind==='commande'){
+  var p=prod(g('produitId'));
+  state.commandes.push({id:uid(),date:g('date')||today(),produitId:g('produitId'),ville:g('ville'),
+   montant:num(g('montant'),p?num(p.prix):0),statut:g('statut')||'nouvelle',ref:g('ref'),motif:''});
+  touch();toast('Commande ajoutée');
+ }
+ else if(kind==='campagne'){
+  if(!g('nom')){toast('Le nom est obligatoire');return;}
+  var kid=g('id');
+  var k={id:kid||uid(),nom:g('nom'),plateforme:g('plateforme'),produitId:g('produitId'),debut:g('debut')||today(),
+   depense:num(g('depense')),commandes:num(g('commandes')),statut:g('statut')};
+  if(kid)state.campagnes=state.campagnes.map(function(x){return x.id===kid?k:x;});
+  else state.campagnes.push(k);
+  ui.editCa=null;touch();toast('Campagne enregistrée');
+ }
+ else if(kind==='tache'){
+  if(!g('titre')){toast('Écris la tâche');return;}
+  state.taches.push({id:uid(),titre:g('titre'),date:g('date')||today(),saison:g('saison'),fait:false});
+  ui.tacheSaison=null;touch();toast('Tâche ajoutée');
+ }
+ else if(kind==='reglages'){
+  state.reglages={boutique:g('boutique')||'Ma boutique',livraison:num(g('livraison'),33),retour:num(g('retour'),18),
+   tauxDefaut:Math.min(Math.max(num(g('tauxDefaut'),0.7),0.05),1)};
+  touch();toast('Réglages enregistrés');
+ }
+ else if(kind==='csv'){importCSV(g('csv'));}
+ else if(kind==='import'){
+  try{
+   var o=JSON.parse(g('json'));
+   if(!o||!o.v)throw new Error('format');
+   state=o;var dd=defaults();for(var k2 in dd)if(!(k2 in state))state[k2]=dd[k2];
+   touch();toast('Données restaurées');
+  }catch(e){toast('JSON illisible — rien n\'a été remplacé');}
+ }
+});
+function importCSV(txt){
+ if(!txt){toast('Colle d\'abord le CSV');return;}
+ var lines=txt.split(/\r?\n/).filter(function(l){return l.trim();});
+ if(lines.length<2){toast('Il faut une ligne d\'en-tête et au moins une commande');return;}
+ var sep=(lines[0].split(';').length>lines[0].split(',').length)?';':',';
+ function cells(l){
+  var out=[],cur='',q=false;
+  for(var i=0;i<l.length;i++){
+   var ch=l[i];
+   if(ch==='"'){q=!q;continue;}
+   if(ch===sep&&!q){out.push(cur);cur='';continue;}
+   cur+=ch;
+  }
+  out.push(cur);return out.map(function(s){return s.trim();});
+ }
+ var head=cells(lines[0]).map(function(s){return s.toLowerCase();});
+ function col(){
+  for(var i=0;i<arguments.length;i++){
+   var name=arguments[i];
+   for(var j=0;j<head.length;j++)if(head[j].indexOf(name)>=0)return j;
+  }
+  return -1;
+ }
+ var iDate=col('date','créé','cree'),iProd=col('produit','product','article'),iVille=col('ville','city'),
+     iMont=col('montant','total','prix','price'),iStat=col('statut','status','état','etat'),iRef=col('ref','commande','order','#');
+ if(iProd<0){toast('Colonne « produit » introuvable dans l\'en-tête');return;}
+ var mapStat={livr:'livree',deliver:'livree',complet:'livree',refus:'refusee',retour:'refusee',return:'refusee',
+  annul:'annulee',cancel:'annulee',confirm:'confirmee',expedi:'expediee',ship:'expediee',nouveau:'nouvelle',new:'nouvelle',pending:'nouvelle'};
+ var ajout=0,inconnus={};
+ for(var i=1;i<lines.length;i++){
+  var c=cells(lines[i]);if(!c.length)continue;
+  var nom=(c[iProd]||'').trim();if(!nom)continue;
+  var p=null;
+  state.produits.forEach(function(x){if(x.nom.toLowerCase()===nom.toLowerCase())p=x;});
+  if(!p){inconnus[nom]=(inconnus[nom]||0)+1;continue;}
+  var st='nouvelle',raw=(iStat>=0?(c[iStat]||''):'').toLowerCase();
+  Object.keys(mapStat).forEach(function(k){if(raw.indexOf(k)>=0)st=mapStat[k];});
+  var dt=(iDate>=0?(c[iDate]||''):'').slice(0,10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(dt)){
+   var m=dt.match(/^(\d{2})[\/\-](\d{2})[\/\-](\d{4})$/);
+   dt=m?(m[3]+'-'+m[2]+'-'+m[1]):today();
+  }
+  state.commandes.push({id:uid(),date:dt,produitId:p.id,ville:(iVille>=0?c[iVille]:'')||'Autre',
+   montant:num(iMont>=0?c[iMont]:'',num(p.prix)),statut:st,ref:(iRef>=0?c[iRef]:'')||'',motif:''});
+  ajout++;
+ }
+ var manquants=Object.keys(inconnus);
+ touch();
+ toast(ajout+' commande'+(ajout>1?'s':'')+' importée'+(ajout>1?'s':'')+
+  (manquants.length?' — '+manquants.length+' produit(s) non reconnu(s) : '+manquants.slice(0,3).join(', '):''));
+}
+
+/* ---------- sauvegarde ---------- */
+function buildDoc(st){
+ var css=document.getElementById('app-css').textContent;
+ var js=document.getElementById('app-code').textContent;
+ var json=JSON.stringify(st).replace(/</g,'\\u003c');
+ var o='<'+S,c='</'+S+'>';
+ return '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n'+
+  '<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Pilote COD</title>\n'+
+  '<link rel="preconnect" href="https://fonts.googleapis.com">\n'+
+  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'+
+  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">\n'+
+  '<style id="app-css">'+css+'</style>\n</head>\n<body>\n<div id="root"></div>\n'+
+  o+' id="app-state" type="application/json">'+json+c+'\n'+
+  o+' id="app-code">'+js+c+'\n</body>\n</html>';
+}
+function save(){
+ state.localAt=Date.now();
+ try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+ var btn=document.querySelector('[data-act="save"]');
+ if(btn){btn.disabled=true;btn.textContent='Enregistrement…';}
+ var api=(typeof claude!=='undefined'&&claude&&claude.use)?claude.use('artifact'):Promise.resolve(null);
+ Promise.resolve(api).then(function(a){
+  if(!a){
+   dirty=true;render();
+   toast('Enregistré dans ce navigateur seulement — la page ne peut pas se réécrire ici.');
+   return;
+  }
+  var snapshot=JSON.parse(JSON.stringify(state));
+  snapshot.publishedAt=Date.now();snapshot.localAt=snapshot.publishedAt;
+  return a.publish(buildDoc(snapshot)).then(function(){
+   state.publishedAt=snapshot.publishedAt;state.localAt=snapshot.localAt;dirty=false;
+   try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+   render();toast('Enregistré');
+  });
+ }).catch(function(err){
+  render();
+  var code=err&&err.code?err.code:'';
+  if(code==='conflict')toast('Une autre version a été enregistrée entre-temps. Recharge la page, puis ressaisis cette modification.');
+  else if(code==='not_granted'||code==='not_writer')toast('Enregistrement impossible : cette page est en lecture seule pour ce compte.');
+  else toast('Enregistrement impossible. Tes données restent dans ce navigateur.');
+ });
+}
+function exportJSON(){
+ var data=JSON.stringify(state,null,2);
+ var name='pilote-cod-'+today()+'.json';
+ var api=(typeof claude!=='undefined'&&claude&&claude.use)?claude.use('downloads'):Promise.resolve(null);
+ Promise.resolve(api).then(function(d){
+  if(!d)throw new Error('no downloads');
+  return d.save({filename:name,data:data}).then(function(){toast('Sauvegarde enregistrée');});
+ }).catch(function(){
+  var ta=document.querySelector('[data-form="import"] textarea');
+  if(ta){ta.value=data;ta.select();toast('Téléchargement indisponible — le JSON est dans le champ ci-dessous, copie-le.');}
+  else toast('Téléchargement indisponible.');
+ });
+}
+window.addEventListener('beforeunload',function(e){
+ if(dirty){e.preventDefault();e.returnValue='';}
+});
+render();
+if(pendingLocal)setTimeout(function(){toast('Modifications non enregistrées récupérées depuis ce navigateur.');},600);
+})();
+</script>
+</body>
+</html>

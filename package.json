@@ -1,0 +1,20 @@
+{
+  "name": "poste-cod",
+  "version": "1.0.0",
+  "description": "Poste COD — application locale qui réunit Espion COD, Radar Produit COD, Comptoir COD, Pilote COD, Rayon COD et Registre WhatsApp, et lance une campagne complète à partir d'un produit ou d'une catégorie.",
+  "type": "commonjs",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node test/run.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.123.0"
+  }
+}
