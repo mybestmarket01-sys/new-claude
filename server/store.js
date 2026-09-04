@@ -15,7 +15,7 @@ const path = require("path");
 const RACINE = process.env.POSTE_COD_DATA
   ? path.resolve(process.env.POSTE_COD_DATA)
   : path.join(__dirname, "..", "data");
-const TABLES = ["produits", "boutiques", "fournisseurs", "campagnes", "reglages", "captures"];
+const TABLES = ["produits", "boutiques", "fournisseurs", "campagnes", "reglages", "captures", "commandes"];
 
 function chemin(table) {
   return path.join(RACINE, table + ".json");
@@ -63,6 +63,7 @@ function reglagesParDefaut() {
     symbole: "DH",
     hypotheses: Object.assign({}, eco.DEFAUT),
     modele: process.env.POSTE_COD_MODEL || "claude-opus-5",
+    connecteurs: { make: {}, higgsfield: {} },
     creeLe: new Date().toISOString()
   };
 }
@@ -136,6 +137,10 @@ function reglages() {
   const def = reglagesParDefaut();
   const fusion = Object.assign({}, def, r);
   fusion.hypotheses = Object.assign({}, def.hypotheses, r.hypotheses || {});
+  fusion.connecteurs = {
+    make: Object.assign({}, (r.connecteurs || {}).make || {}),
+    higgsfield: Object.assign({}, (r.connecteurs || {}).higgsfield || {})
+  };
   return fusion;
 }
 
@@ -144,6 +149,14 @@ function majReglages(champs) {
   const suivant = Object.assign({}, actuel, champs);
   if (champs && champs.hypotheses) {
     suivant.hypotheses = Object.assign({}, actuel.hypotheses, champs.hypotheses);
+  }
+  if (champs && champs.connecteurs) {
+    /* Fusion par connecteur : enregistrer le webhook Make ne doit pas effacer
+       les identifiants Higgsfield saisis plus tôt. */
+    suivant.connecteurs = {
+      make: Object.assign({}, actuel.connecteurs.make, champs.connecteurs.make || {}),
+      higgsfield: Object.assign({}, actuel.connecteurs.higgsfield, champs.connecteurs.higgsfield || {})
+    };
   }
   return ecrire("reglages", suivant);
 }

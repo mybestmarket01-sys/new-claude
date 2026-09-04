@@ -28,6 +28,7 @@ const src = require("./sources");
 const visuals = require("./visuals");
 const landing = require("./landing");
 const store = require("./store");
+const connecteurs = require("./connecteurs");
 
 const radar = require("./data/radar.json");
 
@@ -159,6 +160,7 @@ async function executer(job) {
         job.etapes.filter(e => e.statut === "attente")
           .forEach(e => majEtape(job, e.id, { statut: "sautee", note: "Arrêté à la validation" }));
         enregistrer(job);
+        await notifierMake(job);
         diffuser(job.id, { type: "fin", job: resume(job) });
         return;
       }
@@ -178,7 +180,37 @@ async function executer(job) {
   job.statut = "fini";
   job.fin = new Date().toISOString();
   enregistrer(job);
+  await notifierMake(job);
   diffuser(job.id, { type: "fin", job: resume(job) });
+}
+
+/* Prévient Make qu'une campagne s'est terminée — ou s'est arrêtée, et pourquoi.
+   Un webhook injoignable ne doit pas faire échouer la campagne : on note le
+   résultat de l'envoi dans le dossier et on continue. */
+async function notifierMake(job) {
+  const reglages = store.reglages();
+  if (!connecteurs.etat(reglages).make.webhook) return;
+
+  const v = job.resultats.validation || {};
+  const e = v.economie || {};
+  const r = await connecteurs.pousserMake(reglages,
+    job.statut === "arrete" ? "campagne.arretee" : "campagne.terminee", {
+      campagne: job.id,
+      cible: job.cible,
+      produit: job.produitRetenu || job.cible,
+      boutique: job.boutique,
+      mode: job.mode,
+      prix: job.prix,
+      cout: job.cout,
+      score: v.score != null ? v.score : null,
+      verdict: v.verdict || null,
+      cpaMax: e.cpaMax != null ? e.cpaMax : null,
+      cpaCible: e.cpaCible != null ? e.cpaCible : null,
+      netParLivree: e.netParLivree != null ? e.netParLivree : null,
+      raisonArret: job.arret || null,
+      livrables: store.livrables(job.id).map(f => f.fichier)
+    });
+  job.make = r;
 }
 
 function enregistrer(job) {
@@ -706,14 +738,52 @@ async function etapeVisuels(job) {
   const jeu = visuals.jeuComplet(brief);
   jeu.forEach(c => store.ecrireLivrable(job.id, c.fichier, c.svg));
 
-  return {
+  const sortie = {
     creas: jeu.map(c => ({
       fichier: c.fichier, angle: c.angle, angleNom: c.angleNom, angleQuoi: c.angleQuoi,
       format: c.format, formatNom: c.formatNom, largeur: c.largeur, hauteur: c.hauteur
     })),
+    photos: [],
     note: jeu.length + " créas (3 angles × 3 formats)",
     conversion: "Les fichiers sont en SVG : le bouton « PNG » de l'interface les convertit aux dimensions exactes attendues par Meta et TikTok."
   };
+
+  /* Higgsfield, quand il est branché : une photo par angle, en plus des créas.
+     Les SVG portent le texte et restent corrigeables ; les photos portent le
+     produit. Un échec de génération n'empêche pas la campagne d'aboutir. */
+  const reglages = store.reglages();
+  if (connecteurs.etat(reglages).higgsfield.actif) {
+    const contexte = [
+      copy.promesse || null,
+      (job.resultats.recherche && job.resultats.recherche.synthese) || null
+    ].filter(Boolean).join(" ").slice(0, 400);
+
+    const photos = await connecteurs.visuelsProduit(reglages, {
+      produit: copy.titreProduit || nom,
+      contexte,
+      format: "feed"
+    });
+
+    photos.forEach(p => {
+      if (!p.ok) return;
+      store.ecrireLivrable(job.id, p.fichier, p.octets);
+    });
+
+    sortie.photos = photos.map(p => ({
+      angle: p.angle, ok: p.ok, fichier: p.ok ? p.fichier : null,
+      octets: p.ok ? p.octets.length : null, erreur: p.erreur || null,
+      largeur: p.ok ? p.dimensions.l : null, hauteur: p.ok ? p.dimensions.h : null
+    }));
+
+    const reussies = sortie.photos.filter(p => p.ok).length;
+    sortie.note = jeu.length + " créas SVG + " + reussies + " photo" + (reussies > 1 ? "s" : "") + " Higgsfield";
+    if (reussies < photos.length) {
+      sortie.avertissementPhotos = (photos.length - reussies) + " génération(s) Higgsfield en échec — " +
+        "les créas SVG sont là quand même.";
+    }
+  }
+
+  return sortie;
 }
 
 /* ===========================================================================
@@ -722,11 +792,22 @@ async function etapeVisuels(job) {
 async function etapeLanding(job) {
   const nom = job.produitRetenu || job.cible;
   const copy = job.copy || {};
-  const creas = ((job.resultats.visuels || {}).creas || [])
-    .filter(c => c.format === "feed")
-    .map(c => ({ fichier: c.fichier, angle: c.angleNom }));
+  const vis = job.resultats.visuels || {};
+  const photos = (vis.photos || []).filter(p => p.ok);
+  /* Une photo vaut mieux qu'une créa dans une galerie produit : la créa porte
+     le prix et le hook, sa place est dans le fil publicitaire, pas ici. */
+  const creas = photos.length
+    ? photos.map(p => ({ fichier: p.fichier, angle: p.angle }))
+    : (vis.creas || []).filter(c => c.format === "feed")
+        .map(c => ({ fichier: c.fichier, angle: c.angleNom }));
+
+  /* Si un webhook Make est configuré, la page y poste la commande avant
+     d'ouvrir WhatsApp : la commande entre dans les scénarios existants même
+     quand la page est hébergée ailleurs. */
+  const cnx = connecteurs.config(store.reglages());
 
   const html = landing.page({
+    webhookUrl: cnx.make.webhook || "",
     titre: copy.titreProduit || nom,
     titreAr: copy.titreProduitAr || "",
     produit: nom,

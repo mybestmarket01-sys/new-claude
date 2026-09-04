@@ -41,6 +41,7 @@ function page(brief) {
   const devise = b.devise || "DH";
   const boutique = b.boutique || "Ma boutique";
   const whatsapp = (b.whatsapp || "").replace(/\D/g, "");
+  const webhookUrl = b.webhookUrl || "";
   const promesse = b.promesse || "";
   const promesseAr = b.promesseAr || "";
   const benefices = b.benefices || [];
@@ -321,6 +322,7 @@ footer{padding:30px 0 40px;border-top:1px solid var(--trait);color:var(--encre3)
 (function(){
   "use strict";
   var WHATSAPP = ${js(whatsapp)};
+  var WEBHOOK  = ${js(webhookUrl)};
   var PRODUIT = ${js(titre)};
   var PRIX = ${js(String(prix) + " " + devise)};
 
@@ -381,8 +383,32 @@ footer{padding:30px 0 40px;border-top:1px solid var(--trait);color:var(--encre3)
       "Tél : " + tel + "\\n" +
       "Ville : " + ville;
 
+    /* La commande part d'abord vers l'automatisation, ensuite seulement on
+       ouvre WhatsApp. L'option keepalive est indispensable : sans elle, la navigation
+       vers wa.me annule la requête en vol et la commande est perdue. */
+    if (WEBHOOK) {
+      try {
+        fetch(WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          keepalive: true,
+          body: JSON.stringify({
+            source: "landing", type: "commande.recue",
+            le: new Date().toISOString(),
+            produit: PRODUIT, prix: PRIX,
+            nom: nom, telephone: tel, ville: ville,
+            page: window.location.href
+          })
+        }).catch(function(){});
+      } catch (e) {}
+    }
+
     if (WHATSAPP) {
       window.location.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(texte);
+    } else if (WEBHOOK) {
+      f.innerHTML = '<p style="font-size:18px;font-weight:600;color:var(--bien)">✓ Commande enregistrée.</p>' +
+        '<p style="color:var(--encre2)">Nous vous appelons pour confirmer. Vous payez au livreur, ' +
+        'après avoir ouvert le colis.</p>';
     } else {
       /* Sans numéro WhatsApp configuré, la commande ne doit pas disparaître :
          on la garde dans le navigateur et on le dit clairement. */

@@ -42,6 +42,7 @@ const pipeline = require("./pipeline");
 const claude = require("./claude");
 const eco = require("./economics");
 const src = require("./sources");
+const connecteurs = require("./connecteurs");
 const radar = require("./data/radar.json");
 
 const RACINE = path.join(__dirname, "..");
@@ -153,9 +154,11 @@ async function api(req, res, chemin, requete) {
 
   /* ---- état général ---- */
   if (r[0] === "etat" && methode === "GET") {
+    const reglages = store.reglages();
     return json(res, 200, {
       claude: claude.etat(),
-      reglages: store.reglages(),
+      connecteurs: connecteurs.etat(reglages),
+      reglages: reglages,
       apps: APPS.map(a => ({ id: a.id, nom: a.nom, emoji: a.emoji, quoi: a.quoi, url: "/apps/" + a.fichier })),
       etapes: pipeline.ETAPES,
       compteurs: {
@@ -164,6 +167,7 @@ async function api(req, res, chemin, requete) {
         fournisseurs: store.liste("fournisseurs").length,
         campagnes: store.liste("campagnes").length,
         captures: store.liste("captures").length,
+        commandes: store.liste("commandes").length,
         catalogueRadar: radar.produits.length,
         sourcesComptoir: src.SOURCES.length
       }
@@ -179,8 +183,32 @@ async function api(req, res, chemin, requete) {
     }
   }
 
+  /* ---- commande reçue ----
+     Point d'entrée des landing pages servies en local et de la saisie
+     manuelle. La commande est rangée, puis poussée vers Make. Une commande
+     n'est jamais perdue parce que le webhook est tombé : elle est enregistrée
+     avant l'envoi, et le résultat de l'envoi est noté sur la ligne. */
+  if (r[0] === "commandes" && methode === "POST" && !r[1]) {
+    const c = await corpsJson(req);
+    const tel = String(c.telephone || c.tel || "").replace(/\D/g, "");
+    if (!c.nom || !tel) return json(res, 400, { erreur: "Nom et téléphone sont obligatoires." });
+
+    const commande = store.ajouter("commandes", {
+      produit: c.produit || null, prix: c.prix != null ? c.prix : null,
+      nom: String(c.nom).slice(0, 120), telephone: tel,
+      ville: c.ville || null, campagne: c.campagne || null,
+      statut: "nouvelle", origine: c.origine || "landing"
+    });
+
+    const envoi = await connecteurs.pousserMake(store.reglages(), "commande.recue",
+      Object.assign({ commande: commande.id }, commande));
+    store.majSur("commandes", commande.id, { make: envoi });
+
+    return json(res, 201, { commande: commande.id, make: envoi });
+  }
+
   /* ---- collections génériques ---- */
-  const COLLECTIONS = ["produits", "boutiques", "fournisseurs", "captures"];
+  const COLLECTIONS = ["produits", "boutiques", "fournisseurs", "captures", "commandes"];
   if (COLLECTIONS.includes(r[0])) {
     const table = r[0];
     if (methode === "GET" && !r[1]) return json(res, 200, store.liste(table));
@@ -274,6 +302,29 @@ async function api(req, res, chemin, requete) {
     if (r[1] && !r[2] && methode === "GET") {
       const d = pipeline.complet(r[1]);
       return d ? json(res, 200, d) : json(res, 404, { erreur: "Campagne introuvable" });
+    }
+  }
+
+  /* ---- connecteurs ---- */
+  if (r[0] === "connecteurs") {
+    const reglages = store.reglages();
+
+    if (methode === "GET" && !r[1]) return json(res, 200, connecteurs.etat(reglages));
+
+    if (r[1] === "make" && r[2] === "test" && methode === "POST") {
+      return json(res, 200, await connecteurs.testerMake(reglages));
+    }
+    if (r[1] === "make" && r[2] === "scenarios" && methode === "GET") {
+      try { return json(res, 200, { scenarios: await connecteurs.scenariosMake(reglages) }); }
+      catch (err) { return json(res, 400, { erreur: err.message }); }
+    }
+    if (r[1] === "make" && r[2] === "scenarios" && r[3] && r[4] === "lancer" && methode === "POST") {
+      const c = await corpsJson(req);
+      try { return json(res, 200, await connecteurs.lancerScenarioMake(reglages, r[3], c)); }
+      catch (err) { return json(res, 400, { erreur: err.message }); }
+    }
+    if (r[1] === "higgsfield" && r[2] === "test" && methode === "POST") {
+      return json(res, 200, await connecteurs.testerHiggsfield(reglages));
     }
   }
 

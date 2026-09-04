@@ -606,6 +606,336 @@ groupe("Orchestrateur en mode direct (Claude simulé)", async () => {
 });
 
 /* ===========================================================================
+   Connecteurs — Make et Higgsfield, contre un serveur factice.
+
+   Aucune requête ne sort de la machine : les bases d'URL sont surchargées vers
+   un petit serveur local qui rejoue les formes de réponse documentées.
+   ======================================================================== */
+groupe("Connecteurs", async () => {
+  const connecteurs = require("../server/connecteurs");
+
+  /* --- serveur factice --- */
+  const recus = [];
+  let comportement = "normal";
+
+  const faux = require("http").createServer((req, res) => {
+    const morceaux = [];
+    req.on("data", c => morceaux.push(c));
+    req.on("end", () => {
+      let corps = null;
+      try { corps = JSON.parse(Buffer.concat(morceaux).toString("utf8")); } catch (e) {}
+      recus.push({ methode: req.method, chemin: req.url, entetes: req.headers, corps });
+
+      const repondre = (code, obj, type) => {
+        const t = typeof obj === "string" ? obj : JSON.stringify(obj);
+        res.writeHead(code, { "Content-Type": type || "application/json" });
+        res.end(t);
+      };
+
+      /* --- webhook Make : répond en texte brut, comme le vrai --- */
+      if (req.url === "/hook") {
+        if (comportement === "webhook-ko") return repondre(500, "Internal error", "text/plain");
+        return repondre(200, "Accepted", "text/plain");
+      }
+      /* --- API Make --- */
+      if (req.url.startsWith("/api/v2/scenarios") && req.method === "GET") {
+        if (req.headers.authorization !== "Token jeton-test") {
+          return repondre(401, { message: "Unauthorized" });
+        }
+        return repondre(200, { scenarios: [
+          { id: 1, name: "COD → Sheets", isActive: true },
+          { id: 2, name: "Relance J+2", isActive: false }
+        ]});
+      }
+      /* --- Higgsfield v2 : soumission puis statut --- */
+      if (req.url === "/higgsfield-ai/soul/v2/standard" && req.method === "POST") {
+        if (comportement === "hf-refus") return repondre(402, { message: "Insufficient credits" });
+        return repondre(200, { request_id: "req-123", status: "queued" });
+      }
+      if (req.url === "/requests/req-123/status") {
+        if (comportement === "hf-echec") return repondre(200, { status: "failed", error: "prompt rejected" });
+        return repondre(200, { status: "completed", output: { image_url: "http://127.0.0.1:" + port + "/image.jpg" } });
+      }
+      /* --- Higgsfield v1 : forme documentée avec jobs[].results --- */
+      if (req.url === "/v1/text2image/soul" && req.method === "POST") {
+        if (req.headers["hf-api-key"] !== "id-test" || req.headers["hf-secret"] !== "secret-test") {
+          return repondre(401, { message: "bad credentials" });
+        }
+        return repondre(200, { id: "js-77", jobs: [{ id: "j1", status: "queued" }] });
+      }
+      if (req.url === "/v1/job-sets/js-77") {
+        return repondre(200, { id: "js-77", jobs: [{ id: "j1", status: "completed",
+          results: { min: { url: "http://127.0.0.1:" + port + "/min.jpg" },
+                     raw: { url: "http://127.0.0.1:" + port + "/raw.jpg" } } }] });
+      }
+      /* --- l'image elle-même --- */
+      if (req.url === "/image.jpg" || req.url === "/raw.jpg" || req.url === "/min.jpg") {
+        res.writeHead(200, { "Content-Type": "image/jpeg" });
+        return res.end(Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 16, 0x4a, 0x46, 0x49, 0x46]));
+      }
+      repondre(404, { message: "not found" });
+    });
+  });
+
+  await new Promise(r => faux.listen(0, "127.0.0.1", r));
+  const port = faux.address().port;
+  const racine = "http://127.0.0.1:" + port;
+
+  /* Les bases pointent vers le faux serveur, sans toucher aux vraies. */
+  process.env.HIGGSFIELD_BASE_V2 = racine;
+  process.env.HIGGSFIELD_BASE_V1 = racine;
+  process.env.MAKE_API_BASE = racine + "/api/v2";
+
+  const avecMake = { connecteurs: { make: { webhook: racine + "/hook", token: "jeton-test" } } };
+  const avecHf2 = { connecteurs: { higgsfield: { cleId: "id-test", cleSecret: "secret-test", profil: "v2" } } };
+  const avecHf1 = { connecteurs: { higgsfield: { cleId: "id-test", cleSecret: "secret-test", profil: "v1" } } };
+
+  try {
+    await testAsync("non configuré, l'état dit pourquoi", () => {
+      const e = connecteurs.etat({});
+      assert.strictEqual(e.make.actif, false);
+      assert.strictEqual(e.higgsfield.actif, false);
+      assert.ok(e.make.raison.length > 20 && e.higgsfield.raison.length > 20);
+    });
+
+    await testAsync("configuré, l'état le reflète", () => {
+      /* Fusion explicite : les deux objets portent une clé `connecteurs`,
+         un Object.assign de surface en perdrait une. */
+      const e = connecteurs.etat({ connecteurs: {
+        make: avecMake.connecteurs.make,
+        higgsfield: avecHf2.connecteurs.higgsfield
+      } });
+      assert.strictEqual(e.make.actif, true);
+      assert.strictEqual(e.make.webhook, true);
+      assert.strictEqual(e.make.api, true);
+      assert.strictEqual(e.higgsfield.actif, true);
+    });
+
+    await testAsync("un secret Higgsfield seul ne suffit pas", () => {
+      const e = connecteurs.etat({ connecteurs: { higgsfield: { cleId: "id" } } });
+      assert.strictEqual(e.higgsfield.actif, false, "une clé sans secret ne devrait pas activer le connecteur");
+    });
+
+    await testAsync("l'évènement Make part avec la bonne forme", async () => {
+      recus.length = 0;
+      const r = await connecteurs.pousserMake(avecMake, "campagne.terminee", { campagne: "camp-1", cpaMax: 51.5 });
+      assert.strictEqual(r.envoye, true, r.erreur || "");
+      const envoi = recus.find(x => x.chemin === "/hook");
+      assert.ok(envoi, "rien n'est arrivé au webhook");
+      assert.strictEqual(envoi.methode, "POST");
+      assert.strictEqual(envoi.corps.source, "poste-cod");
+      assert.strictEqual(envoi.corps.type, "campagne.terminee");
+      assert.strictEqual(envoi.corps.cpaMax, 51.5);
+      assert.ok(envoi.corps.le, "horodatage absent");
+    });
+
+    await testAsync("un webhook en panne est signalé, pas propagé en exception", async () => {
+      comportement = "webhook-ko";
+      const r = await connecteurs.pousserMake(avecMake, "test", {});
+      comportement = "normal";
+      assert.strictEqual(r.envoye, false);
+      assert.ok(/500/.test(r.erreur), "erreur peu lisible : " + r.erreur);
+    });
+
+    await testAsync("sans webhook, l'envoi ne tente rien", async () => {
+      const r = await connecteurs.pousserMake({}, "test", {});
+      assert.strictEqual(r.envoye, false);
+      assert.ok(/aucun webhook/.test(r.raison));
+    });
+
+    await testAsync("les scénarios Make sont listés avec le bon en-tête", async () => {
+      const s = await connecteurs.scenariosMake(avecMake);
+      assert.strictEqual(s.length, 2);
+      assert.strictEqual(s[0].nom, "COD → Sheets");
+      assert.strictEqual(s[0].actif, true);
+      assert.strictEqual(s[1].actif, false);
+    });
+
+    await testAsync("un mauvais jeton Make remonte une erreur lisible", async () => {
+      const mauvais = { connecteurs: { make: { token: "faux" } } };
+      await assert.rejects(() => connecteurs.scenariosMake(mauvais), /401/);
+    });
+
+    await testAsync("Higgsfield v2 : soumission, attente, image téléchargée", async () => {
+      const r = await connecteurs.genererImage(avecHf2, { prompt: "test", format: "feed", delai: 20000 });
+      assert.ok(Buffer.isBuffer(r.octets) && r.octets.length > 0, "image vide");
+      assert.strictEqual(r.tache, "req-123");
+      assert.deepStrictEqual([r.dimensions.l, r.dimensions.h], [1080, 1080]);
+    });
+
+    await testAsync("Higgsfield v2 : l'en-tête d'authentification est bien formé", async () => {
+      const envoi = recus.filter(x => x.chemin === "/higgsfield-ai/soul/v2/standard").pop();
+      assert.ok(envoi, "aucune soumission reçue");
+      assert.strictEqual(envoi.entetes.authorization, "Key id-test:secret-test");
+      assert.strictEqual(envoi.corps.aspect_ratio, "1:1");
+    });
+
+    await testAsync("Higgsfield v1 : l'autre contrat marche aussi", async () => {
+      const r = await connecteurs.genererImage(avecHf1, { prompt: "test", format: "story", delai: 20000 });
+      assert.ok(r.octets.length > 0);
+      assert.strictEqual(r.tache, "js-77");
+      const envoi = recus.filter(x => x.chemin === "/v1/text2image/soul").pop();
+      assert.strictEqual(envoi.corps.params.width_and_height, "1080x1920");
+    });
+
+    await testAsync("un refus de génération remonte le message de l'API", async () => {
+      comportement = "hf-refus";
+      await assert.rejects(
+        () => connecteurs.genererImage(avecHf2, { prompt: "x", format: "feed", delai: 8000 }),
+        /Insufficient credits/);
+      comportement = "normal";
+    });
+
+    await testAsync("une tâche en échec est signalée, pas attendue jusqu'au délai", async () => {
+      comportement = "hf-echec";
+      const t0 = Date.now();
+      await assert.rejects(
+        () => connecteurs.genererImage(avecHf2, { prompt: "x", format: "feed", delai: 30000 }),
+        /refusée par Higgsfield/);
+      assert.ok(Date.now() - t0 < 15000, "l'échec a été attendu trop longtemps");
+      comportement = "normal";
+    });
+
+    await testAsync("les trois angles sont produits, un échec n'arrête pas les autres", async () => {
+      const photos = await connecteurs.visuelsProduit(avecHf2, { produit: "Tapis chauffant", format: "feed" });
+      assert.strictEqual(photos.length, 3);
+      assert.ok(photos.every(p => p.ok), "certaines générations ont échoué");
+      assert.strictEqual(new Set(photos.map(p => p.fichier)).size, 3, "noms de fichiers en double");
+    });
+
+    await testAsync("le prompt produit interdit le texte incrusté", () => {
+      const p = connecteurs.promptProduit("Tapis chauffant", "probleme");
+      assert.ok(/AUCUN texte/.test(p), "rien n'interdit le texte dans l'image");
+      assert.ok(p.length > 120);
+      assert.notStrictEqual(connecteurs.promptProduit("X", "preuve"), connecteurs.promptProduit("X", "offre"));
+    });
+
+    await testAsync("une URL non http est refusée", async () => {
+      await assert.rejects(() => connecteurs.requete("file:///etc/passwd"), /Protocole refusé/);
+    });
+
+  } finally {
+    delete process.env.HIGGSFIELD_BASE_V2;
+    delete process.env.HIGGSFIELD_BASE_V1;
+    delete process.env.MAKE_API_BASE;
+    await new Promise(r => faux.close(r));
+  }
+});
+
+/* ===========================================================================
+   Câblage bout en bout des connecteurs dans la chaîne
+   ======================================================================== */
+groupe("Connecteurs dans la chaîne", async () => {
+  const store = require("../server/store");
+  const pipeline = require("../server/pipeline");
+
+  const recus = [];
+  const faux = require("http").createServer((req, res) => {
+    const m = [];
+    req.on("data", c => m.push(c));
+    req.on("end", () => {
+      let corps = null;
+      try { corps = JSON.parse(Buffer.concat(m).toString("utf8")); } catch (e) {}
+      recus.push({ chemin: req.url, corps });
+
+      if (req.url === "/hook") { res.writeHead(200, {"Content-Type":"text/plain"}); return res.end("Accepted"); }
+      if (req.url === "/higgsfield-ai/soul/v2/standard") {
+        res.writeHead(200, {"Content-Type":"application/json"});
+        return res.end(JSON.stringify({ request_id: "r1", status: "queued" }));
+      }
+      if (req.url === "/requests/r1/status") {
+        res.writeHead(200, {"Content-Type":"application/json"});
+        return res.end(JSON.stringify({ status: "completed",
+          output: { image_url: "http://127.0.0.1:" + port + "/i.jpg" } }));
+      }
+      if (req.url === "/i.jpg") {
+        res.writeHead(200, {"Content-Type":"image/jpeg"});
+        return res.end(Buffer.from([0xff,0xd8,0xff,0xe0,0,16,0x4a,0x46,0x49,0x46]));
+      }
+      res.writeHead(404); res.end("{}");
+    });
+  });
+  await new Promise(r => faux.listen(0, "127.0.0.1", r));
+  const port = faux.address().port;
+  const racine = "http://127.0.0.1:" + port;
+
+  const reglagesAvant = store.reglages();
+  process.env.HIGGSFIELD_BASE_V2 = racine;
+
+  function attendreFin(id) {
+    return new Promise((resolve, reject) => {
+      const t0 = Date.now();
+      const t = setInterval(() => {
+        const e = pipeline.etat(id);
+        if (e && e.statut !== "en-cours") { clearInterval(t); resolve(e); }
+        else if (Date.now() - t0 > 40000) { clearInterval(t); reject(new Error("délai dépassé")); }
+      }, 60);
+    });
+  }
+
+  try {
+    store.majReglages({ connecteurs: {
+      make: { webhook: racine + "/hook" },
+      higgsfield: { cleId: "id", cleSecret: "sec", profil: "v2" }
+    }});
+
+    await testAsync("une campagne terminée est poussée vers Make", async () => {
+      recus.length = 0;
+      const job = pipeline.lancer({ cible: "Aspirateur de voiture sans fil", prix: 259, cout: 70 });
+      await attendreFin(job.id);
+
+      const envoi = recus.filter(x => x.chemin === "/hook").pop();
+      assert.ok(envoi, "rien n'est arrivé au webhook");
+      assert.strictEqual(envoi.corps.type, "campagne.terminee");
+      assert.strictEqual(envoi.corps.campagne, job.id);
+      assert.strictEqual(envoi.corps.prix, 259);
+      assert.ok(envoi.corps.cpaMax > 0, "le CPA maximum manque dans l'évènement");
+      assert.ok(Array.isArray(envoi.corps.livrables) && envoi.corps.livrables.length > 5,
+        "la liste des livrables manque");
+    });
+
+    await testAsync("les photos Higgsfield sont produites et rangées", async () => {
+      const job = pipeline.lancer({ cible: "Coussin masseur cervical", prix: 349, cout: 95 });
+      await attendreFin(job.id);
+      const d = pipeline.complet(job.id);
+
+      const photos = (d.resultats.visuels.photos || []).filter(p => p.ok);
+      assert.strictEqual(photos.length, 3, "il devrait y avoir une photo par angle");
+
+      const fichiers = store.livrables(job.id).map(f => f.fichier);
+      photos.forEach(p => assert.ok(fichiers.includes(p.fichier), p.fichier + " absent du dossier"));
+      assert.ok(/photo/.test(d.resultats.visuels.note), "la note ne mentionne pas les photos");
+    });
+
+    await testAsync("la landing page utilise les photos et poste vers le webhook", async () => {
+      const job = pipeline.lancer({ cible: "Mini blender portable", prix: 249, cout: 65 });
+      await attendreFin(job.id);
+      const html = store.lireLivrable(job.id, "landing.html").toString("utf8");
+      assert.ok(html.includes("photo-probleme-feed.jpg"), "la galerie n'utilise pas les photos");
+      assert.ok(html.includes("/hook"), "la page ne poste pas la commande vers Make");
+      const m = html.match(/<script>([\s\S]*?)<\/script>/);
+      new Function(m[1]);   // le script doit rester valide avec le webhook injecté
+    });
+
+    await testAsync("une campagne arrêtée est poussée avec sa raison", async () => {
+      recus.length = 0;
+      const job = pipeline.lancer({ cible: "Set 12 pots à épices", prix: 199, cout: 150 });
+      await attendreFin(job.id);
+      const envoi = recus.filter(x => x.chemin === "/hook").pop();
+      assert.ok(envoi, "rien n'est arrivé au webhook");
+      assert.strictEqual(envoi.corps.type, "campagne.arretee");
+      assert.ok(envoi.corps.raisonArret && envoi.corps.raisonArret.length > 20,
+        "la raison de l'arrêt n'est pas transmise");
+    });
+
+  } finally {
+    store.majReglages({ connecteurs: { make: {}, higgsfield: {} } });
+    delete process.env.HIGGSFIELD_BASE_V2;
+    await new Promise(r => faux.close(r));
+  }
+});
+
+/* ===========================================================================
    Serveur HTTP
    ======================================================================== */
 groupe("Serveur HTTP", async () => {
@@ -674,6 +1004,33 @@ groupe("Serveur HTTP", async () => {
     const d = JSON.parse(r.corps);
     assert.ok(d.routes.length > 5);
     assert.ok(d.pistesContact.length >= 6);
+  });
+
+  await testAsync("une commande est enregistrée même sans webhook", async () => {
+    const r = await requete("/api/commandes", { methode: "POST", corps: {
+      nom: "Fatima El Amrani", telephone: "+212 600-11.22 33", ville: "Casablanca",
+      produit: "Test", prix: 249 } });
+    assert.strictEqual(r.code, 201);
+    const d = JSON.parse(r.corps);
+    assert.ok(d.commande, "aucun identifiant de commande");
+    assert.strictEqual(d.make.envoye, false, "aucun webhook n'est configuré ici");
+
+    const store = require("../server/store");
+    const c = store.trouver("commandes", d.commande);
+    assert.strictEqual(c.telephone, "212600112233", "le numéro n'a pas été normalisé");
+    assert.strictEqual(c.statut, "nouvelle");
+  });
+
+  await testAsync("une commande sans téléphone est refusée", async () => {
+    const r = await requete("/api/commandes", { methode: "POST", corps: { nom: "X" } });
+    assert.strictEqual(r.code, 400);
+  });
+
+  await testAsync("l'état expose les connecteurs", async () => {
+    const r = await requete("/api/etat");
+    const d = JSON.parse(r.corps);
+    assert.ok(d.connecteurs && d.connecteurs.make && d.connecteurs.higgsfield,
+      "les connecteurs manquent dans /api/etat");
   });
 
   await testAsync("une route inconnue rend un 404 lisible", async () => {

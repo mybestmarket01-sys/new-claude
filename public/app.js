@@ -798,14 +798,43 @@ function htmlScripts(d){
 }
 
 /* ---- visuels ---- */
+function nomAngle(cle){
+  return { probleme:"Angle problème", preuve:"Angle preuve", offre:"Angle offre" }[cle] || cle;
+}
+
 function htmlVisuels(d, c){
   var creas = d.creas || [];
-  if(!creas.length) return '<div class="vide">Aucune créa.</div>';
+  if(!creas.length && !(d.photos || []).length) return '<div class="vide">Aucune créa.</div>';
 
   var parAngle = {};
   creas.forEach(function(x){ (parAngle[x.angle] = parAngle[x.angle] || []).push(x); });
 
-  var h = '<div class="note"><b>Les fichiers sont en SVG.</b> ' +
+  var h = "";
+
+  var photos = (d.photos || []).filter(function(p){ return p.ok; });
+  if (d.avertissementPhotos) {
+    h += '<div class="alerte warn"><span class="ic">⚠</span><div>' + ech(d.avertissementPhotos) + '</div></div>';
+  }
+  if (photos.length) {
+    h += '<div class="carte"><div class="pad">' +
+      '<h2>Photos produit</h2>' +
+      '<p class="sous">Générées par Higgsfield, une par angle, sans texte incrusté. ' +
+      'Elles servent la galerie de la landing page ; le prix et le hook restent sur les créas SVG, ' +
+      'où ils se corrigent sans regénérer l\'image.</p>' +
+      '<div class="creas">' +
+      photos.map(function(p){
+        var url = "/api/campagnes/" + c.id + "/fichier/" + encodeURIComponent(p.fichier);
+        return '<figure class="crea" style="margin:0">' +
+          '<div class="apercu"><img src="' + url + '" alt="Photo produit — angle ' + ech(p.angle) + '" loading="lazy"></div>' +
+          '<figcaption class="bas"><span class="t">' + ech(nomAngle(p.angle)) +
+            '<span class="d">' + Math.round((p.octets || 0) / 1024) + ' Ko</span></span>' +
+          '<a class="btn sm" href="' + url + '" download="' + ech(p.fichier) + '">Télécharger</a>' +
+          '</figcaption></figure>';
+      }).join("") +
+      '</div></div></div>';
+  }
+
+  h += '<div class="note"><b>Les fichiers sont en SVG.</b> ' +
     'Le bouton « PNG » les convertit aux dimensions exactes attendues par Meta et TikTok. ' +
     'Le texte reste vectoriel : vous pouvez ouvrir le SVG dans n\'importe quel éditeur ' +
     'pour changer un mot sans tout refaire.</div>';
@@ -1134,9 +1163,13 @@ function vueReglages(){
           '<span class="num">npm start</span>.</div>') +
       '</div></div>' +
 
+      carteConnecteurs(r) +
+
       '<div class="actions"><button class="btn pri" type="submit">Enregistrer</button>' +
         '<a class="btn" href="/api/export">Exporter toutes les données</a></div>' +
       '</form>';
+
+    brancherConnecteurs();
 
     $("f-reglages").onsubmit = function(ev){
       ev.preventDefault();
@@ -1145,6 +1178,20 @@ function vueReglages(){
         boutique: f.boutique.value.trim(),
         whatsapp: f.whatsapp.value.replace(/\D/g, ""),
         modele: f.modele.value.trim(),
+        connecteurs: {
+          make: {
+            webhook: f.makeWebhook.value.trim(),
+            token: f.makeToken.value.trim(),
+            zone: f.makeZone.value.trim() || "eu2",
+            equipe: f.makeEquipe.value.trim()
+          },
+          higgsfield: {
+            cleId: f.hfId.value.trim(),
+            cleSecret: f.hfSecret.value.trim(),
+            profil: f.hfProfil.value,
+            modele: f.hfModele.value.trim()
+          }
+        },
         hypotheses: {
           confirmation: Number(f.confirmation.value),
           livraison: Number(f.livraison.value),
@@ -1164,6 +1211,120 @@ function vueReglages(){
       }).catch(function(err){ toast(err.message); });
     };
   });
+}
+
+/* ---------------------------------------------------------------------------
+   Connecteurs
+   ------------------------------------------------------------------------ */
+function carteConnecteurs(r){
+  var e = ETAT.connecteurs || { make:{}, higgsfield:{} };
+  var cm = (r.connecteurs || {}).make || {};
+  var ch = (r.connecteurs || {}).higgsfield || {};
+
+  return '<div class="carte"><div class="pad">' +
+    '<h2>Connecteurs</h2>' +
+    '<p class="sous">Deux liens vers l\'extérieur, tous les deux facultatifs. ' +
+    'L\'application marche entièrement sans eux.</p>' +
+
+    '<h3 style="margin-top:22px">Make ' + pastilleConnecteur(e.make.actif) + '</h3>' +
+    '<p class="sous">Le webhook reçoit chaque campagne terminée et chaque commande passée ' +
+    'depuis une landing page — y compris quand la page est hébergée ailleurs. ' +
+    'Créez un scénario Make démarrant par « Webhooks → Custom webhook » et collez son URL. ' +
+    'Aucune authentification n\'est nécessaire pour un webhook standard.</p>' +
+    '<div class="champs">' +
+      champ("makeWebhook", "URL du webhook", "text", cm.webhook || "", "https://hook.eu2.make.com/…") +
+      champ("makeToken", "Jeton d\'API (facultatif)", "password", cm.token || "", "Permet de lister et déclencher vos scénarios") +
+      champ("makeZone", "Zone", "text", cm.zone || "eu2", "eu1, eu2, us1…") +
+      champ("makeEquipe", "ID d\'équipe (facultatif)", "text", cm.equipe || "") +
+    '</div>' +
+    '<div class="actions"><button class="btn" type="button" id="test-make">Tester Make</button>' +
+      '<span id="res-make" class="aide"></span></div>' +
+
+    '<h3 style="margin-top:26px">Higgsfield ' + pastilleConnecteur(e.higgsfield.actif) + '</h3>' +
+    '<p class="sous">Produit une photo produit par angle, en plus des neuf créas SVG. ' +
+    'Il faut deux valeurs : un identifiant de clé et son secret. ' +
+    'La documentation Higgsfield décrit deux contrats — si vos identifiants sont anciens ' +
+    '(en-têtes <span class="num">hf-api-key</span> / <span class="num">hf-secret</span>), ' +
+    'choisissez le profil v1.</p>' +
+    '<div class="champs">' +
+      champ("hfId", "Identifiant de clé", "password", ch.cleId || "") +
+      champ("hfSecret", "Secret", "password", ch.cleSecret || "") +
+      '<div class="champ"><label for="r-hfProfil">Profil d\'API</label>' +
+        '<select id="r-hfProfil" name="hfProfil">' +
+        ['v2','v1'].map(function(v){
+          return '<option value="' + v + '"' + ((ch.profil || "v2") === v ? " selected" : "") + '>' +
+            (v === "v2" ? "v2 — api.higgsfield.ai (courant)" : "v1 — platform.higgsfield.ai (ancien)") +
+            '</option>'; }).join("") +
+        '</select></div>' +
+      champ("hfModele", "Modèle", "text", ch.modele || "higgsfield-ai/soul/v2/standard", "profil v2 uniquement") +
+    '</div>' +
+    '<div class="actions"><button class="btn" type="button" id="test-hf">Tester Higgsfield</button>' +
+      '<span id="res-hf" class="aide"></span></div>' +
+
+    '<div class="note"><b>Où sont rangées ces clés.</b> Enregistrées ici, elles vont dans ' +
+    '<span class="num">data/reglages.json</span>, en clair sur votre disque — ce fichier est hors ' +
+    'du dépôt Git, mais il part avec un export de données. Pour les garder à l\'écart, mettez-les ' +
+    'plutôt dans <span class="num">.env</span> : ' +
+    '<span class="num">MAKE_WEBHOOK_URL</span>, <span class="num">MAKE_API_TOKEN</span>, ' +
+    '<span class="num">HIGGSFIELD_KEY_ID</span>, <span class="num">HIGGSFIELD_KEY_SECRET</span>. ' +
+    'L\'environnement l\'emporte toujours sur les réglages.</div>' +
+    '</div></div>';
+}
+
+function pastilleConnecteur(actif){
+  return '<span class="pilule ' + (actif ? "good" : "creuse") + '" style="margin-left:8px;vertical-align:middle">' +
+    (actif ? "branché" : "non configuré") + '</span>';
+}
+
+function brancherConnecteurs(){
+  var bm = $("test-make");
+  if(bm) bm.onclick = function(){
+    testerConnecteur(bm, "res-make", "/connecteurs/make/test", function(d){
+      var bouts = [];
+      if(d.webhook) bouts.push(d.webhook.envoye
+        ? "webhook : évènement envoyé ✓"
+        : "webhook : " + (d.webhook.erreur || d.webhook.raison));
+      if(d.api) bouts.push(d.api.ok
+        ? "API : " + d.api.scenarios + " scénarios (" + d.api.actifs + " actifs) ✓"
+        : "API : " + (d.api.erreur || d.api.raison));
+      return bouts.join(" · ");
+    });
+  };
+
+  var bh = $("test-hf");
+  if(bh) bh.onclick = function(){
+    testerConnecteur(bh, "res-hf", "/connecteurs/higgsfield/test", function(d){
+      return d.ok
+        ? "image reçue, " + Math.round(d.octets / 1024) + " Ko ✓"
+        : "échec : " + d.erreur;
+    });
+  };
+}
+
+/* Un test se fait sur les réglages ENREGISTRÉS, pas sur ce qui est à l'écran :
+   on enregistre d'abord, sinon le bouton testerait l'ancienne configuration. */
+function testerConnecteur(bouton, cibleId, chemin, formater){
+  var avant = bouton.textContent;
+  var sortie = $(cibleId);
+  bouton.disabled = true;
+  bouton.textContent = "Test en cours…";
+  sortie.textContent = "";
+
+  var f = $("f-reglages");
+  var enregistrer = f
+    ? new Promise(function(res){ f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event("submit", {cancelable:true})); setTimeout(res, 350); })
+    : Promise.resolve();
+
+  enregistrer
+    .then(function(){ return api(chemin, { method: "POST", body: "{}" }); })
+    .then(function(d){ sortie.textContent = formater(d); })
+    .catch(function(err){ sortie.textContent = "échec : " + err.message; })
+    .then(function(){
+      bouton.disabled = false;
+      bouton.textContent = avant;
+      return api("/etat");
+    })
+    .then(function(e){ if(e) ETAT = e; });
 }
 
 function champ(nom, label, type, val, aide, pas){
