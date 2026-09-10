@@ -10,25 +10,67 @@ page COD bilingue prête à mettre en ligne, et le plan de lancement chiffré.
 
 ---
 
-## Démarrer
+## Deux éditions
+
+L'application existe sous deux formes. Même interface, mêmes calculs, mêmes livrables —
+elles ne diffèrent que par ce qui tourne derrière.
+
+### Édition HTML — rien à installer
+
+**`dist/poste-cod.html`** : un seul fichier de 826 Ko. Vous le double-cliquez, il s'ouvre
+dans votre navigateur, il marche. Les sept applications sont dedans, la chaîne complète
+tourne dans l'onglet, vos données restent sur votre machine.
+
+C'est l'édition à prendre si vous voulez simplement vous en servir.
+
+Ce qu'elle fait : les huit étapes, les neuf créas, la landing page, les 41 routes d'achat,
+le modèle économique, le plan de lancement. Un bouton **Tout télécharger (.zip)** rend la
+campagne entière en une archive.
+
+Ce qu'elle ne fait pas : la recherche web et la rédaction en darija, qui demandent une clé
+API — et une clé API n'a pas sa place dans une page web qu'on s'envoie par WhatsApp.
+
+Pour la reconstruire après une modification du code :
+
+```bash
+npm run build:html
+```
+
+### Édition Node — la chaîne complète
 
 ```bash
 npm install          # une fois
 npm start            # puis ouvrir http://localhost:4321
 ```
 
-L'application tourne **sans clé API**. Dans ce mode elle produit les visuels, la landing
-page, le modèle économique, les 41 routes d'achat et le plan de lancement à partir de la
-base intégrée. Ce qui manque, ce sont la recherche web et la rédaction en darija.
-
-Pour activer le mode direct :
+Elle ajoute ce que le navigateur seul ne peut pas faire : la recherche web, la rédaction
+en darija, les vrais contacts fournisseurs, les photos produit Higgsfield, et l'API Make.
 
 ```bash
 cp .env.example .env       # puis renseigner ANTHROPIC_API_KEY
 npm start
 ```
 
-Le bandeau en haut à droite dit toujours dans quel mode vous êtes.
+Sans clé, l'édition Node se comporte exactement comme l'édition HTML.
+
+Le bandeau en haut à droite dit toujours où vous en êtes : **Édition HTML**,
+**Hors ligne**, ou **En direct**.
+
+| | HTML | Node |
+|---|---|---|
+| Installation | aucune | `npm install` |
+| Les 7 applications | ✓ | ✓ |
+| Modèle économique, score, verdict | ✓ | ✓ |
+| 41 routes d'achat | ✓ | ✓ |
+| 9 créas + landing page | ✓ | ✓ |
+| Plan de lancement chiffré | ✓ | ✓ |
+| Archive .zip de la campagne | ✓ | ✓ |
+| Recherche web du marché | — | avec clé |
+| Ad copies et scripts en darija | — | avec clé |
+| Contacts fournisseurs réels | — | avec clé |
+| Photos produit Higgsfield | — | avec clé |
+| Webhook Make | envoi sans retour | avec accusé |
+| Stockage | navigateur | `data/` sur disque |
 
 ---
 
@@ -232,6 +274,7 @@ la page se contente de garder les commandes dans le navigateur.
 ```
 server/
   economics.js    le modèle COD — CPA max, score, budgets. Le cœur.
+  horsligne.js    la chaîne sans réseau — partagée entre les deux éditions
   sources.js      les 41 sources du Comptoir, rendues interrogeables
   claude.js       accès à Claude : recherche web, rédaction, lecture des réponses
   pipeline.js     l'orchestrateur — les 8 étapes et leur enchaînement
@@ -242,11 +285,25 @@ server/
   index.js        le serveur local
   data/           comptoir.json (41 sources), radar.json (45 produits, 9 marchés)
 
-public/           l'atelier : le shell, la passerelle injectée
+public/           l'atelier : le shell, l'API locale, la passerelle injectée
+outils/           le constructeur de l'édition HTML
+dist/             poste-cod.html — l'édition autonome, régénérable
 apps/             les sept applications, servies telles quelles
 data/             vos données — hors dépôt
 test/run.js       60 tests, sans réseau ni clé API
 ```
+
+### Une seule chaîne, deux éditions
+
+`server/horsligne.js` contient les huit étapes en fonctions pures : pas de disque, pas de
+réseau, pas de Node. L'orchestrateur du serveur l'appelle, et le navigateur aussi. Le
+constructeur refuse d'assembler l'édition HTML si un module partagé se met à dépendre de
+`fs`, de `path` ou de `process.env` — la construction échoue plutôt que de livrer une page
+qui plante à l'ouverture.
+
+L'interface, elle, ne sait pas qui lui répond : `public/app.js` appelle `/api/…`, et selon
+l'édition c'est le serveur Node ou `public/api-locale.js` qui répond. Le même écran, les
+deux moteurs.
 
 ### Tests
 
@@ -254,13 +311,19 @@ test/run.js       60 tests, sans réseau ni clé API
 npm test
 ```
 
-83 tests, aucun appel sortant. Le mode direct est couvert avec un faux client Claude :
+92 tests, aucun appel sortant. Le mode direct est couvert avec un faux client Claude :
 on vérifie que la chaîne sait lire les réponses, rattraper un JSON mal formé, faire
 circuler ce qu'une étape a trouvé vers la suivante, et continuer quand une étape tombe.
 
 Les connecteurs tournent contre un serveur factice local qui rejoue les réponses
 documentées de Make et des deux contrats Higgsfield — y compris les cas d'échec :
 webhook en panne, jeton refusé, crédits épuisés, tâche rejetée.
+
+L'édition HTML est reconstruite à chaque exécution, et chaque bloc `<script>` de la page
+produite est compilé. C'est exactement le défaut qui a cassé la première construction :
+un `</script>` littéral dans `landing.js` fermait la balise et coupait le programme en
+deux. Un test vérifie aussi que `dist/poste-cod.html` n'a pas pris de retard sur les
+sources.
 
 ---
 

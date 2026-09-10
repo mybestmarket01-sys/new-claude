@@ -41,6 +41,13 @@ function frDate(iso){
   }catch(e){ return String(iso).slice(0, 16).replace("T", " "); }
 }
 
+/* L'adresse d'un livrable : une route du serveur, ou une URL blob construite
+   sur place. Tout le reste de l'interface passe par ici. */
+function urlLivrable(campagneId, fichier){
+  if(LOCAL) return LOCAL.urlFichier(campagneId, fichier);
+  return "/api/campagnes/" + campagneId + "/fichier/" + encodeURIComponent(fichier);
+}
+
 function toast(msg){
   var t = document.querySelector(".toast");
   if(t) t.remove();
@@ -52,7 +59,12 @@ function toast(msg){
   setTimeout(function(){ if(t.parentNode) t.remove(); }, 3600);
 }
 
+var LOCAL = typeof window !== "undefined" && window.POSTE_COD_LOCAL ? window.POSTE_COD_LOCAL : null;
+
 function api(chemin, options){
+  /* Édition HTML : le même contrat, mais servi dans l'onglet. */
+  if(LOCAL) return LOCAL.appel(chemin, options);
+
   return fetch("/api" + chemin, Object.assign({ headers: { "Content-Type":"application/json" } }, options || {}))
     .then(function(r){
       return r.json().catch(function(){ return {}; }).then(function(d){
@@ -94,7 +106,7 @@ function majMode(){
   el.className = "mode " + (c.disponible ? "live" : "hors");
   el.innerHTML = '<i></i><span>' + (c.disponible
     ? "En direct · " + ech(c.modele)
-    : "Hors ligne") + '</span>';
+    : (ETAT.edition === "html" ? "Édition HTML" : "Hors ligne")) + '</span>';
   el.title = c.disponible
     ? "Recherche web active. L'orchestrateur cherche et rédige en direct."
     : c.raison || "";
@@ -169,9 +181,11 @@ function vueApp(id){
     '<div class="barre-app">' +
       '<b>' + app.emoji + ' ' + ech(app.nom) + '</b>' +
       '<span class="q">' + ech(app.quoi) + '</span>' +
-      '<a class="btn sm" href="' + ech(app.url) + '" target="_blank" rel="noopener">Ouvrir dans un onglet ↗</a>' +
+      (LOCAL ? '' : '<a class="btn sm" href="' + ech(app.url) + '" target="_blank" rel="noopener">Ouvrir dans un onglet ↗</a>') +
     '</div>' +
-    '<iframe class="cadre" src="' + ech(app.url) + '" title="' + ech(app.nom) + '"></iframe>';
+    (LOCAL
+      ? '<iframe class="cadre" srcdoc="' + ech(htmlApp(app.id)) + '" title="' + ech(app.nom) + '"></iframe>'
+      : '<iframe class="cadre" src="' + ech(app.url) + '" title="' + ech(app.nom) + '"></iframe>');
 }
 
 /* ===========================================================================
@@ -191,8 +205,17 @@ function vueOrchestrateur(){
       'landing page bilingue et plan de lancement chiffré. Dans cet ordre, sans intervention.</p>' +
     '</div>' +
 
+    (ETAT.edition === "html" && ETAT.stockagePersistant === false
+      ? '<div class="alerte bad"><span class="ic">✕</span><div>' +
+        '<b>Ce navigateur refuse d\'enregistrer.</b> Vos campagnes et vos réglages ne survivront ' +
+        'pas à la fermeture de l\'onglet. C\'est le cas en navigation privée, ou quand les données ' +
+        'de site sont bloquées. Téléchargez ce que vous produisez au fur et à mesure, ou ouvrez ' +
+        'la page dans une fenêtre normale.</div></div>'
+      : '') +
+
     (horsLigne ? '<div class="alerte warn"><span class="ic">⚠</span><div>' +
-      '<b>Mode hors ligne.</b> ' + ech(ETAT.claude.raison) + ' L\'orchestrateur tourne quand même : ' +
+      '<b>' + (ETAT.edition === "html" ? "Édition HTML." : "Mode hors ligne.") + '</b> ' +
+      ech(ETAT.claude.raison) + ' L\'orchestrateur tourne quand même : ' +
       'il produit les visuels, la landing page, le modèle économique, les 41 routes d\'achat et le plan ' +
       'de lancement à partir de la base intégrée. Ce qui manque, ce sont la recherche web et la rédaction ' +
       'en darija.</div></div>' : '') +
@@ -316,6 +339,27 @@ function tuile(k, v, s, cls){
    ------------------------------------------------------------------------ */
 function suivre(id){
   if(flux) { flux.close(); flux = null; }
+
+  /* En local il n'y a pas de flux réseau à ouvrir : on s'abonne à la chaîne
+     qui tourne dans l'onglet, et on branche le même traitement. */
+  if(LOCAL){
+    var stop = LOCAL.abonner(id, function(d){
+      if(d.job) campagne = d.job;
+      if(d.type === "fin"){
+        stop();
+        api("/campagnes/" + id).then(function(c){
+          campagne = Object.assign({}, campagne, c);
+          ongletResultat = "validation";
+          rendreCampagne();
+          return api("/etat");
+        }).then(function(e){ ETAT = e; rendreRail(); });
+        return;
+      }
+      if(vue === "orchestrateur") majProgression();
+    });
+    return;
+  }
+
   flux = new EventSource("/api/campagnes/" + id + "/flux");
 
   flux.onmessage = function(ev){
@@ -383,7 +427,8 @@ function rendreCampagne(){
       '<h1>' + ech(c.cible) + '</h1>' +
       '<div class="actions" style="margin-top:14px">' +
         '<button class="btn" id="b-retour">← Nouvelle campagne</button>' +
-        (enCours ? '' : '<a class="btn" href="/api/campagnes/' + ech(c.id) + '/fichier/campagne.json" download>Dossier JSON</a>') +
+        (enCours ? '' : '<a class="btn" href="' + urlLivrable(c.id, "campagne.json") + '" download="campagne.json">Dossier JSON</a>' +
+        '<button class="btn" id="b-zip">Tout télécharger (.zip)</button>') +
       '</div>' +
     '</div>' +
 
@@ -405,6 +450,8 @@ function rendreCampagne(){
   $("onglets").querySelectorAll("[data-onglet]").forEach(function(b){
     b.onclick = function(){ ongletResultat = b.dataset.onglet; rendreCampagne(); };
   });
+  var bz = $("b-zip");
+  if(bz) bz.onclick = function(){ telechargerCampagne(c, bz); };
 
   $("corps").innerHTML = corpsOnglet(ongletResultat, c);
   brancherCorps();
@@ -823,7 +870,7 @@ function htmlVisuels(d, c){
       'où ils se corrigent sans regénérer l\'image.</p>' +
       '<div class="creas">' +
       photos.map(function(p){
-        var url = "/api/campagnes/" + c.id + "/fichier/" + encodeURIComponent(p.fichier);
+        var url = urlLivrable(c.id, p.fichier);
         return '<figure class="crea" style="margin:0">' +
           '<div class="apercu"><img src="' + url + '" alt="Photo produit — angle ' + ech(p.angle) + '" loading="lazy"></div>' +
           '<figcaption class="bas"><span class="t">' + ech(nomAngle(p.angle)) +
@@ -846,7 +893,7 @@ function htmlVisuels(d, c){
       '<p class="sous">' + ech(lot[0].angleQuoi) + '</p>' +
       '<div class="creas">' +
       lot.map(function(x){
-        var url = "/api/campagnes/" + c.id + "/fichier/" + encodeURIComponent(x.fichier);
+        var url = urlLivrable(c.id, x.fichier);
         return '<figure class="crea" style="margin:0">' +
           '<div class="apercu"><img src="' + url + '" alt="' + ech(x.angleNom + " " + x.formatNom) + '" loading="lazy"></div>' +
           '<figcaption class="bas"><span class="t">' + ech(x.formatNom) +
@@ -863,7 +910,7 @@ function htmlVisuels(d, c){
 
 /* ---- landing ---- */
 function htmlLanding(d, c){
-  var url = "/api/campagnes/" + c.id + "/fichier/" + encodeURIComponent(d.fichier || "landing.html");
+  var url = urlLivrable(c.id, d.fichier || "landing.html");
   return (d.aFaire ? '<div class="alerte warn"><span class="ic">⚠</span><div>' + ech(d.aFaire) + '</div></div>' : "") +
     '<div class="carte"><div class="pad">' +
       '<h2>Landing page</h2>' +
@@ -956,6 +1003,169 @@ function htmlStrategie(d){
 /* ---------------------------------------------------------------------------
    Interactions du corps
    ------------------------------------------------------------------------ */
+/* ---------------------------------------------------------------------------
+   Édition HTML : les applications sont embarquées dans la page.
+   On leur injecte la passerelle avant de les poser dans l'iframe, exactement
+   comme le serveur le fait à la volée.
+   ------------------------------------------------------------------------ */
+function htmlApp(id){
+  var app = (window.POSTE_COD_APPS || []).filter(function(a){ return a.id === id; })[0];
+  if(!app) return "<p>Application introuvable.</p>";
+  if(app.pont === false) return app.html;
+  var balise = '<script>(' + String(passerelleEmbarquee) + ')(' + JSON.stringify(app.nom) + ');<\/script>';
+  return app.html.indexOf("</body>") > -1
+    ? app.html.replace("</body>", balise + "</body>")
+    : app.html + balise;
+}
+
+/* La passerelle, en édition HTML : même geste que public/bridge.js, mais
+   sérialisée dans l'iframe plutôt que chargée par une balise src — il n'y a
+   pas de serveur pour la servir. */
+function passerelleEmbarquee(nomApp){
+  var b = document.createElement("div");
+  b.setAttribute("style", "position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;gap:7px;" +
+    "align-items:center;background:#16211f;color:#f6f3ec;border-radius:99px;padding:7px 8px 7px 15px;" +
+    "box-shadow:0 4px 24px rgba(0,0,0,.32);font:600 13px/1.2 Archivo,'Segoe UI',system-ui,sans-serif");
+  b.innerHTML = '<span style="opacity:.62;letter-spacing:.06em;text-transform:uppercase;font-size:10px;' +
+    'padding-right:3px">Poste COD</span>' +
+    '<button type="button" style="font:inherit;background:#f6f3ec;color:#16211f;border:0;border-radius:99px;' +
+    'padding:8px 15px;cursor:pointer;white-space:nowrap">🚀 Lancer une campagne</button>';
+  document.body.appendChild(b);
+
+  var dernier = null;
+  document.addEventListener("mouseover", function(ev){
+    var el = ev.target;
+    if(el && el.closest){ var p = el.closest("tr, article, .card, .carte, .item, li"); if(p) dernier = p; }
+  }, { passive:true, capture:true });
+
+  b.querySelector("button").onclick = function(){
+    var sel = "";
+    try{ sel = String(window.getSelection()).replace(/\s+/g," ").trim(); }catch(e){}
+    if(!(sel.length > 2 && sel.length < 140)) sel = "";
+    if(!sel && dernier){
+      var c = dernier.querySelector("h1,h2,h3,h4,.nom,.pname,.tname,.card-title,td:first-child");
+      var t = ((c ? c.textContent : dernier.textContent) || "").replace(/\s+/g," ").trim();
+      if(t.length > 2 && t.length < 140) sel = t;
+    }
+    var nom = window.prompt("Lancer la chaîne complète sur quel produit ?", sel);
+    if(nom === null || !nom.trim()) return;
+    var prix = null;
+    if(dernier){
+      var m = (dernier.textContent || "").match(/(\d{2,5})\s*(?:DH|MAD)/i);
+      if(m) prix = Number(m[1]);
+    }
+    parent.postMessage({ type:"poste-cod:lancer", produit:{ source: nomApp, nom: nom.trim(), prix: prix } }, "*");
+  };
+}
+
+/* ---------------------------------------------------------------------------
+   Écriture d'une archive ZIP, sans bibliothèque.
+   Méthode « stored » : pas de compression, mais un fichier qu'Explorateur,
+   Finder et n'importe quel outil savent ouvrir. C'est le seul moyen de rendre
+   une campagne entière en un clic dans l'édition HTML, où il n'y a pas de
+   dossier data/ sur le disque.
+   ------------------------------------------------------------------------ */
+function crc32(octets){
+  var table = crc32.table;
+  if(!table){
+    table = crc32.table = new Int32Array(256);
+    for(var n = 0; n < 256; n++){
+      var c = n;
+      for(var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      table[n] = c;
+    }
+  }
+  var crc = -1;
+  for(var i = 0; i < octets.length; i++) crc = (crc >>> 8) ^ table[(crc ^ octets[i]) & 0xFF];
+  return (crc ^ -1) >>> 0;
+}
+
+function zip(fichiers){
+  var enc = new TextEncoder();
+  var morceaux = [], entrees = [], decalage = 0;
+
+  function u32(v){ return [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255]; }
+  function u16(v){ return [v & 255, (v >>> 8) & 255]; }
+
+  fichiers.forEach(function(f){
+    var nom = enc.encode(f.nom);
+    var donnees = f.octets instanceof Uint8Array ? f.octets : enc.encode(String(f.contenu));
+    var somme = crc32(donnees);
+
+    /* En-tête local : version 2.0, pas de compression, pas de date (l'horodatage
+       à zéro est accepté partout et évite un fuseau qui ment). */
+    var entete = [].concat(
+      u32(0x04034b50), u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(somme), u32(donnees.length), u32(donnees.length),
+      u16(nom.length), u16(0));
+    morceaux.push(new Uint8Array(entete), nom, donnees);
+    entrees.push({ nom: nom, somme: somme, taille: donnees.length, decalage: decalage });
+    decalage += entete.length + nom.length + donnees.length;
+  });
+
+  var debutCentral = decalage, tailleCentral = 0;
+  entrees.forEach(function(e){
+    var c = [].concat(
+      u32(0x02014b50), u16(20), u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(e.somme), u32(e.taille), u32(e.taille),
+      u16(e.nom.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(e.decalage));
+    morceaux.push(new Uint8Array(c), e.nom);
+    tailleCentral += c.length + e.nom.length;
+  });
+
+  morceaux.push(new Uint8Array([].concat(
+    u32(0x06054b50), u16(0), u16(0),
+    u16(entrees.length), u16(entrees.length),
+    u32(tailleCentral), u32(debutCentral), u16(0))));
+
+  return new Blob(morceaux, { type: "application/zip" });
+}
+
+function telecharger(blob, nom){
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = nom;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+}
+
+/* Rassemble les livrables d'une campagne et les rend en une archive. */
+function telechargerCampagne(c, bouton){
+  var avant = bouton.textContent;
+  bouton.disabled = true;
+  bouton.textContent = "Préparation…";
+
+  var noms = (c.livrables || []).map(function(f){ return f.fichier; });
+  if(!noms.length){
+    bouton.disabled = false; bouton.textContent = avant;
+    return toast("Aucun livrable à archiver.");
+  }
+
+  var lecture = LOCAL
+    ? Promise.resolve(noms.map(function(n){
+        return { nom: n, contenu: LOCAL.livrablesDe(c.id)[n] };
+      }))
+    : Promise.all(noms.map(function(n){
+        return fetch(urlLivrable(c.id, n))
+          .then(function(r){ return r.arrayBuffer(); })
+          .then(function(b){ return { nom: n, octets: new Uint8Array(b) }; });
+      }));
+
+  lecture.then(function(fichiers){
+    var propre = String(c.cible || "campagne").toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 50);
+    telecharger(zip(fichiers), "campagne-" + (propre || "cod") + ".zip");
+  }).catch(function(err){
+    toast("Archive impossible : " + err.message);
+  }).then(function(){
+    bouton.disabled = false;
+    bouton.textContent = avant;
+  });
+}
+
 function brancherCorps(){
   document.querySelectorAll("[data-copier]").forEach(function(b){
     b.onclick = function(){
@@ -1166,10 +1376,18 @@ function vueReglages(){
       carteConnecteurs(r) +
 
       '<div class="actions"><button class="btn pri" type="submit">Enregistrer</button>' +
-        '<a class="btn" href="/api/export">Exporter toutes les données</a></div>' +
+        '<button class="btn" type="button" id="b-export">Exporter toutes les données</button></div>' +
       '</form>';
 
     brancherConnecteurs();
+
+    var bx = $("b-export");
+    if(bx) bx.onclick = function(){
+      api("/export").then(function(d){
+        telecharger(new Blob([JSON.stringify(d, null, 1)], { type:"application/json" }),
+          "poste-cod-" + new Date().toISOString().slice(0, 10) + ".json");
+      }).catch(function(err){ toast(err.message); });
+    };
 
     $("f-reglages").onsubmit = function(ev){
       ev.preventDefault();

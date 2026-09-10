@@ -1041,6 +1041,102 @@ groupe("Serveur HTTP", async () => {
 });
 
 /* ===========================================================================
+   Édition HTML autonome
+
+   Le fichier unique est construit puis inspecté : chaque bloc <script> doit
+   compiler, les modules partagés doivent être présents, et le fichier livré
+   dans dist/ doit correspondre aux sources. Sans navigateur — c'est du
+   contrôle de construction, pas du test d'interface.
+   ======================================================================== */
+groupe("Édition HTML autonome", () => {
+  const vm = require("vm");
+  const constructeur = require("../outils/construire-html");
+
+  const avant = process.cwd();
+  let page = "";
+
+  test("la construction aboutit", () => {
+    const r = constructeur.construire();
+    assert.ok(r.octets > 400000, "fichier suspicieusement petit : " + r.octets + " octets");
+    assert.strictEqual(r.apps, 7);
+    page = fs.readFileSync(r.chemin, "utf8");
+  });
+
+  test("chaque bloc de script compile", () => {
+    /* C'est exactement le défaut qui a cassé la première construction : un
+       « </script > » littéral dans landing.js fermait la balise et coupait le
+       programme en deux. Compiler chaque bloc l'attrape. */
+    const blocs = [];
+    const re = /<script>([\s\S]*?)<\/script>/g;
+    let m;
+    while ((m = re.exec(page)) !== null) blocs.push(m[1]);
+
+    assert.ok(blocs.length >= 4, "seulement " + blocs.length + " blocs de script trouvés");
+    blocs.forEach((code, i) => {
+      try { new vm.Script(code, { filename: "bloc-" + i + ".js" }); }
+      catch (err) { throw new Error("le bloc " + i + " ne compile pas : " + err.message); }
+    });
+  });
+
+  test("les modules partagés sont embarqués", () => {
+    ["./economics", "./sources", "./visuals", "./landing", "./horsligne",
+     "./data/comptoir.json", "./data/radar.json"].forEach(nom => {
+      assert.ok(page.includes('__mods["' + nom + '"]'), "module absent du bundle : " + nom);
+    });
+  });
+
+  test("les sept applications sont embarquées", () => {
+    assert.ok(page.includes("POSTE_COD_APPS"));
+    ["Espion COD", "Radar Produit COD", "Comptoir COD", "Pilote COD",
+     "Rayon COD", "Registre WhatsApp", "Lancement COD"].forEach(nom => {
+      assert.ok(page.includes(nom), "application absente : " + nom);
+    });
+  });
+
+  test("aucune balise fermante n'échappe à l'échappement", () => {
+    /* Quatre balises fermantes légitimes : les quatre blocs de la page. */
+    const fermantes = (page.match(/<\/script>/g) || []).length;
+    assert.strictEqual(fermantes, 4,
+      fermantes + " balises </script> — il devrait y en avoir exactement 4, une par bloc");
+  });
+
+  test("la page ne demande rien au réseau à part les polices", () => {
+    const srcs = (page.match(/<script[^>]+src=/g) || []);
+    assert.strictEqual(srcs.length, 0, "un script externe traîne dans la page");
+    const liens = (page.match(/<link[^>]+href="(https?:[^"]+)"/g) || [])
+      .filter(l => !/fonts\.(googleapis|gstatic)\.com/.test(l));
+    assert.strictEqual(liens.length, 0, "une feuille de style externe traîne : " + liens.join(", "));
+  });
+
+  test("un module dépendant de Node fait échouer la construction", () => {
+    /* Le garde-fou du constructeur : si quelqu'un ajoute un require("fs") dans
+       un module partagé, la construction doit refuser plutôt que de livrer une
+       page qui plante à l'ouverture. */
+    const chemin = path.join(__dirname, "..", "server", "economics.js");
+    const original = fs.readFileSync(chemin, "utf8");
+    try {
+      fs.writeFileSync(chemin, 'const fs = require("fs");\n' + original);
+      assert.throws(() => constructeur.construire(), /ne peut pas tourner dans un navigateur/);
+    } finally {
+      fs.writeFileSync(chemin, original);
+      constructeur.construire();   // on remet un dist/ correct
+    }
+  });
+
+  test("le fichier livré correspond aux sources", () => {
+    /* dist/poste-cod.html est versionné pour être téléchargeable directement.
+       S'il a pris du retard sur les sources, il faut le dire. */
+    const livre = fs.readFileSync(path.join(__dirname, "..", "dist", "poste-cod.html"), "utf8");
+    assert.strictEqual(livre.length, page.length,
+      "dist/poste-cod.html ne correspond plus aux sources — relancez `npm run build:html`");
+  });
+
+  test("le chemin est resté propre", () => {
+    assert.strictEqual(process.cwd(), avant);
+  });
+});
+
+/* ===========================================================================
    Exécution
    ======================================================================== */
 (async () => {

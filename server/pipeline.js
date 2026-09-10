@@ -29,6 +29,7 @@ const visuals = require("./visuals");
 const landing = require("./landing");
 const store = require("./store");
 const connecteurs = require("./connecteurs");
+const hl = require("./horsligne");
 
 const radar = require("./data/radar.json");
 
@@ -259,22 +260,7 @@ Règles absolues :
 async function etapeRecherche(job) {
   const categorie = src.categoriser(job.cible);
 
-  if (job.mode !== "live") {
-    /* Hors ligne : on ne prétend pas avoir cherché. On donne les liens à
-       ouvrir soi-même, et les produits proches du catalogue Radar. */
-    const proches = produitsProches(job.cible, categorie.id);
-    return {
-      horsLigne: true,
-      categorie,
-      note: "Mode hors ligne — liens de vérification fournis",
-      aVerifier: src.plafondsPrix(job.cible),
-      produitsProches: proches,
-      synthese: "Aucune recherche web n'a été faite : l'application tourne sans clé API. " +
-        "Les liens ci-dessus ouvrent les recherches à faire vous-même — Meta Ad Library " +
-        "pour savoir qui fait déjà de la publicité, Jumia pour le plafond de prix, " +
-        "Google Trends pour la tendance."
-    };
-  }
+  if (job.mode !== "live") return hl.recherche(job);
 
   const prompt = `${CONTEXTE}
 
@@ -318,46 +304,17 @@ Réponds en JSON :
   return Object.assign({ categorie, sources: r.sources, note: (r.sources || []).length + " sources consultées" }, d);
 }
 
-function produitsProches(cible, categorieId) {
-  const t = String(cible).toLowerCase();
-  const mots = t.split(/\s+/).filter(m => m.length > 3);
-  return radar.produits
-    .map(p => {
-      const n = p.nom.toLowerCase();
-      let s = mots.reduce((a, m) => a + (n.includes(m) ? 2 : 0), 0);
-      if (categorieId && src.categoriser(p.nom).id === categorieId) s += 1;
-      return { p, s };
-    })
-    .filter(x => x.s > 0)
-    .sort((a, b) => b.s - a.s)
-    .slice(0, 5)
-    .map(x => ({ nom: x.p.nom, prix: x.p.prix, cout: x.p.cout, categorie: x.p.cat, note: x.p.note }));
-}
-
 /* ===========================================================================
    2. VALIDATION
    ======================================================================== */
 async function etapeValidation(job) {
   const rech = job.resultats.recherche || {};
-
-  /* Sans prix, on ne peut rien valider : on prend le milieu de la fenêtre COD
-     et on le signale, plutôt que de refuser d'avancer. */
-  let suppose = false;
-  if (!job.prix) {
-    const proche = (rech.produitsProches || [])[0];
-    job.prix = proche ? proche.prix : 299;
-    suppose = true;
-  }
-  if (!job.cout) {
-    const proche = (rech.produitsProches || [])[0];
-    job.cout = proche ? proche.cout : Math.round(job.prix * 0.35);
-    suppose = true;
-  }
-
-  const nom = job.produitRetenu || job.cible;
   let criteres = null;
 
+  /* En direct, Claude note les six critères de jugement ; le calcul lui-même
+     reste celui de horsligne.js, identique aux deux modes. */
   if (job.mode === "live") {
+    const nom = job.produitRetenu || job.cible;
     const prompt = `${CONTEXTE}
 
 Note le produit « ${nom} » sur les six critères du produit gagnant COD marocain.
@@ -387,99 +344,37 @@ Réponds en JSON :
     }
   }
 
-  const produit = { nom, prix: job.prix, cout: job.cout, criteres: criteres || {} };
-  const note = eco.scoreProduit(produit, job.hypotheses);
-  job.economie = note.economie;
-  job.scoreProduit = note.score;
+  const res = hl.validation({
+    cible: job.cible, produitRetenu: job.produitRetenu,
+    prix: job.prix, cout: job.cout,
+    hypotheses: job.hypotheses, criteres, recherche: rech
+  });
 
-  const alertes = [];
-  if (suppose) {
-    alertes.push({ niveau: "warn", texte: "Prix et coût partiellement supposés — remplacez-les par vos chiffres réels avant d'engager du budget." });
-  }
-  if (!note.economie.lancable) {
-    alertes.push({
-      niveau: "bad",
-      texte: "CPA maximum de " + note.economie.cpaMax + " DH, sous le plancher de " +
-        job.hypotheses.cplPlancher + " DH. Aucune campagne Meta ou TikTok au Maroc n'acquiert " +
-        "une commande COD à ce prix de façon durable."
-    });
-  }
-  if (!note.economie.dansLaFenetre) {
-    alertes.push({ niveau: "warn", texte: "Prix hors de la fenêtre d'impulsion " + job.hypotheses.fenetreBasse + "–" + job.hypotheses.fenetreHaute + " DH." });
-  }
-  if (note.economie.multiple < 2) {
-    alertes.push({ niveau: "warn", texte: "Multiple ×" + note.economie.multiple + " : sous ×2, le moindre imprévu efface la marge." });
-  }
-  if (criteres && criteres.risqueMajeur) {
-    alertes.push({ niveau: "warn", texte: criteres.risqueMajeur });
-  }
-
-  const bloquant = !note.economie.lancable;
-
-  /* Les deux sorties de secours quand l'économie ne passe pas. */
-  const correctifs = bloquant ? {
-    prixMinimum: eco.prixPourCpa(job.cout, job.hypotheses.cplPlancher + 20, job.hypotheses),
-    coutMaximum: eco.coutMaxPour(job.prix, job.hypotheses.cplPlancher + 20, job.hypotheses)
-  } : null;
-
-  return {
-    produit: nom, prix: job.prix, cout: job.cout, suppose,
-    score: note.score, detail: note.parts, poids: note.poids,
-    verdictScore: note.verdict,
-    economie: note.economie,
-    criteres: criteres || null,
-    alertes,
-    correctifs,
-    verdict: bloquant ? "bloquant" : "poursuivre",
-    raison: bloquant
-      ? "À " + job.prix + " DH d'achat " + job.cout + " DH, il ne reste que " + note.economie.cpaMax +
-        " DH de CPA maximum. Vendre à " + correctifs.prixMinimum + " DH, ou acheter à " +
-        correctifs.coutMaximum + " DH — sinon la campagne perd de l'argent dès la première commande."
-      : null,
-    note: "Score " + note.score + "/100 · CPA max " + note.economie.cpaMax + " DH"
-  };
+  /* La validation a pu suppléer prix et coût : la suite de la chaîne travaille
+     avec ces valeurs-là. */
+  job.prix = res.prix;
+  job.cout = res.cout;
+  job.economie = res.economie;
+  job.scoreProduit = res.score;
+  return res;
 }
 
 /* ===========================================================================
    3. FOURNISSEURS
    ======================================================================== */
 async function etapeFournisseurs(job) {
-  const rech = job.resultats.recherche || {};
-  const categorie = (rech.categorie && rech.categorie.id) || src.categoriser(job.cible).id;
   const nom = job.produitRetenu || job.cible;
+  const base = hl.fournisseurs({
+    cible: job.cible, produitRetenu: job.produitRetenu,
+    cout: job.cout, recherche: job.resultats.recherche
+  });
+  const categorie = base.categorie;
 
-  const routes = src.routesAchat({ nom, requete: nom }, { categorieId: categorie });
-  const ancre = job.cout ? { sourceId: routes[0] && routes[0].id, cout: job.cout } : null;
-  const chiffrees = src.estimerCouts(routes, ancre);
+  if (job.mode !== "live") return base;
 
-  const base = {
-    categorie,
-    routes: chiffrees.slice(0, 14),
-    pistesContact: src.pistesContact(nom),
-    annuaires: src.ANNUAIRES,
-    plafonds: src.plafondsPrix(nom),
-    methode: {
-      coutRendu: "coût rendu = (prix unitaire × taux de change) + douane % + fret ÷ quantité + dédouanement ÷ quantité",
-      cpaMax: "CPA max = [ livrées × (vente − coût rendu) − livrées × frais livraison − refusées × frais retour ] ÷ 100 commandes brutes",
-      regles: [
-        "Viser un multiple de ×2,5 minimum entre coût rendu et prix de vente.",
-        "Demander toujours un échantillon payant avant le volume.",
-        "Exiger une facture avec ICE — sans elle, aucun recours.",
-        "Le MOQ n'est affiché nulle part : c'est la première question à poser.",
-        "Vérifier l'existence légale sur Charika avant tout acompte."
-      ]
-    }
-  };
-
-  if (job.mode !== "live") {
-    return Object.assign(base, {
-      horsLigne: true,
-      contacts: [],
-      note: routes.length + " routes d'achat · contacts à qualifier vous-même",
-      avertissement: "Sans clé API, aucun fournisseur n'a été cherché en direct. " +
-        "Les liens de recherche ci-dessus ouvrent les annuaires où trouver les coordonnées réelles."
-    });
-  }
+  /* En direct, on remplace l'avertissement par de vrais contacts. */
+  delete base.horsLigne;
+  delete base.avertissement;
 
   const prompt = `${CONTEXTE}
 
@@ -564,7 +459,7 @@ Réponds en JSON :
     pieges: d.pieges || [],
     revalidation,
     sources: r.sources,
-    note: contacts.length + " contacts trouvés · " + routes.length + " routes d'achat"
+    note: contacts.length + " contacts trouvés · " + base.routes.length + " routes d'achat"
   });
 }
 
@@ -577,10 +472,7 @@ async function etapeAdCopy(job) {
   const rech = job.resultats.recherche || {};
 
   if (job.mode !== "live") {
-    return Object.assign(gabaritAdCopy(nom, job), {
-      horsLigne: true,
-      note: "Gabarits à remplir — sans clé API, le darija n'est pas rédigé"
-    });
+    return hl.adcopy({ cible: job.cible, produitRetenu: job.produitRetenu, prix: job.prix });
   }
 
   const prompt = `${CONTEXTE}
@@ -630,32 +522,6 @@ Réponds en JSON :
   });
 }
 
-function gabaritAdCopy(nom, job) {
-  const modele = {
-    hookAr: "[hook darija — la douleur en une phrase]",
-    hookFr: "[la même en français]",
-    meta: {
-      texte: "[accroche]\n\n[agitation : ce que ça coûte de ne rien faire]\n\n✅ [bénéfice 1]\n✅ [bénéfice 2]\n✅ [bénéfice 3]\n\nالثمن: " + job.prix + " درهم\n🚚 الدفع عند الاستلام\n📦 التوصيل ل جميع المدن\n\nسير دابا 👇",
-      titre: nom.slice(0, 40) + " — " + job.prix + " DH",
-      description: "Paiement à la livraison"
-    },
-    tiktok: { legende: "[légende darija]", hashtags: "#المغرب #cod #codmaroc #maroc" },
-    pourquoi: "[à compléter]"
-  };
-  return {
-    angles: { probleme: modele, preuve: modele, offre: modele },
-    benefices: ["[bénéfice 1]", "[bénéfice 2]", "[bénéfice 3]"],
-    beneficesAr: [],
-    objections: [
-      { question: "Je paie d'avance ?", reponse: "Non. Vous payez au livreur, après avoir ouvert le colis." },
-      { question: "Et si ça ne me plaît pas ?", reponse: "Vous ouvrez, vous vérifiez, et vous ne payez que si ça vous convient." }
-    ],
-    promesse: "[promesse]", promesseAr: "",
-    titreProduit: nom, titreProduitAr: "",
-    specs: [], faq: []
-  };
-}
-
 /* ===========================================================================
    5. SCRIPTS VIDÉO
    ======================================================================== */
@@ -663,9 +529,7 @@ async function etapeScripts(job) {
   const nom = job.produitRetenu || job.cible;
   const copy = job.copy || {};
 
-  if (job.mode !== "live") {
-    return { horsLigne: true, scripts: gabaritScripts(), note: "Trame de 6 beats à remplir" };
-  }
+  if (job.mode !== "live") return hl.scripts();
 
   const prompt = `${CONTEXTE}
 
@@ -696,57 +560,21 @@ Réponds en JSON :
   return Object.assign(d, { note: Object.keys(d.scripts || {}).length + " scripts de 30 s" });
 }
 
-function gabaritScripts() {
-  const trame = {
-    titre: "[titre]", duree: "30 s",
-    beats: [
-      { temps: "0-3 s", beat: "HOOK", image: "[ce qu'on filme — montrer, pas expliquer]", voix: "[darija]" },
-      { temps: "3-8 s", beat: "AGITATION", image: "[ce que ça coûte de ne rien faire]", voix: "[darija]" },
-      { temps: "8-16 s", beat: "DÉMO", image: "[le produit en action, plan serré]", voix: "[darija]" },
-      { temps: "16-22 s", beat: "PREUVE", image: "[avant/après ou test]", voix: "[darija]" },
-      { temps: "22-26 s", beat: "LEVÉE D'OBJECTION", image: "[la démonstration qui répond au doute]", voix: "[darija]" },
-      { temps: "26-30 s", beat: "CTA", image: "[carton prix + badge paiement à la livraison]", voix: "الدفع عند الاستلام" }
-    ],
-    materiel: ["Téléphone", "Lumière naturelle", "Le produit"]
-  };
-  return { probleme: trame, preuve: trame, offre: trame };
-}
-
 /* ===========================================================================
    6. VISUELS
    ======================================================================== */
 async function etapeVisuels(job) {
   const nom = job.produitRetenu || job.cible;
   const copy = job.copy || {};
-  const angles = copy.angles || {};
 
-  const brief = {
-    produit: copy.titreProduit || nom,
-    boutique: job.boutique,
-    prix: job.prix,
-    prixBarre: job.prix ? Math.round(job.prix * 1.8) : null,
-    devise: job.devise,
-    benefices: copy.benefices || [],
-    badge: "الدفع عند الاستلام 🚚",
-    hooks: {
-      probleme: { ar: (angles.probleme || {}).hookAr, fr: (angles.probleme || {}).hookFr },
-      preuve:   { ar: (angles.preuve   || {}).hookAr, fr: (angles.preuve   || {}).hookFr },
-      offre:    { ar: (angles.offre    || {}).hookAr, fr: (angles.offre    || {}).hookFr }
-    }
-  };
+  const v = hl.visuels({
+    cible: job.cible, produitRetenu: job.produitRetenu, copy: job.copy,
+    boutique: job.boutique, prix: job.prix, devise: job.devise
+  });
+  v.jeu.forEach(c => store.ecrireLivrable(job.id, c.fichier, c.svg));
 
-  const jeu = visuals.jeuComplet(brief);
-  jeu.forEach(c => store.ecrireLivrable(job.id, c.fichier, c.svg));
-
-  const sortie = {
-    creas: jeu.map(c => ({
-      fichier: c.fichier, angle: c.angle, angleNom: c.angleNom, angleQuoi: c.angleQuoi,
-      format: c.format, formatNom: c.formatNom, largeur: c.largeur, hauteur: c.hauteur
-    })),
-    photos: [],
-    note: jeu.length + " créas (3 angles × 3 formats)",
-    conversion: "Les fichiers sont en SVG : le bouton « PNG » de l'interface les convertit aux dimensions exactes attendues par Meta et TikTok."
-  };
+  const sortie = v.resume;
+  const jeu = v.jeu;
 
   /* Higgsfield, quand il est branché : une photo par angle, en plus des créas.
      Les SVG portent le texte et restent corrigeables ; les photos portent le
@@ -790,79 +618,28 @@ async function etapeVisuels(job) {
    7. LANDING PAGE
    ======================================================================== */
 async function etapeLanding(job) {
-  const nom = job.produitRetenu || job.cible;
-  const copy = job.copy || {};
-  const vis = job.resultats.visuels || {};
-  const photos = (vis.photos || []).filter(p => p.ok);
-  /* Une photo vaut mieux qu'une créa dans une galerie produit : la créa porte
-     le prix et le hook, sa place est dans le fil publicitaire, pas ici. */
-  const creas = photos.length
-    ? photos.map(p => ({ fichier: p.fichier, angle: p.angle }))
-    : (vis.creas || []).filter(c => c.format === "feed")
-        .map(c => ({ fichier: c.fichier, angle: c.angleNom }));
-
-  /* Si un webhook Make est configuré, la page y poste la commande avant
-     d'ouvrir WhatsApp : la commande entre dans les scénarios existants même
-     quand la page est hébergée ailleurs. */
   const cnx = connecteurs.config(store.reglages());
-
-  const html = landing.page({
-    webhookUrl: cnx.make.webhook || "",
-    titre: copy.titreProduit || nom,
-    titreAr: copy.titreProduitAr || "",
-    produit: nom,
-    prix: job.prix,
-    prixBarre: job.prix ? Math.round(job.prix * 1.8) : null,
-    devise: job.devise,
-    boutique: job.boutique,
-    whatsapp: job.whatsapp,
-    promesse: copy.promesse || "",
-    promesseAr: copy.promesseAr || "",
-    benefices: copy.benefices || [],
-    beneficesAr: copy.beneficesAr || [],
-    objections: copy.objections || [],
-    specs: copy.specs || [],
-    faq: copy.faq || [],
-    creas
+  const r = hl.landingPage({
+    cible: job.cible, produitRetenu: job.produitRetenu, copy: job.copy,
+    visuels: job.resultats.visuels, prix: job.prix, devise: job.devise,
+    boutique: job.boutique, whatsapp: job.whatsapp,
+    webhookUrl: cnx.make.webhook || ""
   });
-
-  const info = store.ecrireLivrable(job.id, "landing.html", html);
-  return {
-    fichier: info.fichier, octets: info.octets,
-    note: Math.round(info.octets / 1024) + " Ko, autonome",
-    aFaire: job.whatsapp
-      ? null
-      : "Aucun numéro WhatsApp n'est configuré : la page enregistre les commandes dans le navigateur au lieu de les envoyer. Renseignez-le dans Réglages avant de lancer la campagne."
-  };
+  const info = store.ecrireLivrable(job.id, "landing.html", r.html);
+  return Object.assign({}, r.resume, { octets: info.octets });
 }
 
 /* ===========================================================================
    8. STRATÉGIE
    ======================================================================== */
 async function etapeStrategie(job) {
-  const e = job.economie || eco.economie({ prix: job.prix, cout: job.cout }, job.hypotheses);
-  const budget = eco.planBudget(e);
+  const socle = hl.strategie({
+    prix: job.prix, cout: job.cout, hypotheses: job.hypotheses, economie: job.economie
+  });
+  if (job.mode !== "live") return socle;
+
+  const e = socle.economie, budget = socle.budget;
   const nom = job.produitRetenu || job.cible;
-
-  const socle = {
-    economie: e,
-    budget,
-    regles: [
-      { quand: "CPA réel ≤ " + budget.seuilScaling + " DH", alors: "Rentable — augmenter le budget de 20 % par jour, pas plus.", ton: "good" },
-      { quand: "CPA réel entre " + budget.seuilScaling + " et " + budget.seuilCoupure + " DH", alors: "À l'équilibre — changer de créa avant de toucher au budget.", ton: "warn" },
-      { quand: "CPA réel > " + budget.seuilCoupure + " DH", alors: "En perte — couper l'ensemble de publicités, garder l'angle qui a le meilleur taux de clic.", ton: "bad" },
-      { quand: "Taux de confirmation < 70 %", alors: "Le problème est le délai de rappel, pas la publicité : viser un contact sous 2 h.", ton: "warn" },
-      { quand: "Refus > 40 % sur une ville", alors: "Vérifier le transporteur et le délai sur cette ville avant d'y remettre du budget.", ton: "warn" }
-    ]
-  };
-
-  if (job.mode !== "live") {
-    return Object.assign(socle, {
-      horsLigne: true,
-      plan: planParDefaut(budget, e),
-      note: "Plan standard · CPA cible " + budget.seuilScaling + " DH"
-    });
-  }
 
   const prompt = `${CONTEXTE}
 
@@ -892,57 +669,12 @@ Réponds en JSON :
   const r = await claude.demanderJson({ prompt, maxTokens: 20000, modele: job.modele });
   comptabiliser(job, r);
 
+  /* Le plan rédigé remplace le plan standard ; l'économie et les règles de
+     coupure, elles, restent celles du calcul. */
   return Object.assign(socle, r.donnees || {}, {
-    note: "CPA cible " + budget.seuilScaling + " DH · budget test " + budget.budgetTest3Jours + " DH"
+    horsLigne: false,
+    note: "CPA cible " + Math.round(budget.seuilScaling) + " DH · budget test " + budget.budgetTest3Jours + " DH"
   });
-}
-
-function planParDefaut(budget, e) {
-  return {
-    phases: [
-      { nom: "Test d'angles", duree: "3 jours", budget: budget.budgetJourTest + " DH/jour",
-        quoi: "Trois ensembles de publicités, un par angle, même audience large.",
-        onRegarde: ["Taux de clic sur le lien", "CPA par angle", "Taux de confirmation"],
-        decision: "Garder l'angle sous " + budget.seuilScaling + " DH de CPA, couper les autres." },
-      { nom: "Sélection", duree: "3 jours", budget: budget.budgetJourTest + " DH/jour",
-        quoi: "Trois créas du même angle gagnant, formats différents.",
-        onRegarde: ["CPA par créa", "Taux de livraison réel"],
-        decision: "Garder les deux meilleures créas." },
-      { nom: "Montée en budget", duree: "7 à 14 jours", budget: "+20 % par jour maximum",
-        quoi: "On augmente lentement, on ne duplique pas la campagne qui marche.",
-        onRegarde: ["CPA après montée", "Stock disponible", "Taux de refus par ville"],
-        decision: "Couper dès que le CPA dépasse " + budget.seuilCoupure + " DH." },
-      { nom: "Entretien", duree: "en continu", budget: "stable",
-        quoi: "Une nouvelle créa par semaine pour retarder l'usure, retargeting sur les visiteurs.",
-        onRegarde: ["Fréquence", "CPA sur 7 jours glissants"],
-        decision: "Renouveler la créa dès que la fréquence dépasse 2,5." }
-    ],
-    ciblage: {
-      meta: "Maroc, 25–55 ans, ciblage large (pas d'intérêt) — l'algorithme trouve mieux que nous sur un marché de cette taille. Placement automatique.",
-      tiktok: "Maroc, 18–45 ans, large. Le contenu fait le ciblage.",
-      exclusions: "Exclure les acheteurs des 30 derniers jours des campagnes d'acquisition."
-    },
-    calendrier: [
-      { jour: "J-2", quoi: "Stock vérifié, échantillon reçu et testé, landing page en ligne" },
-      { jour: "J-1", quoi: "Script de confirmation prêt, WhatsApp branché, transporteur confirmé" },
-      { jour: "J1", quoi: "Lancement des 3 angles, on ne touche à rien pendant 48 h" },
-      { jour: "J3", quoi: "Premier arbitrage : on coupe les angles au-dessus du CPA maximum" },
-      { jour: "J7", quoi: "Premier bilan livraison réelle — c'est lui qui dit la vérité, pas le gestionnaire de publicités" }
-    ],
-    avantLancement: [
-      "Échantillon reçu et testé soi-même",
-      "Stock suffisant pour 3 jours au rythme espéré",
-      "Script d'appel de confirmation écrit, en darija",
-      "Transporteur confirmé sur les villes visées",
-      "Landing page testée sur téléphone, pas sur ordinateur"
-    ],
-    risques: [
-      { risque: "Rupture de stock pendant que la publicité tourne", parade: "Plafonner le budget au stock disponible, pas à l'ambition." },
-      { risque: "Taux de refus qui explose sur une ville", parade: "Suivre le refus par ville dès la première semaine et couper la ville, pas la campagne." },
-      { risque: "Le gestionnaire de publicités affiche un ROAS positif alors que la boutique perd", parade: "Ne juger que sur les commandes livrées et encaissées." }
-    ],
-    objectif: "Un angle validé sous " + budget.seuilScaling + " DH de CPA, avec un taux de livraison au-dessus de 70 %, et du stock pour tenir la montée."
-  };
 }
 
 /* ---------------------------------------------------------------------------
